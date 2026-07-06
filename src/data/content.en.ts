@@ -23,9 +23,9 @@ export const en: PortfolioContent = {
 
   about: {
     paragraphs: [
-      "I'm a full stack developer with an unconventional background. For 20 years I led scout groups, managed teams, and coordinated community service projects. That experience taught me how to work with people, solve problems under pressure, and stay calm when things get complicated.",
-      "Before writing code, I spent 11 years as an industrial mechanic and national park guide. I learned to diagnose failures, maintain critical systems, and pay attention to detail — skills I now apply when debugging an API or designing application architecture.",
-      "Today I combine all of that with my self-taught and formal training in software development. I work with modern technologies from the JavaScript/TypeScript ecosystem, both frontend and backend, and I'm always learning something new. My profile isn't the typical one: I come from the trenches, from fixing machines and leading volunteers, and that mix gives me a unique perspective to build software that actually solves problems.",
+      "I'm a self-taught full stack developer with a background that doesn't follow the typical path. For 3 years I've been building complete web applications — from design to deploy — applying clean architecture, best practices, and iterative development. My differentiator: I use AI tools strategically with spec-driven development, model evaluation, and context optimization.",
+      "I currently work as IT Support and Security at Poder Judicial de Tucumán, where I configure networks, monitor threats, and manage incidents. In parallel, I keep building full stack projects with React, Node.js, Express, and PostgreSQL.",
+      "Before software, I spent over 10 years in industrial manufacturing designing and building automated industrial machinery with Siemens LOGO!8 PLCs — potato harvesters, endless saws, brick-making machines. I also ran my own venture Emme 3D with 10 simultaneous 3D printers, and coordinated sales, rental, and logistics of construction machinery. That combination of trades, industry, and technology gives me a unique perspective to solve real problems with code.",
     ],
     photoUrl: "https://picsum.photos/seed/mv-portrait/400/400",
     photoAlt: "Portrait of Maximiliano Vallejo",
@@ -53,7 +53,9 @@ export const en: PortfolioContent = {
         { name: "Express", icon: "express" },
         { name: "PostgreSQL", icon: "postgresql" },
         { name: "Prisma ORM", icon: "prisma" },
+        { name: "MySQL", icon: "mysql" },
         { name: "REST APIs", icon: "api" },
+        { name: "JWT", icon: "jwt" },
         { name: "Git / GitHub", icon: "git" },
       ],
     },
@@ -67,6 +69,7 @@ export const en: PortfolioContent = {
         { name: "Figma", icon: "figma" },
         { name: "Vercel", icon: "vercel" },
         { name: "Vite", icon: "vite" },
+        { name: "Postman", icon: "postman" },
       ],
     },
     {
@@ -86,29 +89,29 @@ export const en: PortfolioContent = {
       slug: "stock-control",
       title: "Stock Control",
       description:
-        "Full stack stock and inventory control system with authentication, user roles, admin dashboard, and exportable reports. Built with React, Node.js, and PostgreSQL.",
-      techTags: ["React", "Node.js", "PostgreSQL", "Prisma", "Tailwind CSS"],
-      repoUrl: "https://github.com/maximilianovallejo/stock-control",
+        "Full inventory management and point-of-sale (POS) system with dynamic discount engine, real-time stock control, sales tracking, current accounts, and advanced statistical reports.",
+      techTags: ["React", "Node.js", "Express", "PostgreSQL", "Prisma", "JWT"],
+      repoUrl: "https://github.com/MaximilianoVallejo1991/stock-controll-main",
       screenshot: "https://picsum.photos/seed/stock-control/800/450",
     },
     {
       slug: "elianapp",
       title: "ElianApp",
       description:
-        "Business management application with product catalog, shopping cart, integrated payments, and admin panel. Built with Next.js and TypeScript.",
-      techTags: ["Next.js", "TypeScript", "Prisma", "Tailwind CSS", "Stripe"],
-      liveUrl: "https://elianapp.vercel.app",
-      repoUrl: "https://github.com/maximilianovallejo/elianapp",
+        "Shared expense tracking app: each person reports their own items, the system validates and balances. Supports equal, percentage, and exact splitting per participant.",
+      techTags: ["React 19", "Express 5", "Prisma 7", "PostgreSQL", "JWT"],
+      liveUrl: "https://elian-app-frontend.vercel.app",
+      repoUrl: "https://github.com/MaximilianoVallejo1991/ElianApp",
       screenshot: "https://picsum.photos/seed/elianapp/800/450",
     },
     {
       slug: "countdown-christmas",
       title: "Countdown to Christmas",
       description:
-        "Interactive app with animated Christmas countdown. Includes visual themes, background music, and personalized messages. A creative and festive side project.",
-      techTags: ["React", "TypeScript", "Framer Motion", "CSS Animations"],
-      liveUrl: "https://countdown-christmas.vercel.app",
-      repoUrl: "https://github.com/maximilianovallejo/countdown-christmas",
+        "Search for your country and watch the countdown to Christmas and New Year. Lightweight project deployed on Vercel.",
+      techTags: ["JavaScript", "HTML5", "CSS3", "Vercel"],
+      liveUrl: "https://tochristmas.vercel.app",
+      repoUrl: "https://github.com/MaximilianoVallejo1991/CountdownToChristmas",
       screenshot: "https://picsum.photos/seed/christmas/800/450",
     },
   ],
@@ -139,6 +142,13 @@ export const en: PortfolioContent = {
             "Led community service initiatives: food drives, emergency housing construction, and educational programs in rural areas.",
           photoUrl: "https://picsum.photos/seed/scout2/200/200",
         },
+        {
+          year: "2019-2023",
+          title: "Site Guide — Aconquija National Park",
+          description:
+            "Certified guide for the National Parks Administration at Aconquija National Park, Tucumán province. Environmental interpretation, mountain safety, visitor assistance, and natural heritage conservation.",
+          photoUrl: "https://picsum.photos/seed/aconquija/200/200",
+        },
       ],
     },
     {
@@ -147,24 +157,18 @@ export const en: PortfolioContent = {
       heroImage: "https://picsum.photos/seed/industria/800/400",
       milestones: [
         {
-          year: "2012-2023",
-          title: "Industrial Mechanic — Ladrillera La Banda",
+          year: "2009 - 2020",
+          title: "Mechanical Technician — Machine Shop",
           description:
-            "11 years in heavy industrial machinery maintenance and repair. Fault diagnosis, welding, lathe work, and critical spare parts management.",
+            "Over 10 years repairing, designing, and fabricating industrial machinery — trucks, road machinery, potato harvesters, endless saws, brick-making machines (simple and PLC-automated). Part drafting using 3D modeling tools. PLC Siemens LOGO!8 programming for cutting automation in brick machines, integrating pneumatic systems. Project planning and execution for sugar, brick, and agricultural industries.",
           photoUrl: "https://picsum.photos/seed/mecanica1/200/200",
         },
         {
-          year: "2019-2023",
-          title: "National Park Guide — Los Alerces National Park",
+          year: "2017 - 2022",
+          title: "Sales, Rental & Logistics Coordinator — Ladrillos Macizos Concepción",
           description:
-            "Trekking and hiking guide at Los Alerces National Park. Environmental interpretation, mountain safety, and visitor assistance in English and Spanish.",
+            "Commercialized the machines designed and built in the workshop — brick machines, saws, potato harvesters — plus the bricks produced by them. Sales and rental management with included technical support. Responsible for collections and contract administration. Delivery logistics coordination ensuring timely supply to construction sites.",
           photoUrl: "https://picsum.photos/seed/parque1/200/200",
-        },
-        {
-          year: "2020-2022",
-          title: "Production Operator — Laminados Industriales",
-          description:
-            "Quality control in a continuous production line. Industrial furnace operation and scheduled preventive maintenance.",
         },
       ],
     },
@@ -174,50 +178,31 @@ export const en: PortfolioContent = {
       heroImage: "https://picsum.photos/seed/tech/800/400",
       milestones: [
         {
-          year: "2020-2026",
-          title: "Self-Taught Full Stack Developer",
+          year: "2023 - Present",
+          title: "Full Stack Developer — Personal Projects",
           description:
-            "Self-taught training in web development. Studied JavaScript, React, Node.js, TypeScript, databases, and software architecture. Completed multiple personal projects and open source contributions.",
+            "I build complete web applications from design to deploy, applying good architecture practices, testing, and iterative development. Main stack: React, TypeScript, Node.js, Express, Prisma, PostgreSQL. Featured projects: Stock Control (POS and inventory with dynamic discounts), ElianApp (shared expenses with equal, percentage, and exact splitting), Countdown to Christmas (country-filterable countdown).",
           photoUrl: "https://picsum.photos/seed/code1/200/200",
         },
         {
-          year: "2022-2023",
-          title: "IT Support — Poder Judicial de Tucumán",
+          year: "2022 - Present",
+          title: "IT Support & Security — Poder Judicial de Tucumán",
           description:
-            "Technical support in the systems department of the Judiciary. Help desk, hardware maintenance, software installation, and ticket management with GLPI.",
+            "Configuration and maintenance of internet and intranet networks, ensuring optimal operation according to organizational standards. Security console supervision, threat monitoring, and preventive measures. Report preparation on security status and equipment performance. Development of action plans for problem resolution.",
           photoUrl: "https://picsum.photos/seed/pjudicial/200/200",
-        },
-        {
-          year: "2024-2025",
-          title: "Technical Certifications",
-          description:
-            "Completed professional certifications in QA Testing (UTN), frontend development with React, and various JavaScript ecosystem technologies. Continuous learning through platforms like Platzi, freeCodeCamp, and Frontend Masters.",
-        },
-        {
-          year: "2025-2026",
-          title: "Freelance Projects & Portfolio",
-          description:
-            "Freelance project development and professional portfolio building. Focus on modern architectures, code best practices, and user experience.",
-          photoUrl: "https://picsum.photos/seed/code2/200/200",
         },
       ],
     },
     {
       trackKey: "oficios",
-      trackLabel: "Trades & Manual Skills",
+      trackLabel: "Trades & Ventures",
       heroImage: "https://picsum.photos/seed/oficios/800/400",
       milestones: [
         {
-          year: "2010-2023",
-          title: "Welder & Lathe Operator",
+          year: "2020 - 2022",
+          title: "Owner — Emme 3D",
           description:
-            "Skills in electric and oxyacetylene welding, conventional lathe work, and basic CNC. Applied in repair projects and parts manufacturing.",
-        },
-        {
-          year: "2015-2020",
-          title: "Hobbyist Woodworker",
-          description:
-            "Woodworking projects: furniture, repairs, and restoration work. Experience with manual and power tools.",
+            "Scaled the venture to 10 simultaneous 3D printers, managing maintenance, supplies, deliveries, and customer service. Industrial design and manufacturing of customized products through 3D modeling. Design of specialized parts for Tucumán industry machinery. Complete management from concept to final delivery.",
           photoUrl: "https://picsum.photos/seed/carpinteria/200/200",
         },
       ],
@@ -310,8 +295,8 @@ export const en: PortfolioContent = {
 
   contact: {
     email: "maximilianovallejo@gmail.com",
-    linkedin: "https://linkedin.com/in/maximilianovallejo",
-    github: "https://github.com/maximilianovallejo",
+    linkedin: "https://www.linkedin.com/in/maximiliano-vallejo/",
+    github: "https://github.com/MaximilianoVallejo1991",
     cta: "Let's work together?",
     linkLabels: {
       email: "Email",

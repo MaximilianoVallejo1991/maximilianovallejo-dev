@@ -157,6 +157,33 @@ const icons: Record<string, JSX.Element> = {
       <path d="M9 12l2 2 4-4" />
     </svg>
   ),
+  postman: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" />
+      <path d="M9 8l3 4-3 4" />
+      <path d="M15 8l-3 4 3 4" />
+    </svg>
+  ),
+  mysql: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <ellipse cx="12" cy="5" rx="9" ry="2" />
+      <path d="M3 5v6c0 1.4 4 2.5 9 2.5s9-1.1 9-2.5V5" />
+      <path d="M3 10v2c0 1.4 4 2.5 9 2.5s9-1.1 9-2.5v-2" />
+      <path d="M12 12v7M8 16l4 3 4-3" />
+    </svg>
+  ),
+  jwt: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <path d="M12 2v9" />
+      <path d="M12 13v9" />
+      <path d="M2 12h20" />
+      <path d="M7.5 7.5l4.5 4.5" />
+      <path d="M12 12l4.5 4.5" />
+      <path d="M16.5 7.5L12 12" />
+      <path d="M7.5 16.5L12 12" />
+    </svg>
+  ),
 };
 
 interface IconMapProps {

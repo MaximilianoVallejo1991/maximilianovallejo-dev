@@ -23,9 +23,9 @@ export const es: PortfolioContent = {
 
   about: {
     paragraphs: [
-      "Soy un desarrollador full stack con una trayectoria poco convencional. Durante 20 años lideré grupos scouts, gestioné equipos y coordiné proyectos de servicio comunitario. Esa experiencia me enseñó a trabajar con personas, resolver problemas bajo presión y mantener la calma cuando las cosas se complican.",
-      "Antes de escribir código, pasé 11 años como mecánico industrial y guía de parques nacionales. Aprendí a diagnosticar fallas, mantener sistemas críticos y prestar atención al detalle — habilidades que hoy aplico al debuggear una API o diseñar la arquitectura de una aplicación.",
-      "Hoy combino todo eso con mi formación autodidacta y técnica en desarrollo de software. Trabajo con tecnologías modernas del ecosistema JavaScript/TypeScript, tanto en frontend como backend, y estoy siempre aprendiendo algo nuevo. Mi perfil no es el típico: vengo del barro, de arreglar máquinas y liderar voluntarios, y esa mezcla me da una perspectiva única para construir software que realmente resuelva problemas.",
+      "Soy un desarrollador full stack autodidacta con una trayectoria que no sigue el camino típico. Llevo 3 años construyendo aplicaciones web completas — desde el diseño hasta el deploy — aplicando arquitectura limpia, buenas prácticas y desarrollo iterativo. Mi diferencial: uso herramientas de IA de forma estratégica con spec-driven development, evaluación de modelos y optimización de contextos.",
+      "Actualmente trabajo como Soporte Técnico y Seguridad Informática en el Poder Judicial de Tucumán, donde configuro redes, monitoreo amenazas y gestiono incidentes. En paralelo, sigo desarrollando proyectos full stack con React, Node.js, Express y PostgreSQL.",
+      "Antes del software, pasé más de 10 años en la industria fabril diseñando y fabricando maquinaria industrial automatizada con PLCs Siemens LOGO!8 — arrancadoras de papa, sierras sin fin, ladrilleras. También tuve mi emprendimiento Emme 3D con 10 impresoras en simultáneo, y coordiné ventas, alquiler y logística de maquinaria para la construcción. Esa combinación de oficios, industria y tecnología me da una perspectiva única para resolver problemas reales con código.",
     ],
     photoUrl: "https://picsum.photos/seed/mv-portrait/400/400",
     photoAlt: "Retrato de Maximiliano Vallejo",
@@ -53,7 +53,9 @@ export const es: PortfolioContent = {
         { name: "Express", icon: "express" },
         { name: "PostgreSQL", icon: "postgresql" },
         { name: "Prisma ORM", icon: "prisma" },
+        { name: "MySQL", icon: "mysql" },
         { name: "REST APIs", icon: "api" },
+        { name: "JWT", icon: "jwt" },
         { name: "Git / GitHub", icon: "git" },
       ],
     },
@@ -67,6 +69,7 @@ export const es: PortfolioContent = {
         { name: "Figma", icon: "figma" },
         { name: "Vercel", icon: "vercel" },
         { name: "Vite", icon: "vite" },
+        { name: "Postman", icon: "postman" },
       ],
     },
     {
@@ -86,29 +89,29 @@ export const es: PortfolioContent = {
       slug: "stock-control",
       title: "Stock Control",
       description:
-        "Sistema full stack de control de stock e inventario con autenticación, roles de usuario, dashboard administrativo y reportes exportables. Construido con React, Node.js y PostgreSQL.",
-      techTags: ["React", "Node.js", "PostgreSQL", "Prisma", "Tailwind CSS"],
-      repoUrl: "https://github.com/maximilianovallejo/stock-control",
+        "Sistema integral de gestión de inventarios y punto de venta (POS) con motor de descuentos dinámico, control de stock en tiempo real, seguimiento de ventas, cuentas corrientes y reportes estadísticos avanzados.",
+      techTags: ["React", "Node.js", "Express", "PostgreSQL", "Prisma", "JWT"],
+      repoUrl: "https://github.com/MaximilianoVallejo1991/stock-controll-main",
       screenshot: "https://picsum.photos/seed/stock-control/800/450",
     },
     {
       slug: "elianapp",
       title: "ElianApp",
       description:
-        "Aplicación de gestión comercial con catálogo de productos, carrito de compras, pagos integrados y panel de administración. Desarrollada con Next.js y TypeScript.",
-      techTags: ["Next.js", "TypeScript", "Prisma", "Tailwind CSS", "Stripe"],
-      liveUrl: "https://elianapp.vercel.app",
-      repoUrl: "https://github.com/maximilianovallejo/elianapp",
+        "Aplicación para control de gastos compartidos: cada persona reporta sus propios items, el sistema valida y balancea. Soporta división equitativa, por porcentaje y exacta por participante.",
+      techTags: ["React 19", "Express 5", "Prisma 7", "PostgreSQL", "JWT"],
+      liveUrl: "https://elian-app-frontend.vercel.app",
+      repoUrl: "https://github.com/MaximilianoVallejo1991/ElianApp",
       screenshot: "https://picsum.photos/seed/elianapp/800/450",
     },
     {
       slug: "countdown-christmas",
       title: "Countdown to Christmas",
       description:
-        "Aplicación interactiva con cuenta regresiva animada para Navidad. Incluye temas visuales, música de fondo y mensajes personalizados. Ideal como proyecto creativo y festivo.",
-      techTags: ["React", "TypeScript", "Framer Motion", "CSS Animations"],
-      liveUrl: "https://countdown-christmas.vercel.app",
-      repoUrl: "https://github.com/maximilianovallejo/countdown-christmas",
+        "Buscá tu país y mirá la cuenta regresiva hasta Navidad y Año Nuevo. Proyecto liviano con despliegue en Vercel.",
+      techTags: ["JavaScript", "HTML5", "CSS3", "Vercel"],
+      liveUrl: "https://tochristmas.vercel.app",
+      repoUrl: "https://github.com/MaximilianoVallejo1991/CountdownToChristmas",
       screenshot: "https://picsum.photos/seed/christmas/800/450",
     },
   ],
@@ -139,6 +142,13 @@ export const es: PortfolioContent = {
             "Lideré iniciativas de servicio comunitario: colectas de alimentos, construcción de viviendas de emergencia, y programas educativos en zonas rurales.",
           photoUrl: "https://picsum.photos/seed/scout2/200/200",
         },
+        {
+          year: "2019-2023",
+          title: "Guía de Sitio — Parque Nacional del Aconquija",
+          description:
+            "Guía habilitado por Parques Nacionales en el Parque Nacional del Aconquija, provincia de Tucumán. Interpretación ambiental, seguridad en montaña, atención al visitante y conservación del patrimonio natural.",
+          photoUrl: "https://picsum.photos/seed/aconquija/200/200",
+        },
       ],
     },
     {
@@ -147,24 +157,18 @@ export const es: PortfolioContent = {
       heroImage: "https://picsum.photos/seed/industria/800/400",
       milestones: [
         {
-          year: "2012-2023",
-          title: "Mecánico Industrial — Ladrillera La Banda",
+          year: "2009 - 2020",
+          title: "Técnico Mecánico — Taller Mecánica",
           description:
-            "11 años en mantenimiento y reparación de maquinaria industrial pesada. Diagnóstico de fallas, soldadura, tornería y gestión de repuestos críticos.",
+            "Más de 10 años reparando, diseñando y fabricando maquinaria industrial — camiones, maquinaria vial, arrancadoras de papa, sierras sin fin, ladrilleras simples y automatizadas con PLC. Creación de planos de piezas con modelado 3D. Diseño y programación con PLC Siemens LOGO!8 para automatización de corte en máquinas ladrilleras, integrando sistemas neumáticos. Planificación y ejecución de proyectos para industrias azucareras, ladrilleras y agrícolas.",
           photoUrl: "https://picsum.photos/seed/mecanica1/200/200",
         },
         {
-          year: "2019-2023",
-          title: "Guía de Parque Nacional — Parque Nacional Los Alerces",
+          year: "2017 - 2022",
+          title: "Coordinador de Ventas, Alquiler y Logística — Ladrillos Macizos Concepción",
           description:
-            "Guía de trekking y senderismo en el Parque Nacional Los Alerces. Interpretación ambiental, seguridad en montaña y atención al visitante en inglés y español.",
+            "Comercialización de máquinas diseñadas y fabricadas en el taller — ladrilleras, sierras, arrancadoras de papa — más los ladrillos producidos por estas. Gestión de ventas y alquiler con soporte técnico incluido. Responsable de cobranza y administración de contratos. Coordinación de logística de entrega asegurando suministro oportuno en obra.",
           photoUrl: "https://picsum.photos/seed/parque1/200/200",
-        },
-        {
-          year: "2020-2022",
-          title: "Operador de Producción — Laminados Industriales",
-          description:
-            "Control de calidad en línea de producción continua. Operación de hornos industriales y mantenimiento preventivo programado.",
         },
       ],
     },
@@ -174,50 +178,31 @@ export const es: PortfolioContent = {
       heroImage: "https://picsum.photos/seed/tech/800/400",
       milestones: [
         {
-          year: "2020-2026",
-          title: "Desarrollador Full Stack Autodidacta",
+          year: "2023 - Actualidad",
+          title: "Desarrollador Full Stack — Proyectos Propios",
           description:
-            "Formación autodidacta en desarrollo web. Estudié JavaScript, React, Node.js, TypeScript, bases de datos y arquitectura de software. Completé múltiples proyectos personales y contribuciones open source.",
+            "Construyo aplicaciones web completas desde el diseño hasta el deploy, aplicando buenas prácticas de arquitectura, testing y desarrollo iterativo. Stack principal: React, TypeScript, Node.js, Express, Prisma, PostgreSQL. Proyectos destacados: Stock Control (POS e inventarios con descuentos dinámicos), ElianApp (gastos compartidos con división equitativa, porcentual y exacta), Countdown to Christmas (countdown filtrável por país).",
           photoUrl: "https://picsum.photos/seed/code1/200/200",
         },
         {
-          year: "2022-2023",
-          title: "Soporte IT — Poder Judicial de Tucumán",
+          year: "2022 - Actualidad",
+          title: "Soporte Técnico y Seguridad Informática — Poder Judicial de Tucumán",
           description:
-            "Soporte técnico en el área de sistemas del Poder Judicial. Mesa de ayuda, mantenimiento de hardware, instalación de software y gestión de tickets en GLPI.",
+            "Configuración y mantenimiento de redes de internet e intranet, asegurando el funcionamiento óptimo según los estándares del organismo. Supervisión de la consola de seguridad, monitoreo de amenazas y aplicación de medidas preventivas. Elaboración de reportes sobre el estado de seguridad y desempeño de equipos. Desarrollo de planes de acción para resolución de problemas.",
           photoUrl: "https://picsum.photos/seed/pjudicial/200/200",
-        },
-        {
-          year: "2024-2025",
-          title: "Certificaciones Técnicas",
-          description:
-            "Completé certificaciones profesionales en QA Testing (UTN), desarrollo frontend con React y diversas tecnologías del ecosistema JavaScript. Formación continua en plataformas como Platzi, freeCodeCamp y Frontend Masters.",
-        },
-        {
-          year: "2025-2026",
-          title: "Proyectos Freelance y Portfolio",
-          description:
-            "Desarrollo de proyectos freelance y construcción de portfolio profesional. Enfoque en arquitecturas modernas, buenas prácticas de código y experiencia de usuario.",
-          photoUrl: "https://picsum.photos/seed/code2/200/200",
         },
       ],
     },
     {
       trackKey: "oficios",
-      trackLabel: "Oficios y Habilidades Manuales",
+      trackLabel: "Oficios y Emprendimientos",
       heroImage: "https://picsum.photos/seed/oficios/800/400",
       milestones: [
         {
-          year: "2010-2023",
-          title: "Soldador y Tornero",
+          year: "2020 - 2022",
+          title: "Propietario — Emme 3D",
           description:
-            "Habilidades en soldadura eléctrica y autógena, tornería convencional y CNC básica. Aplicación en proyectos de reparación y fabricación de piezas.",
-        },
-        {
-          year: "2015-2020",
-          title: "Carpintero Aficionado",
-          description:
-            "Proyectos de carpintería: muebles, reparaciones y trabajos de restauración. Experiencia con herramientas manuales y eléctricas.",
+            "Escalé el emprendimiento a 10 impresoras 3D operando en simultáneo, gestionando mantenimiento, insumos, entregas y atención al cliente. Diseño industrial y fabricación de productos personalizados mediante modelado 3D. Diseño de piezas especializadas para maquinaria de la industria tucumana. Administración completa del proceso de fabricación y venta — desde el concepto hasta la entrega final.",
           photoUrl: "https://picsum.photos/seed/carpinteria/200/200",
         },
       ],
@@ -310,8 +295,8 @@ export const es: PortfolioContent = {
 
   contact: {
     email: "maximilianovallejo@gmail.com",
-    linkedin: "https://linkedin.com/in/maximilianovallejo",
-    github: "https://github.com/maximilianovallejo",
+    linkedin: "https://www.linkedin.com/in/maximiliano-vallejo/",
+    github: "https://github.com/MaximilianoVallejo1991",
     cta: "¿Trabajamos juntos?",
     linkLabels: {
       email: "Email",
