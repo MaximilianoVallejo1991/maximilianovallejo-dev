@@ -313,6 +313,11 @@ export const en: PortfolioContent = {
     linkedin: "https://linkedin.com/in/maximilianovallejo",
     github: "https://github.com/maximilianovallejo",
     cta: "Let's work together?",
+    linkLabels: {
+      email: "Email",
+      linkedin: "LinkedIn",
+      github: "GitHub",
+    },
   },
 
   navLinks: [
@@ -324,6 +329,13 @@ export const en: PortfolioContent = {
     { href: "#certifications", label: "Certifications" },
     { href: "#contact", label: "Contact" },
   ],
+
+  skipLink: "Skip to content",
+  footerCredits: "Built with React, TypeScript, Tailwind CSS",
+  footerBackToTop: "Back to top",
+  navAriaLabel: "Main navigation",
+  navOpenMenu: "Open menu",
+  navCloseMenu: "Close menu",
 };
 
 export default en;

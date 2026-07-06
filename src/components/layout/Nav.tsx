@@ -61,7 +61,7 @@ export default function Nav() {
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-surface/90 backdrop-blur-sm">
       <nav
-        aria-label="Navegación principal"
+        aria-label={content.navAriaLabel}
         className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3"
       >
         <a
@@ -97,7 +97,7 @@ export default function Nav() {
           {/* Hamburger */}
           <button
             onClick={() => setMenuOpen((o) => !o)}
-            aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+            aria-label={menuOpen ? content.navCloseMenu : content.navOpenMenu}
             aria-expanded={menuOpen}
             className="ml-2 cursor-pointer rounded-md p-1.5 text-muted transition-colors duration-200 hover:text-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 md:hidden"
           >

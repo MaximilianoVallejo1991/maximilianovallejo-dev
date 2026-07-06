@@ -313,6 +313,11 @@ export const es: PortfolioContent = {
     linkedin: "https://linkedin.com/in/maximilianovallejo",
     github: "https://github.com/maximilianovallejo",
     cta: "¿Trabajamos juntos?",
+    linkLabels: {
+      email: "Email",
+      linkedin: "LinkedIn",
+      github: "GitHub",
+    },
   },
 
   navLinks: [
@@ -324,6 +329,13 @@ export const es: PortfolioContent = {
     { href: "#certifications", label: "Certificaciones" },
     { href: "#contact", label: "Contacto" },
   ],
+
+  skipLink: "Saltar al contenido",
+  footerCredits: "Construido con React, TypeScript, Tailwind CSS",
+  footerBackToTop: "Volver arriba",
+  navAriaLabel: "Navegación principal",
+  navOpenMenu: "Abrir menú",
+  navCloseMenu: "Cerrar menú",
 };
 
 export default es;

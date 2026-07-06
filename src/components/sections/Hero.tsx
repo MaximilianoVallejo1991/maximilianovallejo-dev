@@ -29,6 +29,17 @@ export default function Hero() {
 
   const delays = [0, 0.2, 0.4, 0.6];
 
+  // ponytail: when prefersReduced, skip pathLength animation entirely
+  const pathProps = (delay: number) =>
+    prefersReduced
+      ? { initial: { pathLength: 1 } as const }
+      : {
+          variants: pathVariants,
+          initial: "hidden" as const,
+          animate: "draw" as const,
+          transition: { delay, ease: easeOut },
+        };
+
   return (
     <section
       id="hero"
@@ -47,10 +58,7 @@ export default function Hero() {
           <title>{labels[0]}</title>
           <motion.path
             d="M 80 80 C 200 120, 320 200, 400 300"
-            variants={pathVariants}
-            initial="hidden"
-            animate="draw"
-            transition={{ delay: prefersReduced ? 0 : delays[0], ease: easeOut }}
+            {...pathProps(delays[0])}
             onAnimationComplete={onPathComplete}
           />
 
@@ -58,10 +66,7 @@ export default function Hero() {
           <title>{labels[1]}</title>
           <motion.path
             d="M 720 80 C 600 120, 480 200, 400 300"
-            variants={pathVariants}
-            initial="hidden"
-            animate="draw"
-            transition={{ delay: prefersReduced ? 0 : delays[1], ease: easeOut }}
+            {...pathProps(delays[1])}
             onAnimationComplete={onPathComplete}
           />
 
@@ -69,10 +74,7 @@ export default function Hero() {
           <title>{labels[2]}</title>
           <motion.path
             d="M 80 520 C 200 480, 320 400, 400 300"
-            variants={pathVariants}
-            initial="hidden"
-            animate="draw"
-            transition={{ delay: prefersReduced ? 0 : delays[2], ease: easeOut }}
+            {...pathProps(delays[2])}
             onAnimationComplete={onPathComplete}
           />
 
@@ -80,10 +82,7 @@ export default function Hero() {
           <title>{labels[3]}</title>
           <motion.path
             d="M 720 520 C 600 480, 480 400, 400 300"
-            variants={pathVariants}
-            initial="hidden"
-            animate="draw"
-            transition={{ delay: prefersReduced ? 0 : delays[3], ease: easeOut }}
+            {...pathProps(delays[3])}
             onAnimationComplete={onPathComplete}
           />
         </svg>

@@ -11,7 +11,7 @@ export default function Footer() {
           &copy; {year} {content.meta.author}
         </p>
         <p>
-          Construido con React, TypeScript, Tailwind CSS &mdash;{" "}
+          {content.footerCredits} &mdash;{" "}
           <a
             href="https://vercel.com"
             target="_blank"
@@ -25,7 +25,7 @@ export default function Footer() {
           href="#hero"
           className="text-muted underline underline-offset-2 transition-colors duration-200 hover:text-accent"
         >
-          &uarr; Volver arriba
+          &uarr; {content.footerBackToTop}
         </a>
       </div>
     </footer>

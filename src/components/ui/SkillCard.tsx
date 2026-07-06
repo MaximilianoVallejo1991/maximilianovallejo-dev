@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { fadeInItem } from "./SectionWrapper";
+import IconMap from "./IconMap";
 import type { Skill } from "../../data/content";
 
 interface SkillCardProps {
@@ -13,6 +14,7 @@ export default function SkillCard({ skill, index }: SkillCardProps) {
       {...fadeInItem(index)}
       className="flex cursor-default items-center gap-3 rounded-lg border border-border bg-surface px-4 py-3 transition-colors duration-200 hover:border-accent/40"
     >
+      <IconMap name={skill.icon} className="h-5 w-5 shrink-0 text-accent" />
       <span className="font-body text-sm font-medium text-primary">{skill.name}</span>
     </motion.div>
   );

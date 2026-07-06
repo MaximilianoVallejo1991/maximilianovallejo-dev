@@ -74,11 +74,18 @@ export interface CertCategory {
 
 export type CertFilter = "all" | "formal" | "tecnica" | "extracurricular";
 
+export interface ContactLinkLabels {
+  email: string;
+  linkedin: string;
+  github: string;
+}
+
 export interface ContactData {
   email: string;
   linkedin: string;
   github: string;
   cta: string;
+  linkLabels: ContactLinkLabels;
 }
 
 export interface NavLinkData {
@@ -96,4 +103,10 @@ export interface PortfolioContent {
   certifications: CertCategory[];
   contact: ContactData;
   navLinks: NavLinkData[];
+  skipLink: string;
+  footerCredits: string;
+  footerBackToTop: string;
+  navAriaLabel: string;
+  navOpenMenu: string;
+  navCloseMenu: string;
 }
