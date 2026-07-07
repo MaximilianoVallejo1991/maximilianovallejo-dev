@@ -1,347 +1,497 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Maximiliano Vallejo — CV</title>
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { font-size: 14px; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    color: #1a1a1a;
-    background: #f5f5f5;
-    line-height: 1.5;
-    padding: 2rem 1rem;
-  }
-  .page {
-    max-width: 210mm;
-    margin: 0 auto;
-    background: #fff;
-    box-shadow: 0 2px 12px rgba(0,0,0,.08);
-    border-radius: 4px;
-    overflow: hidden;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maximiliano Vallejo — CV</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  /* ── Colored top bar ── */
-  .topbar {
-    background: linear-gradient(135deg, #1e40af, #2563eb);
-    padding: 1.6rem 2.2rem 1.2rem;
-    color: #fff;
-  }
-  .topbar h1 { font-size: 1.8rem; font-weight: 700; letter-spacing: -.02em; color: #fff; }
-  .topbar .title { font-size: 1rem; color: rgba(255,255,255,.85); font-weight: 500; margin-top: .1rem; }
-  .topbar .contact-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: .3rem 1.2rem;
-    margin-top: .5rem;
-    font-size: .8rem;
-    color: rgba(255,255,255,.9);
-  }
-  .topbar .contact-row a { color: #fff; }
-  .topbar .contact-row a:hover { text-decoration: underline; }
+    html {
+      font-size: 14px;
+    }
 
-  /* ── Body ── */
-  .body-wrap { padding: 1.2rem 2.2rem 1.6rem; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: #1a1a1a;
+      background: #f5f5f5;
+      line-height: 1.5;
+      padding: 2rem 1rem;
+    }
 
-  h2 {
-    font-size: 1rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: .06em;
-    color: #1e40af;
-    border-bottom: 2px solid #2563eb;
-    padding-bottom: .3rem;
-    margin: 1.2rem 0 .6rem;
-  }
-  h2:first-of-type { margin-top: 0; }
-  h3 { font-size: .95rem; font-weight: 600; }
-  h4 { font-size: .82rem; font-weight: 600; color: #555; margin-top: .4rem; }
-  a { color: #2563eb; text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  p, li { font-size: .85rem; color: #333; }
-  ul { list-style: none; padding: 0; }
+    .page {
+      max-width: 210mm;
+      margin: 0 auto;
+      background: #fff;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, .08);
+      border-radius: 4px;
+      overflow: hidden;
+    }
 
-  /* ── Summary ── */
-  .summary { font-size: .85rem; color: #444; line-height: 1.55; }
+    /* ── Colored top bar ── */
+    .topbar {
+      background: linear-gradient(135deg, #1e40af, #2563eb);
+      padding: 1.6rem 2.2rem 1.2rem;
+      color: #fff;
+    }
 
-  /* ── Skills ── */
-  .skills-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: .35rem .45rem;
-    margin: .15rem 0;
-  }
-  .skills-grid span {
-    background: #eef2ff;
-    color: #1e40af;
-    font-size: .76rem;
-    font-weight: 500;
-    padding: .12rem .6rem;
-    border-radius: 999px;
-    line-height: 1.6;
-  }
+    .topbar h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      color: #fff;
+    }
 
-  /* ── Projects ── */
-  .project { margin-bottom: .6rem; }
-  .project h3 { display: inline; }
-  .project .links { display: inline; font-size: .8rem; }
-  .project .links a { margin-left: .4rem; }
-  .project .tags { margin: .1rem 0 .15rem; }
-  .project .tags span {
-    display: inline-block;
-    background: #f3f4f6;
-    color: #555;
-    font-size: .73rem;
-    padding: .03rem .45rem;
-    border-radius: 4px;
-    margin-right: .25rem;
-  }
-  .project p { margin-top: .1rem; font-size: .83rem; color: #444; }
+    .topbar .title {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, .85);
+      font-weight: 500;
+      margin-top: .1rem;
+    }
 
-  /* ── Experience ── */
-  .entry {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: .6rem;
-  }
-  .entry .date {
-    min-width: 8rem;
-    font-size: .8rem;
-    font-weight: 500;
-    color: #555;
-    flex-shrink: 0;
-    padding-top: .05rem;
-  }
-  .entry .body h3 { font-size: .9rem; }
-  .entry .body .sub { font-size: .8rem; color: #555; margin-bottom: .1rem; }
-  .entry .body ul li {
-    position: relative;
-    padding-left: .9rem;
-    margin-bottom: .08rem;
-    font-size: .8rem;
-    color: #444;
-  }
-  .entry .body ul li::before {
-    content: "•";
-    position: absolute;
-    left: .15rem;
-    color: #888;
-  }
+    .topbar .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .3rem 1.2rem;
+      margin-top: .5rem;
+      font-size: .8rem;
+      color: rgba(255, 255, 255, .9);
+    }
 
-  /* ── Education ── */
-  .edu { margin-bottom: .3rem; font-size: .85rem; }
-  .edu strong { font-weight: 600; }
-  .edu .meta { color: #555; }
+    .topbar .contact-row a {
+      color: #fff;
+    }
 
-  /* ── Print ── */
-  @media print {
-    body { background: #fff; padding: 0; }
-    .page { box-shadow: none; border-radius: 0; }
-    .body-wrap { padding: 1rem 2rem 1.4rem; }
-    .topbar { padding: 1.2rem 2rem 1rem; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    h2 { break-after: avoid; }
-    .project, .entry { break-inside: avoid; }
-  }
+    .topbar .contact-row a:hover {
+      text-decoration: underline;
+    }
 
-  @media (max-width: 600px) {
-    .topbar { padding: 1.2rem 1.2rem 1rem; }
-    .body-wrap { padding: 1rem 1.2rem 1.2rem; }
-    .entry { flex-direction: column; gap: .1rem; }
-    .entry .date { min-width: auto; }
-  }
+    /* ── Body ── */
+    .body-wrap {
+      padding: 1.2rem 2.2rem 1.6rem;
+    }
 
-  .note { font-size: .76rem; color: #888; font-style: italic; margin-top: .8rem; }
-</style>
+    h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: #1e40af;
+      border-bottom: 2px solid #2563eb;
+      padding-bottom: .3rem;
+      margin: 1.2rem 0 .6rem;
+    }
+
+    h2:first-of-type {
+      margin-top: 0;
+    }
+
+    h3 {
+      font-size: .95rem;
+      font-weight: 600;
+    }
+
+    h4 {
+      font-size: .82rem;
+      font-weight: 600;
+      color: #555;
+      margin-top: .4rem;
+    }
+
+    a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    p,
+    li {
+      font-size: .85rem;
+      color: #333;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    /* ── Summary ── */
+    .summary {
+      font-size: .85rem;
+      color: #444;
+      line-height: 1.55;
+    }
+
+    /* ── Skills ── */
+    .skills-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .35rem .45rem;
+      margin: .15rem 0;
+    }
+
+    .skills-grid span {
+      background: #eef2ff;
+      color: #1e40af;
+      font-size: .76rem;
+      font-weight: 500;
+      padding: .12rem .6rem;
+      border-radius: 999px;
+      line-height: 1.6;
+    }
+
+    /* ── Projects ── */
+    .project {
+      margin-bottom: .6rem;
+    }
+
+    .project h3 {
+      display: inline;
+    }
+
+    .project .links {
+      display: inline;
+      font-size: .8rem;
+    }
+
+    .project .links a {
+      margin-left: .4rem;
+    }
+
+    .project .tags {
+      margin: .1rem 0 .15rem;
+    }
+
+    .project .tags span {
+      display: inline-block;
+      background: #f3f4f6;
+      color: #555;
+      font-size: .73rem;
+      padding: .03rem .45rem;
+      border-radius: 4px;
+      margin-right: .25rem;
+    }
+
+    .project p {
+      margin-top: .1rem;
+      font-size: .83rem;
+      color: #444;
+    }
+
+    /* ── Experience ── */
+    .entry {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: .6rem;
+    }
+
+    .entry .date {
+      min-width: 8rem;
+      font-size: .8rem;
+      font-weight: 500;
+      color: #555;
+      flex-shrink: 0;
+      padding-top: .05rem;
+    }
+
+    .entry .body h3 {
+      font-size: .9rem;
+    }
+
+    .entry .body .sub {
+      font-size: .8rem;
+      color: #555;
+      margin-bottom: .1rem;
+    }
+
+    .entry .body ul li {
+      position: relative;
+      padding-left: .9rem;
+      margin-bottom: .08rem;
+      font-size: .8rem;
+      color: #444;
+    }
+
+    .entry .body ul li::before {
+      content: "•";
+      position: absolute;
+      left: .15rem;
+      color: #888;
+    }
+
+    /* ── Education ── */
+    .edu {
+      margin-bottom: .3rem;
+      font-size: .85rem;
+    }
+
+    .edu strong {
+      font-weight: 600;
+    }
+
+    .edu .meta {
+      color: #555;
+    }
+
+    /* ── Print ── */
+    @media print {
+      body {
+        background: #fff;
+        padding: 0;
+      }
+
+      .page {
+        box-shadow: none;
+        border-radius: 0;
+      }
+
+      .body-wrap {
+        padding: 1rem 2rem 1.4rem;
+      }
+
+      .topbar {
+        padding: 1.2rem 2rem 1rem;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      h2 {
+        break-after: avoid;
+      }
+
+      .project,
+      .entry {
+        break-inside: avoid;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .topbar {
+        padding: 1.2rem 1.2rem 1rem;
+      }
+
+      .body-wrap {
+        padding: 1rem 1.2rem 1.2rem;
+      }
+
+      .entry {
+        flex-direction: column;
+        gap: .1rem;
+      }
+
+      .entry .date {
+        min-width: auto;
+      }
+    }
+
+    .note {
+      font-size: .76rem;
+      color: #888;
+      font-style: italic;
+      margin-top: .8rem;
+    }
+  </style>
 </head>
+
 <body>
-<div class="page">
+  <div class="page">
 
-  <!-- ═══ HEADER ═══ -->
-  <div class="topbar">
-    <h1>Maximiliano Vallejo</h1>
-    <div class="title">Desarrollador Full Stack</div>
-    <div class="contact-row">
-      <a href="mailto:maximilianovallejo@gmail.com">maximilianovallejo@gmail.com</a>
-      <a href="https://www.linkedin.com/in/maximiliano-vallejo/" target="_blank">linkedin.com/in/maximiliano-vallejo</a>
-      <a href="https://github.com/MaximilianoVallejo1991" target="_blank">github.com/MaximilianoVallejo1991</a>
-      <span>Tucumán, Argentina</span>
+    <!-- ═══ HEADER ═══ -->
+    <div class="topbar">
+      <h1>Maximiliano Vallejo</h1>
+      <div class="title">Desarrollador Full Stack</div>
+      <div class="contact-row">
+        <a href="mailto:maximilianovallejo@gmail.com">maximilianovallejo@gmail.com</a>
+        <a href="https://www.linkedin.com/in/maximiliano-vallejo/"
+          target="_blank">linkedin.com/in/maximiliano-vallejo</a>
+        <a href="https://github.com/MaximilianoVallejo1991" target="_blank">github.com/MaximilianoVallejo1991</a>
+        <span>Tucumán, Argentina</span>
+      </div>
     </div>
+
+    <div class="body-wrap">
+
+      <!-- ═══ SOBRE MÍ ═══ -->
+      <h2>Sobre mí</h2>
+      <p>
+        Desarrollador full stack autodidacta en transición desde la industria mecanica y los oficios.
+        Más de 10 años reparando, diseñando y fabricando maquinaria a me enseñaron
+        a resolver problemas reales con criterio técnico. Hoy construyo aplicaciones web con
+        React, Node.js, TypeScript y PostgreSQL, aplicando buenas prácticas de arquitectura,
+        testing y desarrollo iterativo.
+      </p>
+
+      <!-- ═══ SKILLS ═══ -->
+      <h2>Tecnologías</h2>
+
+      <h4 style="margin-top:.2rem; font-size:.82rem; color:#555;">Frontend</h4>
+      <div class="skills-grid">
+        <span>React</span><span>TypeScript</span><span>JavaScript</span>
+        <span>Next.js</span><span>Tailwind CSS</span><span>HTML / CSS</span><span>Vite</span>
+      </div>
+      <h4 style="margin-top:.3rem; font-size:.82rem; color:#555;">Backend & BBDD</h4>
+      <div class="skills-grid">
+        <span>Node.js</span><span>Express</span><span>PostgreSQL</span><span>MySQL</span>
+        <span>Prisma ORM</span><span>REST APIs</span><span>JWT</span>
+      </div>
+      <h4 style="margin-top:.3rem; font-size:.82rem; color:#555;">Herramientas</h4>
+      <div class="skills-grid">
+        <span>Git / GitHub</span><span>Docker</span><span>Linux</span><span>Postman</span>
+        <span>VS Code</span><span>Figma</span><span>Vercel</span>
+      </div>
+
+      <!-- ═══ PROYECTOS ═══ -->
+      <h2>Proyectos Destacados</h2>
+
+      <div class="project">
+        <h3>Stock Control</h3>
+        <div class="links">
+          <a href="https://github.com/MaximilianoVallejo1991/stock-controll-main" target="_blank">Repo</a>
+        </div>
+        <div class="tags">
+          <span>React</span><span>Node.js</span><span>Express</span>
+          <span>PostgreSQL</span><span>Prisma</span><span>JWT</span>
+        </div>
+        <p>
+          Sistema de gestión de inventarios y POS con motor de descuentos dinámico,
+          control de stock en tiempo real, cuentas corrientes y reportes estadísticos.
+        </p>
+      </div>
+
+      <div class="project">
+        <h3>ElianApp</h3>
+        <div class="links">
+          <a href="https://elian-app-frontend.vercel.app" target="_blank">Live</a>
+          <a href="https://github.com/MaximilianoVallejo1991/ElianApp" target="_blank">Repo</a>
+        </div>
+        <div class="tags">
+          <span>React 19</span><span>Express 5</span><span>Prisma 7</span>
+          <span>PostgreSQL</span><span>JWT</span>
+        </div>
+        <p>
+          App de gastos compartidos: cada persona reporta sus items, el sistema valida
+          y balancea. Soporta división equitativa, porcentual y exacta por participante.
+        </p>
+      </div>
+
+      <div class="project">
+        <h3>Countdown to Christmas</h3>
+        <div class="links">
+          <a href="https://tochristmas.vercel.app" target="_blank">Live</a>
+          <a href="https://github.com/MaximilianoVallejo1991/CountdownToChristmas" target="_blank">Repo</a>
+        </div>
+        <div class="tags"><span>JavaScript</span><span>HTML5</span><span>CSS3</span><span>Vercel</span></div>
+        <p>Countdown interactivo a Navidad y Año Nuevo filtrável por país.</p>
+      </div>
+
+      <!-- ═══ EXPERIENCIA ═══ -->
+      <h2>Experiencia</h2>
+
+      <div class="entry">
+        <div class="date">2022 — Actualidad</div>
+        <div class="body">
+          <h3>Soporte Técnico y Seguridad Informática</h3>
+          <div class="sub">Poder Judicial de Tucumán</div>
+          <ul>
+            <li>Configuración y mantenimiento de redes de internet e intranet.</li>
+            <li>Supervisión de consola de seguridad, monitoreo de amenazas y medidas preventivas.</li>
+            <li>Reportes de estado de seguridad y desempeño de equipos.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="date">2023 — Actualidad</div>
+        <div class="body">
+          <h3>Desarrollador Full Stack — Proyectos Propios</h3>
+          <div class="sub">Autodidacta / Freelance</div>
+          <ul>
+            <li>Construyo aplicaciones web completas con React, Node.js, Express y PostgreSQL.</li>
+            <li>Aplico arquitectura limpia, buenas prácticas de testing y desarrollo iterativo.</li>
+            <li>Uso estratégico de IA: spec-driven development, evaluación de modelos, optimización de contextos.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="date">2020 — 2022</div>
+        <div class="body">
+          <h3>Propietario — Emme 3D</h3>
+          <div class="sub">Diseño e impresión 3D</div>
+          <ul>
+            <li>Escalé el emprendimiento a 10 impresoras 3D en simultáneo.</li>
+            <li>Diseño industrial y fabricación de productos personalizados con modelado 3D.</li>
+            <li>Gestión completa: mantenimiento, insumos, entregas y atención al cliente.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="date">2017 — 2022</div>
+        <div class="body">
+          <h3>Coordinador de Ventas, Alquiler y Logística</h3>
+          <div class="sub">Ladrillos Macizos Concepción</div>
+          <ul>
+            <li>Comercialización de maquinaria industrial y materiales de construcción.</li>
+            <li>Gestión de ventas, alquiler, cobranza y administración de contratos.</li>
+            <li>Coordinación de logística de entrega en obra.</li>
+            <li>Diseño de piezas con modelado 3D (Fusion 360, Meshmixer).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="date">2009 — 2020</div>
+        <div class="body">
+          <h3>Técnico Mecánico</h3>
+          <div class="sub">Taller Mecánica — reparación, diseño y fabricación de maquinaria industrial</div>
+          <ul>
+            <li>Más de 10 años en reparación y fabricación de maquinaria pesada e industrial.</li>
+            <li>Automatización con PLC Siemens LOGO!8 y sistemas neumáticos.</li>
+            <li>Mantenimiento predictivo y correctivo de maquinaria.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ═══ FORMACIÓN ═══ -->
+      <h2>Formación</h2>
+
+      <div class="edu">
+        <h3>Argentina Programa</h3>
+        <span class="meta">— Desarrollo web — 2023</span>
+      </div>
+      <div class="edu">
+        <h3>QA Testing Manual y Automatización</h3>
+        <span class="meta">— UTN Facultad Regional Tucumán — 2024</span>
+      </div>
+      <div class="edu">
+        <h3>React Avanzado — Patrones y Arquitectura</h3>
+        <span class="meta">— Frontend Masters — 2024</span>
+      </div>
+      <div class="edu">
+        <h3>TypeScript: De Cero a Experto</h3>
+        <span class="meta">— Udemy — 2024</span>
+      </div>
+
+      <h2 style="margin-top:1rem;">Idiomas</h2>
+      <p>Español nativo · Inglés B1 (en curso)</p>
+
+      <div class="note">
+        Abierto a oportunidades full stack Jr. · Presencial Tucumán / Remoto Argentina
+      </div>
+
+    </div><!-- /body-wrap -->
   </div>
-
-  <div class="body-wrap">
-
-  <!-- ═══ SOBRE MÍ ═══ -->
-  <h2>Sobre mí</h2>
-  <p>
-    Desarrollador full stack autodidacta en transición desde la industria y los oficios.
-    Más de 10 años diseñando y fabricando maquinaria industrial automatizada me enseñaron
-    a resolver problemas reales con criterio técnico. Hoy construyo aplicaciones web con
-    React, Node.js, TypeScript y PostgreSQL, aplicando buenas prácticas de arquitectura,
-    testing y desarrollo iterativo.
-  </p>
-
-  <!-- ═══ SKILLS ═══ -->
-  <h2>Tecnologías</h2>
-
-  <h4 style="margin-top:.2rem; font-size:.82rem; color:#555;">Frontend</h4>
-  <div class="skills-grid">
-    <span>React</span><span>TypeScript</span><span>JavaScript</span>
-    <span>Next.js</span><span>Tailwind CSS</span><span>HTML / CSS</span><span>Vite</span>
-  </div>
-  <h4 style="margin-top:.3rem; font-size:.82rem; color:#555;">Backend & BBDD</h4>
-  <div class="skills-grid">
-    <span>Node.js</span><span>Express</span><span>PostgreSQL</span><span>MySQL</span>
-    <span>Prisma ORM</span><span>REST APIs</span><span>JWT</span>
-  </div>
-  <h4 style="margin-top:.3rem; font-size:.82rem; color:#555;">Herramientas</h4>
-  <div class="skills-grid">
-    <span>Git / GitHub</span><span>Docker</span><span>Linux</span><span>Postman</span>
-    <span>VS Code</span><span>Figma</span><span>Vercel</span>
-  </div>
-
-  <!-- ═══ PROYECTOS ═══ -->
-  <h2>Proyectos Destacados</h2>
-
-  <div class="project">
-    <h3>Stock Control</h3>
-    <div class="links">
-      <a href="https://github.com/MaximilianoVallejo1991/stock-controll-main" target="_blank">Repo</a>
-    </div>
-    <div class="tags">
-      <span>React</span><span>Node.js</span><span>Express</span>
-      <span>PostgreSQL</span><span>Prisma</span><span>JWT</span>
-    </div>
-    <p>
-      Sistema de gestión de inventarios y POS con motor de descuentos dinámico,
-      control de stock en tiempo real, cuentas corrientes y reportes estadísticos.
-    </p>
-  </div>
-
-  <div class="project">
-    <h3>ElianApp</h3>
-    <div class="links">
-      <a href="https://elian-app-frontend.vercel.app" target="_blank">Live</a>
-      <a href="https://github.com/MaximilianoVallejo1991/ElianApp" target="_blank">Repo</a>
-    </div>
-    <div class="tags">
-      <span>React 19</span><span>Express 5</span><span>Prisma 7</span>
-      <span>PostgreSQL</span><span>JWT</span>
-    </div>
-    <p>
-      App de gastos compartidos: cada persona reporta sus items, el sistema valida
-      y balancea. Soporta división equitativa, porcentual y exacta por participante.
-    </p>
-  </div>
-
-  <div class="project">
-    <h3>Countdown to Christmas</h3>
-    <div class="links">
-      <a href="https://tochristmas.vercel.app" target="_blank">Live</a>
-      <a href="https://github.com/MaximilianoVallejo1991/CountdownToChristmas" target="_blank">Repo</a>
-    </div>
-    <div class="tags"><span>JavaScript</span><span>HTML5</span><span>CSS3</span><span>Vercel</span></div>
-    <p>Countdown interactivo a Navidad y Año Nuevo filtrável por país.</p>
-  </div>
-
-  <!-- ═══ EXPERIENCIA ═══ -->
-  <h2>Experiencia</h2>
-
-  <div class="entry">
-    <div class="date">2022 — Actualidad</div>
-    <div class="body">
-      <h3>Soporte Técnico y Seguridad Informática</h3>
-      <div class="sub">Poder Judicial de Tucumán</div>
-      <ul>
-        <li>Configuración y mantenimiento de redes de internet e intranet.</li>
-        <li>Supervisión de consola de seguridad, monitoreo de amenazas y medidas preventivas.</li>
-        <li>Reportes de estado de seguridad y desempeño de equipos.</li>
-        <li>Planificación y ejecución de planes de acción ante incidencias.</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="entry">
-    <div class="date">2023 — Actualidad</div>
-    <div class="body">
-      <h3>Desarrollador Full Stack — Proyectos Propios</h3>
-      <div class="sub">Autodidacta / Freelance</div>
-      <ul>
-        <li>Construyo aplicaciones web completas con React, Node.js, Express y PostgreSQL.</li>
-        <li>Aplico arquitectura limpia, buenas prácticas de testing y desarrollo iterativo.</li>
-        <li>Uso IA estratégicamente: spec-driven development, evaluación de modelos, optimización de contextos.</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="entry">
-    <div class="date">2020 — 2022</div>
-    <div class="body">
-      <h3>Propietario — Emme 3D</h3>
-      <div class="sub">Diseño e impresión 3D</div>
-      <ul>
-        <li>Escalé el emprendimiento a 10 impresoras 3D en simultáneo.</li>
-        <li>Diseño industrial y fabricación de productos personalizados con modelado 3D.</li>
-        <li>Gestión completa: mantenimiento, insumos, entregas y atención al cliente.</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="entry">
-    <div class="date">2017 — 2022</div>
-    <div class="body">
-      <h3>Coordinador de Ventas, Alquiler y Logística</h3>
-      <div class="sub">Ladrillos Macizos Concepción</div>
-      <ul>
-        <li>Comercialización de maquinaria industrial y materiales de construcción.</li>
-        <li>Gestión de ventas, alquiler, cobranza y administración de contratos.</li>
-        <li>Coordinación de logística de entrega en obra.</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="entry">
-    <div class="date">2009 — 2020</div>
-    <div class="body">
-      <h3>Técnico Mecánico</h3>
-      <div class="sub">Taller Mecánica — reparación, diseño y fabricación de maquinaria industrial</div>
-      <ul>
-        <li>Más de 10 años en reparación y fabricación de maquinaria pesada e industrial.</li>
-        <li>Automatización con PLC Siemens LOGO!8 y sistemas neumáticos.</li>
-        <li>Diseño de piezas con modelado 3D (Fusion 360, Meshmixer).</li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- ═══ FORMACIÓN ═══ -->
-  <h2>Formación</h2>
-
-  <div class="edu">
-    <h3>Argentina Programa</h3>
-    <span class="meta">— Desarrollo web — 2023</span>
-  </div>
-  <div class="edu">
-    <h3>QA Testing Manual y Automatización</h3>
-    <span class="meta">— UTN Facultad Regional Tucumán — 2024</span>
-  </div>
-  <div class="edu">
-    <h3>React Avanzado — Patrones y Arquitectura</h3>
-    <span class="meta">— Frontend Masters — 2024</span>
-  </div>
-  <div class="edu">
-    <h3>TypeScript: De Cero a Experto</h3>
-    <span class="meta">— Udemy — 2024</span>
-  </div>
-
-  <h2 style="margin-top:1rem;">Idiomas</h2>
-  <p>Español nativo · Inglés B1 (en curso)</p>
-
-  <div class="note">
-    Abierto a oportunidades full stack Jr. · Presencial Tucumán / Remoto Argentina
-  </div>
-
-  </div><!-- /body-wrap -->
-</div>
 </body>
+
 </html>
