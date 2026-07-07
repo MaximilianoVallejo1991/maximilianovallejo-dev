@@ -65,9 +65,10 @@ export default function Nav() {
         className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3"
       >
         <a
-          href="#hero"
-          onClick={(e) => handleNavClick(e, "#hero")}
+          href="/cv.html"
+          download="Maximiliano_Vallejo_CV.html"
           className="font-heading text-lg font-semibold text-primary no-underline transition-colors duration-200 hover:text-accent"
+          title="Descargar CV"
         >
           MV
         </a>

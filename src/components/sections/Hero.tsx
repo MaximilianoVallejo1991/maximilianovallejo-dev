@@ -43,11 +43,11 @@ export default function Hero() {
     prefersReduced
       ? { initial: { pathLength: 1 } as const }
       : {
-          variants: pathVariants,
-          initial: "hidden" as const,
-          animate: "draw" as const,
-          transition: { delay, ease: easeOut },
-        };
+        variants: pathVariants,
+        initial: "hidden" as const,
+        animate: "draw" as const,
+        transition: { delay, ease: easeOut },
+      };
 
   const scrollTo = (href: string) => {
     const target = document.querySelector(href);
@@ -62,7 +62,7 @@ export default function Hero() {
       <div className="absolute inset-0 flex items-center justify-center opacity-30 dark:opacity-15">
         <svg
           viewBox="0 0 800 600"
-          className="h-full w-full max-w-5xl"
+          className="h-full w-full max-w-7xl"
           fill="none"
           stroke="currentColor"
           strokeWidth="1.5"
@@ -71,7 +71,7 @@ export default function Hero() {
           {/* NW: Voluntariado — centro → label */}
           <title>{labels[0]}</title>
           <motion.path
-            d="M 400 300 C 280 180, 160 120, 64 90"
+            d="M 400 300 C 280 180, 160 120, 0 100"
             {...pathProps(delays[0])}
             onAnimationComplete={onPathComplete}
           />
@@ -79,7 +79,7 @@ export default function Hero() {
           {/* NE: Industria */}
           <title>{labels[1]}</title>
           <motion.path
-            d="M 400 300 C 520 180, 640 120, 736 90"
+            d="M 400 300 C 520 180, 640 120, 800 100"
             {...pathProps(delays[1])}
             onAnimationComplete={onPathComplete}
           />
@@ -87,7 +87,7 @@ export default function Hero() {
           {/* SW: Tech */}
           <title>{labels[2]}</title>
           <motion.path
-            d="M 400 300 C 280 420, 160 450, 64 480"
+            d="M 400 300 C 280 420, 160 450, 0 470"
             {...pathProps(delays[2])}
             onAnimationComplete={onPathComplete}
           />
@@ -95,7 +95,7 @@ export default function Hero() {
           {/* SE: Oficios */}
           <title>{labels[3]}</title>
           <motion.path
-            d="M 400 300 C 520 420, 640 450, 736 480"
+            d="M 400 300 C 520 420, 640 450, 800 470"
             {...pathProps(delays[3])}
             onAnimationComplete={onPathComplete}
           />
@@ -112,10 +112,10 @@ export default function Hero() {
             whileTap={{ scale: 0.97 }}
             className={
               "absolute cursor-pointer border-none bg-transparent font-heading text-xs font-medium uppercase tracking-widest text-muted/50 transition-colors duration-200 hover:text-accent md:text-sm " +
-              (i === 0 ? "top-[15%] left-[8%]" : "") +
-              (i === 1 ? "top-[15%] right-[8%]" : "") +
-              (i === 2 ? "bottom-[20%] left-[8%]" : "") +
-              (i === 3 ? "bottom-[20%] right-[8%]" : "")
+              (i === 0 ? "top-[15%] left-[11%]" : "") +
+              (i === 1 ? "top-[15%] right-[12%]" : "") +
+              (i === 2 ? "bottom-[20%] left-[11%]" : "") +
+              (i === 3 ? "bottom-[20%] right-[13%]" : "")
             }
           >
             {label}
