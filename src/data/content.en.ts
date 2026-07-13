@@ -23,9 +23,13 @@ export const en: PortfolioContent = {
 
   about: {
     paragraphs: [
-      "I didn't arrive at software through the expected path. For over 10 years I worked in a machine shop designing and building industrial machinery. Being able to make things with your hands is valuable, but depending on it to make a living takes a physical toll — your lungs, your legs, your hearing, the radiation from welding machines. It's something my father still suffers from today, and something I wanted to avoid for my own future.",
-      "In the middle of that restlessness, I discovered PLC programming with ladder logic and automated systems. Nobody in my province was developing that, and it was exactly what the sugar mills and automated brick machines we built needed. I was fascinated that something could run on its own thanks to code. That curiosity led me to 3D printing — 3D design came naturally because I came from technical drafting, from knowing machines and materials. I just had to scale down. I built Emme 3D with 10 printers running simultaneously.",
-      "That's when web development appeared. I took Argentina Programa, a QA Testing course, and in between, this job at Poder Judicial de Tucumán came up. Since I was already good with computers, they placed me in IT. Today I work there in the mornings and keep training as a developer in the afternoons. I build full stack applications with React, Node.js, Express, and PostgreSQL. My differentiator: I use AI strategically — spec-driven development, model evaluation, context optimization. It's not the typical path. But every step, from the workshop to code, adds up.",
+      "I didn't arrive at software through a traditional path. For over 10 years I worked alongside my father in a metalworking shop, manufacturing and repairing machinery. In the early years of that period, I studied Engineering and completed the core curriculum. That's how I learned to work in teams, use logic to solve problems, and stay in search of new challenges.",
+
+      "Integrating automation with Ladder diagrams and PLCs in the shop sparked a curiosity that led me into the world of 3D printing. My venture, Emme 3D, grew to have 10 printers running simultaneously — hours and hours in front of the PC, preparing me for what was next.",
+
+      "That's when web development appeared. I took the first stage of Argentina Programa, a QA Testing course, and then kept studying on my own. Along the way, a position at Poder Judicial de Tucumán came up, and since I had solid computer skills, they placed me in IT. I currently work there in the mornings in IT Support and Security, and in the afternoons I keep taking courses, programming, and training as a developer.",
+
+      "Today I'm capable of building complete full-stack applications with React, Node.js, Express, and PostgreSQL. My differentiator: I use AI strategically — spec-driven development, model evaluation, and context optimization. It's not the typical path, but every step, from the workshop to code, gave me tools I want to apply in my next professional challenge.",
     ],
     photoUrl: "https://picsum.photos/seed/mv-portrait/400/400",
     photoAlt: "Portrait of Maximiliano Vallejo",

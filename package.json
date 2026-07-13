@@ -4,9 +4,9 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "dev": "node scripts/check-package-manager.mjs && vite",
+    "build": "node scripts/check-package-manager.mjs && tsc -b && vite build",
+    "preview": "node scripts/check-package-manager.mjs && vite preview"
   },
   "dependencies": {
     "motion": "^12.23.25",
