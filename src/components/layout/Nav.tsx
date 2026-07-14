@@ -80,11 +80,10 @@ export default function Nav() {
               key={link.href}
               href={link.href}
               onClick={(e) => handleNavClick(e, link.href)}
-              className={`text-sm font-medium no-underline transition-colors duration-200 ${
-                activeSection === link.href
+              className={`text-sm font-medium no-underline transition-colors duration-200 ${activeSection === link.href
                   ? "text-accent"
                   : "text-muted hover:text-accent"
-              }`}
+                }`}
             >
               {link.label}
             </a>
@@ -139,11 +138,10 @@ export default function Nav() {
               key={link.href}
               href={link.href}
               onClick={(e) => handleNavClick(e, link.href)}
-              className={`block rounded-md px-3 py-2 text-sm font-medium no-underline transition-colors duration-200 ${
-                activeSection === link.href
+              className={`block rounded-md px-3 py-2 text-sm font-medium no-underline transition-colors duration-200 ${activeSection === link.href
                   ? "text-accent bg-accent/5"
                   : "text-muted hover:bg-border/50 hover:text-primary"
-              }`}
+                }`}
             >
               {link.label}
             </a>

@@ -264,15 +264,15 @@ export default function Hero() {
           const mPoses: Record<string, MCfg> = {
             software: {
               id: "software", ta: "left",
-              path: "M 255 210 L 305 160 L 325 160",
+              path: "M 255 210 L 305 160 L 345 160",
               cx: 255, cy: 210, sw: 2,
-              foX: 325, foY: 148, foW: 75,
+              foX: 310, foY: 115, foW: 75,
             },
             tecnico: {
               id: "tecnico", ta: "left",
-              path: "M 285 290 L 325 290",
-              cx: 285, cy: 290, sw: 2,
-              foX: 325, foY: 278, foW: 70,
+              path: "M 275 290 L 315 250 L 365 250 ",
+              cx: 275, cy: 290, sw: 2,
+              foX: 320, foY: 215, foW: 70,
             },
             problemas: {
               id: "problemas", ta: "left",
@@ -284,13 +284,13 @@ export default function Hero() {
               id: "equipos", ta: "right",
               path: "M 145 370 L 95 420 L 75 420",
               cx: 145, cy: 370, sw: 1.5,
-              foX: 15, foY: 428, foW: 95,
+              foX: 5, foY: 425, foW: 95,
             },
             coordinacion: {
               id: "coordinacion", ta: "right",
               path: "M 145 210 L 95 160 L 70 160",
               cx: 145, cy: 210, sw: 1,
-              foX: 10, foY: 148, foW: 90,
+              foX: 5, foY: 130, foW: 90,
             },
           };
           /* map desktop nodes → mobile positions, keep label & target */

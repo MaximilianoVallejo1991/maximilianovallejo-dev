@@ -21,7 +21,7 @@ export const es: PortfolioContent = {
       "Conocimiento Técnico",
     ],
     mobileGreeting: "Hola, Soy",
-    mobileName: "JMV",
+    mobileName: "Maxi Vallejo",
     mobileSubtitle: "Full Stack",
   },
 
