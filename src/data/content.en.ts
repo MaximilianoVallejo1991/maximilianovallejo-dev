@@ -104,7 +104,7 @@ export const en: PortfolioContent = {
       description:
         "Shared expense tracking app: each person reports their own items, the system validates and balances. Supports equal, percentage, and exact splitting per participant.",
       techTags: ["React 19", "Express 5", "Prisma 7", "PostgreSQL", "JWT"],
-      liveUrl: "https://elian-app-frontend.vercel.app",
+      liveUrl: "https://elianapp.vercel.app",
       repoUrl: "https://github.com/MaximilianoVallejo1991/ElianApp",
       screenshot: "https://picsum.photos/seed/elianapp/800/450",
     },

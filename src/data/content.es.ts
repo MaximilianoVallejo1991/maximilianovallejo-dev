@@ -95,6 +95,7 @@ export const es: PortfolioContent = {
       description:
         "Sistema integral de gestión de inventarios y punto de venta (POS) con motor de descuentos dinámico, control de stock en tiempo real, seguimiento de ventas, cuentas corrientes y reportes estadísticos avanzados.",
       techTags: ["React", "Node.js", "Express", "PostgreSQL", "Prisma", "JWT"],
+      liveUrl: "https://stockdetienda.vercel.app",
       repoUrl: "https://github.com/MaximilianoVallejo1991/stock-controll-main",
       screenshot: "https://picsum.photos/seed/stock-control/800/450",
     },
@@ -104,7 +105,7 @@ export const es: PortfolioContent = {
       description:
         "Aplicación para control de gastos compartidos: cada persona reporta sus propios items, el sistema valida y balancea. Soporta división equitativa, por porcentaje y exacta por participante.",
       techTags: ["React 19", "Express 5", "Prisma 7", "PostgreSQL", "JWT"],
-      liveUrl: "https://elian-app-frontend.vercel.app",
+      liveUrl: "https://elianapp.vercel.app",
       repoUrl: "https://github.com/MaximilianoVallejo1991/ElianApp",
       screenshot: "https://picsum.photos/seed/elianapp/800/450",
     },
