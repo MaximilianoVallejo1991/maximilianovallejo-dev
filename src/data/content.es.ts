@@ -13,12 +13,16 @@ export const es: PortfolioContent = {
     greeting: "Hola, soy",
     name: "Maximiliano Vallejo",
     subtitle: "Desarrollador Full Stack",
-    quadrantLabels: [
-      "Voluntariado",
-      "Industria",
-      "Tecnología",
-      "Oficios",
+    nodes: [
+      "Capacidad de Coordinación",
+      "Dinámica de Equipos",
+      "Resolución de Problemas Reales",
+      "Aplicación de Software",
+      "Conocimiento Técnico",
     ],
+    mobileGreeting: "Hola, Soy",
+    mobileName: "JMV",
+    mobileSubtitle: "Full Stack",
   },
 
   about: {

@@ -15,7 +15,10 @@ export interface HeroData {
   greeting: string;
   name: string;
   subtitle: string;
-  quadrantLabels: [string, string, string, string];
+  nodes: [string, string, string, string, string];
+  mobileGreeting: string;
+  mobileName: string;
+  mobileSubtitle: string;
 }
 
 export interface AboutData {

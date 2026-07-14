@@ -1,155 +1,431 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { useContent } from "../../hooks/useContent";
 
-const easeOut: [number, number, number, number] = [0.16, 1, 0.3, 1];
+/* ────────────── Node config ──────────────
+   SVG viewBox: 1000 × 700, center at (500, 350).
+   Each branch has a 45° diagonal segment (circuit-like).
 
-const pathVariants = {
-  draw: {
-    pathLength: 1,
-    transition: { duration: 1.2, ease: easeOut },
-  },
-  hidden: { pathLength: 0 },
-};
+   ALL elements — paths, labels, AND center text — live inside the SVG
+   so they share the same coordinate system regardless of screen size. */
 
-const textItem = (i: number) =>
-  ({
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    transition: { delay: i * 0.15, duration: 0.4, ease: easeOut },
-  }) as const;
+interface NodeConfig {
+  id: string;
+  path: string;
+  circleCx: number;
+  circleCy: number;
+  color: string;
+  strokeWidth: number;
+  label: string;
+  textX: number;
+  textY: number;
+  textAnchor: "start" | "middle" | "end";
+  target: string;
+  fontSize: number;
+}
 
-const sections = ["#experience", "#experience", "#skills", "#experience"];
+function buildNodes(labels: [string, string, string, string, string]): NodeConfig[] {
+  return [
+    {
+      id: "software",
+      label: labels[3],
+      path: "M 660 260 L 780 140 L 880 140",
+      circleCx: 660,
+      circleCy: 260,
+      color: "#06B6D4",
+      strokeWidth: 3,
+      textX: 880,
+      textY: 128,
+      textAnchor: "middle",
+      target: "#projects",
+      fontSize: 11,
+    },
+    {
+      id: "tecnico",
+      label: labels[4],
+      path: "M 760 320 L 840 240 L 950 240",
+      circleCx: 760,
+      circleCy: 320,
+      color: "#94A3B8",
+      strokeWidth: 3,
+      textX: 930,
+      textY: 228,
+      textAnchor: "middle",
+      target: "#certifications",
+      fontSize: 10,
+    },
+    {
+      id: "problemas",
+      label: labels[2],
+      path: "M 560 420 L 660 520 L 800 520",
+      circleCx: 560,
+      circleCy: 420,
+      color: "#F97316",
+      strokeWidth: 3,
+      textX: 785,
+      textY: 508,
+      textAnchor: "middle",
+      target: "#skills",
+      fontSize: 9,
+    },
+    {
+      id: "equipos",
+      label: labels[1],
+      path: "M 370 420 L 290 500 L 210 500",
+      circleCx: 370,
+      circleCy: 420,
+      color: "#10B981",
+      strokeWidth: 2,
+      textX: 220,
+      textY: 492,
+      textAnchor: "middle",
+      target: "#experience",
+      fontSize: 8,
+    },
+    {
+      id: "coordinacion",
+      label: labels[0],
+      path: "M 280 300 L 200 220 L 120 220",
+      circleCx: 280,
+      circleCy: 300,
+      color: "#15803D",
+      strokeWidth: 1,
+      textX: 120,
+      textY: 208,
+      textAnchor: "middle",
+      target: "#experience",
+      fontSize: 9,
+    },
+  ];
+}
+
+/* ────────────── Component ────────────── */
 
 export default function Hero() {
   const content = useContent();
+  const nodes = buildNodes(content.hero.nodes);
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+
   const prefersReduced = useReducedMotion();
-  const [pathsDone, setPathsDone] = useState(prefersReduced);
-  const doneCount = useRef(0);
-
-  const onPathComplete = () => {
-    doneCount.current += 1;
-    if (doneCount.current >= 4) {
-      setPathsDone(true);
-    }
-  };
-
-  const labels = content.hero.quadrantLabels;
-
-  const delays = [0, 0.3, 0.6, 0.9];
-
-  // ponytail: when prefersReduced, skip pathLength animation entirely
-  const pathProps = (delay: number) =>
-    prefersReduced
-      ? { initial: { pathLength: 1 } as const }
-      : {
-        variants: pathVariants,
-        initial: "hidden" as const,
-        animate: "draw" as const,
-        transition: { delay, ease: easeOut },
-      };
+  const svgGrey = "#71717a";
 
   const scrollTo = (href: string) => {
     const target = document.querySelector(href);
     if (target) target.scrollIntoView({ behavior: "smooth" });
   };
 
+  /* Clockwise entrance order — Aplicación de Software first, then clockwise */
+  const clockOrder = [0, 1, 2, 3, 4];
+
   return (
     <section
       id="hero"
       className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-4 scroll-mt-14"
     >
-      <div className="absolute inset-0 flex items-center justify-center opacity-30 dark:opacity-15">
+      {/* ─── DESKTOP: single SVG coordinate system ─── */}
+      {/*
+        The wrapper matches the viewBox aspect ratio. Both SVG paths and center
+        text live inside the SVG so they ALWAYS stay aligned.
+      */}
+      <div className="relative hidden h-full w-full max-w-7xl md:block">
         <svg
-          viewBox="0 0 800 600"
-          className="h-full w-full max-w-7xl"
+          viewBox="0 0 1000 700"
+          className="h-full w-full"
           fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          aria-hidden="true"
+          style={{ aspectRatio: "1000/700", overflow: "visible" }}
         >
-          {/* NW: Voluntariado — centro → label */}
-          <title>{labels[0]}</title>
-          <motion.path
-            d="M 400 300 C 280 180, 160 120, 0 100"
-            {...pathProps(delays[0])}
-            onAnimationComplete={onPathComplete}
-          />
+          {nodes.map((n, i) => {
+            const active = hoveredIdx === i;
+            const stroke = active ? n.color : svgGrey;
+            const sw = active ? n.strokeWidth + 1.5 : n.strokeWidth;
+            const radius = active ? 6 : 3.5;
+            const fs = active ? n.fontSize + 3 : n.fontSize;
 
-          {/* NE: Industria */}
-          <title>{labels[1]}</title>
-          <motion.path
-            d="M 400 300 C 520 180, 640 120, 800 100"
-            {...pathProps(delays[1])}
-            onAnimationComplete={onPathComplete}
-          />
+            const step = clockOrder[i];
+            const delay = prefersReduced ? 0 : step * 0.4;
 
-          {/* SW: Tech */}
-          <title>{labels[2]}</title>
-          <motion.path
-            d="M 400 300 C 280 420, 160 450, 0 470"
-            {...pathProps(delays[2])}
-            onAnimationComplete={onPathComplete}
-          />
+            return (
+              <motion.g
+                key={n.id}
+                initial={{ opacity: 0, y: prefersReduced ? 0 : 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay, ease: "easeOut" }}
+              >
+                {/* Connector path */}
+                <path
+                  d={n.path}
+                  stroke={stroke}
+                  strokeWidth={sw}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="transition-all duration-300 ease-out"
+                />
 
-          {/* SE: Oficios */}
-          <title>{labels[3]}</title>
-          <motion.path
-            d="M 400 300 C 520 420, 640 450, 800 470"
-            {...pathProps(delays[3])}
-            onAnimationComplete={onPathComplete}
-          />
+                {/* Start node */}
+                <circle
+                  cx={n.circleCx}
+                  cy={n.circleCy}
+                  r={radius}
+                  fill={stroke}
+                  className="transition-all duration-300 ease-out"
+                />
+
+                {/* Interactive zone */}
+                <g
+                  onMouseEnter={() => setHoveredIdx(i)}
+                  onMouseLeave={() => setHoveredIdx(null)}
+                  onClick={() => scrollTo(n.target)}
+                  className="cursor-pointer"
+                >
+                  <path
+                    d={n.path}
+                    stroke="transparent"
+                    strokeWidth={16}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    fill="none"
+                  />
+                  <circle cx={n.circleCx} cy={n.circleCy} r={10} fill="transparent" />
+
+                  <text
+                    x={n.textX}
+                    y={n.textY}
+                    textAnchor={n.textAnchor}
+                    fill={stroke}
+                    className="transition-all duration-300 ease-out"
+                    style={{
+                      fontSize: `${fs}px`,
+                      fontFamily: '"Space Grotesk", sans-serif',
+                      fontWeight: 500,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.15em",
+                    }}
+                  >
+                    {n.label}
+                  </text>
+                </g>
+              </motion.g>
+            );
+          })}
+
+          {/* ─── Center text inside SVG (shared coordinate space) ─── */}
+          <text
+            x={500}
+            y={308}
+            textAnchor="middle"
+            fill="var(--color-muted)"
+            style={{ fontSize: 20, fontFamily: "Archivo, sans-serif" }}
+          >
+            {content.hero.greeting}
+          </text>
+          <text
+            x={500}
+            y={356}
+            textAnchor="middle"
+            fill="var(--color-primary)"
+            style={{
+              fontSize: 52,
+              fontFamily: '"Space Grotesk", sans-serif',
+              fontWeight: 700,
+            }}
+          >
+            {content.hero.name}
+          </text>
+          <text
+            x={500}
+            y={400}
+            textAnchor="middle"
+            fill="var(--color-accent)"
+            style={{
+              fontSize: 26,
+              fontFamily: "Archivo, sans-serif",
+              fontWeight: 600,
+            }}
+          >
+            {content.hero.subtitle}
+          </text>
         </svg>
       </div>
 
-      {/* Quadrant labels — hover to lift, click to navigate */}
-      <div className="absolute inset-0">
-        {labels.map((label, i) => (
-          <motion.button
-            key={label}
-            onClick={() => scrollTo(sections[i])}
-            whileHover={prefersReduced ? {} : { y: -3 }}
-            whileTap={{ scale: 0.97 }}
-            className={
-              "absolute cursor-pointer border-none bg-transparent font-heading text-xs font-medium uppercase tracking-widest text-muted/50 transition-colors duration-200 hover:text-accent md:text-sm " +
-              (i === 0 ? "top-[15%] left-[11%]" : "") +
-              (i === 1 ? "top-[15%] right-[12%]" : "") +
-              (i === 2 ? "bottom-[20%] left-[11%]" : "") +
-              (i === 3 ? "bottom-[20%] right-[13%]" : "")
-            }
-          >
-            {label}
-          </motion.button>
-        ))}
-      </div>
+      {/* ─── MOBILE: compact SVG node map ─── */}
+      <div className="flex w-full flex-col items-center py-16 md:hidden">
+        {/*
+          Mobile viewBox adapted to phone aspect ratio.
+          Same 45° circuit-like nodes scaled compact,
+          with foreignObject for text wrapping.
+        */}
+        {(() => {
+          type MCfg = {
+            id: string; path: string; cx: number; cy: number;
+            sw: number; foX: number; foY: number; foW: number;
+            ta: "left" | "right";
+          };
+          /* Mobile positions — viewBox 400×600 */
+          const mPoses: Record<string, MCfg> = {
+            software: {
+              id: "software", ta: "left",
+              path: "M 255 210 L 305 160 L 325 160",
+              cx: 255, cy: 210, sw: 2,
+              foX: 325, foY: 148, foW: 75,
+            },
+            tecnico: {
+              id: "tecnico", ta: "left",
+              path: "M 285 290 L 325 290",
+              cx: 285, cy: 290, sw: 2,
+              foX: 325, foY: 278, foW: 70,
+            },
+            problemas: {
+              id: "problemas", ta: "left",
+              path: "M 255 370 L 305 420 L 325 420",
+              cx: 255, cy: 370, sw: 2,
+              foX: 260, foY: 428, foW: 130,
+            },
+            equipos: {
+              id: "equipos", ta: "right",
+              path: "M 145 370 L 95 420 L 75 420",
+              cx: 145, cy: 370, sw: 1.5,
+              foX: 15, foY: 428, foW: 95,
+            },
+            coordinacion: {
+              id: "coordinacion", ta: "right",
+              path: "M 145 210 L 95 160 L 70 160",
+              cx: 145, cy: 210, sw: 1,
+              foX: 10, foY: 148, foW: 90,
+            },
+          };
+          /* map desktop nodes → mobile positions, keep label & target */
+          const mNodes = nodes.map((n) => {
+            const m = mPoses[n.id];
+            return { ...n, ...m };
+          });
 
-      {/* Center content — static, hover to lift */}
-      <motion.div
-        className="relative z-10 text-center"
-        initial={prefersReduced ? { opacity: 1 } : { opacity: 0 }}
-        animate={pathsDone ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ duration: 0.3 }}
-        whileHover={prefersReduced ? {} : { y: -5 }}
-      >
-        <motion.p
-          className="mb-2 font-body text-lg text-muted md:text-xl"
-          {...(pathsDone ? textItem(0) : {})}
-        >
-          {content.hero.greeting}
-        </motion.p>
-        <motion.h1
-          className="font-heading text-4xl font-bold text-primary md:text-6xl"
-          {...(pathsDone ? textItem(1) : {})}
-        >
-          {content.hero.name}
-        </motion.h1>
-        <motion.p
-          className="mt-4 font-body text-xl font-semibold text-accent md:text-2xl"
-          {...(pathsDone ? textItem(2) : {})}
-        >
-          {content.hero.subtitle}
-        </motion.p>
-      </motion.div>
+          return (
+            <svg
+              viewBox="0 0 400 600"
+              className="w-full max-w-sm"
+              fill="none"
+              style={{ overflow: "visible" }}
+            >
+              {mNodes.map((n, i) => {
+                const active = hoveredIdx === i;
+                const stroke = active ? n.color : svgGrey;
+                const sw = active ? n.sw + 1 : n.sw;
+                const radius = active ? 4.5 : 2.5;
+
+                const step = clockOrder[i];
+                const delay = prefersReduced ? 0 : step * 0.35;
+
+                return (
+                  <motion.g
+                    key={n.id}
+                    initial={{ opacity: 0, y: prefersReduced ? 0 : 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.7, delay, ease: "easeOut" }}
+                  >
+                    {/* Connector path */}
+                    <path
+                      d={n.path}
+                      stroke={stroke}
+                      strokeWidth={sw}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="transition-all duration-300 ease-out"
+                    />
+                    {/* Start circle */}
+                    <circle
+                      cx={n.cx}
+                      cy={n.cy}
+                      r={radius}
+                      fill={stroke}
+                      className="transition-all duration-300 ease-out"
+                    />
+
+                    {/* Interactive zone */}
+                    <g
+                      onMouseEnter={() => setHoveredIdx(i)}
+                      onMouseLeave={() => setHoveredIdx(null)}
+                      onClick={() => scrollTo(n.target)}
+                      className="cursor-pointer"
+                    >
+                      <path
+                        d={n.path}
+                        stroke="transparent"
+                        strokeWidth={16}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        fill="none"
+                      />
+                      <circle cx={n.cx} cy={n.cy} r={12} fill="transparent" />
+
+                      {/* Wrapping text via foreignObject */}
+                      <foreignObject
+                        x={n.foX}
+                        y={n.foY}
+                        width={n.foW}
+                        height={60}
+                      >
+                        <div
+                          className="transition-all duration-300 ease-out"
+                          style={{
+                            fontSize: "10px",
+                            fontFamily: "'Space Grotesk', sans-serif",
+                            fontWeight: 500,
+                            textTransform: "uppercase",
+                            letterSpacing: "0.1em",
+                            lineHeight: 1.35,
+                            color: stroke,
+                            textAlign: n.ta,
+                            pointerEvents: "none",
+                          }}
+                        >
+                          {n.label}
+                        </div>
+                      </foreignObject>
+                    </g>
+                  </motion.g>
+                );
+              })}
+
+              {/* Center text */}
+              <text
+                x={200}
+                y={274}
+                textAnchor="middle"
+                fill="var(--color-muted)"
+                style={{ fontSize: 13, fontFamily: "Archivo, sans-serif" }}
+              >
+                {content.hero.mobileGreeting}
+              </text>
+              <text
+                x={200}
+                y={296}
+                textAnchor="middle"
+                fill="var(--color-primary)"
+                style={{
+                  fontSize: 22,
+                  fontFamily: '"Space Grotesk", sans-serif',
+                  fontWeight: 700,
+                }}
+              >
+                {content.hero.mobileName}
+              </text>
+              <text
+                x={200}
+                y={314}
+                textAnchor="middle"
+                fill="var(--color-accent)"
+                style={{
+                  fontSize: 13,
+                  fontFamily: "Archivo, sans-serif",
+                  fontWeight: 600,
+                }}
+              >
+                {content.hero.mobileSubtitle}
+              </text>
+            </svg>
+          );
+        })()}
+      </div>
     </section>
   );
 }
