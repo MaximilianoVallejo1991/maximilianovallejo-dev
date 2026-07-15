@@ -273,33 +273,38 @@ export default function Hero() {
           const mPoses: Record<string, MCfg> = {
             software: {
               id: "software", ta: "left",
-              path: "M 220 250 L 305 160 L 365 160",
-              cx: 220, cy: 250, sw: 2,
-              foX: 310, foY: 115, foW: 75,
+              // Sube empinado y se estira en una plataforma horizontal larga arriba
+              path: "M 230 240 L 290 140 L 380 140",
+              cx: 230, cy: 240, sw: 2,
+              foX: 290, foY: 108, foW: 90,
             },
             tecnico: {
               id: "tecnico", ta: "left",
-              path: "M 260 290 L 325 220 L 380 220",
-              cx: 260, cy: 290, sw: 2,
-              foX: 325, foY: 190, foW: 70,
+              // Sale casi horizontal hacia la derecha, un quiebre corto y base baja
+              path: "M 270 288 L 320 238 L 390 238",
+              cx: 270, cy: 288, sw: 2,
+              foX: 320, foY: 205, foW: 75,
             },
             problemas: {
               id: "problemas", ta: "left",
-              path: "M 210 345 L 265 400 L 340 400",
-              cx: 210, cy: 345, sw: 2,
-              foX: 270, foY: 405, foW: 130,
+              // Cae largo hacia la esquina inferior derecha
+              path: "M 215 340 L 265 415 L 370 415",
+              cx: 215, cy: 340, sw: 2,
+              foX: 265, foY: 420, foW: 110,
             },
             equipos: {
               id: "equipos", ta: "right",
-              path: "M 145 325 L 95 375 L 30 375",
-              cx: 145, cy: 325, sw: 1.5,
-              foX: 5, foY: 380, foW: 95,
+              // Desplazado en diagonal hacia abajo a la izquierda, base limpia
+              path: "M 135 320 L 85 360 L 15 360",
+              cx: 135, cy: 320, sw: 1.5,
+              foX: -10, foY: 365, foW: 95,
             },
             coordinacion: {
               id: "coordinacion", ta: "right",
-              path: "M 167 253 L 117 203 L 25 203",
-              cx: 167, cy: 253, sw: 1,
-              foX: 27, foY: 173, foW: 90,
+              // Quiebre más pronunciado hacia arriba a la izquierda
+              path: "M 160 250 L 105 170 L 20 170",
+              cx: 160, cy: 250, sw: 1,
+              foX: 15, foY: 140, foW: 90,
             },
           };
           /* map desktop nodes → mobile positions, keep label & target */
@@ -315,7 +320,7 @@ export default function Hero() {
               fill="none"
               style={{ overflow: "visible" }}
             >
-              <g transform="translate(0, -200)">
+              <g transform="translate(0, -160)">
                 {mNodes.map((n, i) => {
                   const active = hoveredIdx === i;
                   const stroke = active ? n.color : svgGrey;
@@ -409,7 +414,7 @@ export default function Hero() {
 
                 {/* Center text — 33% from left edge */}
                 <text
-                  x={185}
+                  x={195}
                   y={274}
                   textAnchor="middle"
                   fill="var(--color-muted)"
@@ -418,7 +423,7 @@ export default function Hero() {
                   {content.hero.mobileGreeting}
                 </text>
                 <text
-                  x={185}
+                  x={195}
                   y={296}
                   textAnchor="middle"
                   fill="var(--color-primary)"
@@ -431,7 +436,7 @@ export default function Hero() {
                   {content.hero.mobileName}
                 </text>
                 <text
-                  x={185}
+                  x={195}
                   y={314}
                   textAnchor="middle"
                   fill="var(--color-accent)"
