@@ -120,7 +120,7 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-4 scroll-mt-14"
+      className="relative flex min-h-screen flex-col items-center justify-center md:overflow-hidden px-4 scroll-mt-14"
     >
       {/* ─── DESKTOP: single SVG coordinate system ─── */}
       {/*
@@ -165,15 +165,24 @@ export default function Hero() {
                 <circle
                   cx={n.circleCx}
                   cy={n.circleCy}
+                  r={9}
+                  stroke={stroke}
+                  strokeWidth={1}
+                  fill="none"
+                  className="transition-all duration-300 ease-out"
+                />
+                <circle
+                  cx={n.circleCx}
+                  cy={n.circleCy}
                   r={radius}
                   fill={stroke}
                   className="transition-all duration-300 ease-out"
                 />
 
-                {/* Interactive zone */}
+                {/* Interactive zone — pointer events unify mouse & touch */}
                 <g
-                  onMouseEnter={() => setHoveredIdx(i)}
-                  onMouseLeave={() => setHoveredIdx(null)}
+                  onPointerEnter={() => setHoveredIdx(i)}
+                  onPointerLeave={() => setHoveredIdx(null)}
                   onClick={() => scrollTo(n.target)}
                   className="cursor-pointer"
                 >
@@ -248,7 +257,7 @@ export default function Hero() {
       </div>
 
       {/* ─── MOBILE: compact SVG node map ─── */}
-      <div className="flex w-full flex-col items-center py-16 md:hidden">
+      <div className="flex w-full flex-col items-center py-4 md:hidden">
         {/*
           Mobile viewBox adapted to phone aspect ratio.
           Same 45° circuit-like nodes scaled compact,
@@ -264,33 +273,33 @@ export default function Hero() {
           const mPoses: Record<string, MCfg> = {
             software: {
               id: "software", ta: "left",
-              path: "M 255 210 L 305 160 L 345 160",
-              cx: 255, cy: 210, sw: 2,
+              path: "M 220 250 L 305 160 L 365 160",
+              cx: 220, cy: 250, sw: 2,
               foX: 310, foY: 115, foW: 75,
             },
             tecnico: {
               id: "tecnico", ta: "left",
-              path: "M 275 290 L 315 250 L 365 250 ",
-              cx: 275, cy: 290, sw: 2,
-              foX: 320, foY: 215, foW: 70,
+              path: "M 260 290 L 325 220 L 380 220",
+              cx: 260, cy: 290, sw: 2,
+              foX: 325, foY: 190, foW: 70,
             },
             problemas: {
               id: "problemas", ta: "left",
-              path: "M 255 370 L 305 420 L 325 420",
-              cx: 255, cy: 370, sw: 2,
-              foX: 260, foY: 428, foW: 130,
+              path: "M 210 345 L 265 400 L 340 400",
+              cx: 210, cy: 345, sw: 2,
+              foX: 270, foY: 405, foW: 130,
             },
             equipos: {
               id: "equipos", ta: "right",
-              path: "M 145 370 L 95 420 L 75 420",
-              cx: 145, cy: 370, sw: 1.5,
-              foX: 5, foY: 425, foW: 95,
+              path: "M 145 325 L 95 375 L 30 375",
+              cx: 145, cy: 325, sw: 1.5,
+              foX: 5, foY: 380, foW: 95,
             },
             coordinacion: {
               id: "coordinacion", ta: "right",
-              path: "M 145 210 L 95 160 L 70 160",
-              cx: 145, cy: 210, sw: 1,
-              foX: 5, foY: 130, foW: 90,
+              path: "M 167 253 L 117 203 L 25 203",
+              cx: 167, cy: 253, sw: 1,
+              foX: 27, foY: 173, foW: 90,
             },
           };
           /* map desktop nodes → mobile positions, keep label & target */
@@ -306,122 +315,135 @@ export default function Hero() {
               fill="none"
               style={{ overflow: "visible" }}
             >
-              {mNodes.map((n, i) => {
-                const active = hoveredIdx === i;
-                const stroke = active ? n.color : svgGrey;
-                const sw = active ? n.sw + 1 : n.sw;
-                const radius = active ? 4.5 : 2.5;
+              <g transform="translate(0, -200)">
+                {mNodes.map((n, i) => {
+                  const active = hoveredIdx === i;
+                  const stroke = active ? n.color : svgGrey;
+                  const sw = active ? n.sw + 1 : n.sw;
+                  const radius = active ? 4.5 : 2.5;
 
-                const step = clockOrder[i];
-                const delay = prefersReduced ? 0 : step * 0.35;
+                  const step = clockOrder[i];
+                  const delay = prefersReduced ? 0 : step * 0.35;
 
-                return (
-                  <motion.g
-                    key={n.id}
-                    initial={{ opacity: 0, y: prefersReduced ? 0 : 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.7, delay, ease: "easeOut" }}
-                  >
-                    {/* Connector path */}
-                    <path
-                      d={n.path}
-                      stroke={stroke}
-                      strokeWidth={sw}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="transition-all duration-300 ease-out"
-                    />
-                    {/* Start circle */}
-                    <circle
-                      cx={n.cx}
-                      cy={n.cy}
-                      r={radius}
-                      fill={stroke}
-                      className="transition-all duration-300 ease-out"
-                    />
-
-                    {/* Interactive zone */}
-                    <g
-                      onMouseEnter={() => setHoveredIdx(i)}
-                      onMouseLeave={() => setHoveredIdx(null)}
-                      onClick={() => scrollTo(n.target)}
-                      className="cursor-pointer"
+                  return (
+                    <motion.g
+                      key={n.id}
+                      initial={{ opacity: 0, y: prefersReduced ? 0 : 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.7, delay, ease: "easeOut" }}
                     >
+                      {/* Connector path */}
                       <path
                         d={n.path}
-                        stroke="transparent"
-                        strokeWidth={16}
+                        stroke={stroke}
+                        strokeWidth={sw}
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        fill="none"
+                        className="transition-all duration-300 ease-out"
                       />
-                      <circle cx={n.cx} cy={n.cy} r={12} fill="transparent" />
+                      {/* Ring around start dot */}
+                      <circle
+                        cx={n.cx}
+                        cy={n.cy}
+                        r={6}
+                        stroke={stroke}
+                        strokeWidth={1}
+                        fill="none"
+                        className="transition-all duration-300 ease-out"
+                      />
+                      {/* Start circle */}
+                      <circle
+                        cx={n.cx}
+                        cy={n.cy}
+                        r={radius}
+                        fill={stroke}
+                        className="transition-all duration-300 ease-out"
+                      />
 
-                      {/* Wrapping text via foreignObject */}
-                      <foreignObject
-                        x={n.foX}
-                        y={n.foY}
-                        width={n.foW}
-                        height={60}
+                      {/* Interactive zone — pointer events unify mouse & touch */}
+                      <g
+                        onPointerEnter={() => setHoveredIdx(i)}
+                        onPointerLeave={() => setHoveredIdx(null)}
+                        onClick={() => scrollTo(n.target)}
+                        className="cursor-pointer"
                       >
-                        <div
-                          className="transition-all duration-300 ease-out"
-                          style={{
-                            fontSize: "10px",
-                            fontFamily: "'Space Grotesk', sans-serif",
-                            fontWeight: 500,
-                            textTransform: "uppercase",
-                            letterSpacing: "0.1em",
-                            lineHeight: 1.35,
-                            color: stroke,
-                            textAlign: n.ta,
-                            pointerEvents: "none",
-                          }}
-                        >
-                          {n.label}
-                        </div>
-                      </foreignObject>
-                    </g>
-                  </motion.g>
-                );
-              })}
+                        <path
+                          d={n.path}
+                          stroke="transparent"
+                          strokeWidth={16}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          fill="none"
+                        />
+                        <circle cx={n.cx} cy={n.cy} r={12} fill="transparent" />
 
-              {/* Center text */}
-              <text
-                x={200}
-                y={274}
-                textAnchor="middle"
-                fill="var(--color-muted)"
-                style={{ fontSize: 13, fontFamily: "Archivo, sans-serif" }}
-              >
-                {content.hero.mobileGreeting}
-              </text>
-              <text
-                x={200}
-                y={296}
-                textAnchor="middle"
-                fill="var(--color-primary)"
-                style={{
-                  fontSize: 22,
-                  fontFamily: '"Space Grotesk", sans-serif',
-                  fontWeight: 700,
-                }}
-              >
-                {content.hero.mobileName}
-              </text>
-              <text
-                x={200}
-                y={314}
-                textAnchor="middle"
-                fill="var(--color-accent)"
-                style={{
-                  fontSize: 13,
-                  fontFamily: "Archivo, sans-serif",
-                  fontWeight: 600,
-                }}
-              >
-                {content.hero.mobileSubtitle}
-              </text>
+                        {/* Wrapping text via foreignObject */}
+                        <foreignObject
+                          x={n.foX}
+                          y={n.foY}
+                          width={n.foW}
+                          height={60}
+                        >
+                          <div
+                            className="transition-all duration-300 ease-out"
+                            style={{
+                              fontSize: "10px",
+                              fontFamily: "'Space Grotesk', sans-serif",
+                              fontWeight: 500,
+                              textTransform: "uppercase",
+                              letterSpacing: "0.1em",
+                              lineHeight: 1.35,
+                              color: stroke,
+                              textAlign: n.ta,
+                              pointerEvents: "none",
+                              overflowWrap: "break-word",
+                            }}
+                          >
+                            {n.label}
+                          </div>
+                        </foreignObject>
+                      </g>
+                    </motion.g>
+                  );
+                })}
+
+                {/* Center text — 33% from left edge */}
+                <text
+                  x={185}
+                  y={274}
+                  textAnchor="middle"
+                  fill="var(--color-muted)"
+                  style={{ fontSize: 13, fontFamily: "Archivo, sans-serif" }}
+                >
+                  {content.hero.mobileGreeting}
+                </text>
+                <text
+                  x={185}
+                  y={296}
+                  textAnchor="middle"
+                  fill="var(--color-primary)"
+                  style={{
+                    fontSize: 22,
+                    fontFamily: '"Space Grotesk", sans-serif',
+                    fontWeight: 700,
+                  }}
+                >
+                  {content.hero.mobileName}
+                </text>
+                <text
+                  x={185}
+                  y={314}
+                  textAnchor="middle"
+                  fill="var(--color-accent)"
+                  style={{
+                    fontSize: 13,
+                    fontFamily: "Archivo, sans-serif",
+                    fontWeight: 600,
+                  }}
+                >
+                  {content.hero.mobileSubtitle}
+                </text>
+              </g>
             </svg>
           );
         })()}
