@@ -318,9 +318,9 @@ export default function Hero() {
               viewBox="0 0 400 600"
               className="w-full max-w-sm"
               fill="none"
-              style={{ overflow: "visible" }}
+              style={{ overflow: "visible", aspectRatio: "400/600" }}
             >
-              <g transform="translate(0, -160)">
+              <g>
                 {mNodes.map((n, i) => {
                   const active = hoveredIdx === i;
                   const stroke = active ? n.color : svgGrey;

@@ -35,6 +35,13 @@ export const es: PortfolioContent = {
 
       "Hoy soy capaz de construir aplicaciones full-stack completas con React, Node.js, Express y PostgreSQL. Mi diferencial: uso la IA estratégicamente —spec-driven development, evaluación de modelos y optimización de contextos. No es el camino típico, pero cada paso, desde el taller hasta el código, me dio herramientas que quiero aplicar en mi próximo desafío profesional.",
     ],
+    mobileParagraphs: [
+      "Por más de 10 años trabajé junto a mi padre en un taller de metalmecánica fabricando y reparando maquinaria. Durante los primeros años, cursé Ingeniería y completé el ciclo básico. Allí integramos automatizaciones con diagramas Ladder y PLCs, lo que despertó la curiosidad que me llevó a mi emprendimiento, Emme 3D, con más de 10 impresoras funcionando en simultáneo.",
+
+      "Pronto apareció la programación web. Hice la primera etapa de Argentina Programa, un curso de QA Testing y luego continué estudiando por mi cuenta. En el medio surgió mi puesto en la oficina de Sistemas en el Poder Judicial de Tucumán. Actualmente trabajo ahí por las mañanas en Soporte IT y Seguridad Informática, y por las tardes sigo realizando cursos, programando y formándome como desarrollador.",
+
+      "Hoy soy capaz de construir aplicaciones full-stack completas con React, Node.js, Express y PostgreSQL. Mi diferencial: uso la IA estratégicamente —spec-driven development, evaluación de modelos y optimización de contextos. No es el camino típico, pero cada paso, desde el taller hasta el código, me dio herramientas que quiero aplicar en mi próximo desafío profesional.",
+    ],
     photoUrl: "https://picsum.photos/seed/mv-portrait/400/400",
     photoAlt: "Retrato de Maximiliano Vallejo",
   },

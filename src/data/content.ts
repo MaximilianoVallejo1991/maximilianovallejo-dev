@@ -23,6 +23,7 @@ export interface HeroData {
 
 export interface AboutData {
   paragraphs: string[];
+  mobileParagraphs?: string[];
   photoUrl: string;
   photoAlt: string;
 }

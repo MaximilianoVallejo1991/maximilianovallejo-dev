@@ -35,6 +35,13 @@ export const en: PortfolioContent = {
 
       "Today I'm capable of building complete full-stack applications with React, Node.js, Express, and PostgreSQL. My differentiator: I use AI strategically — spec-driven development, model evaluation, and context optimization. It's not the typical path, but every step, from the workshop to code, gave me tools I want to apply in my next professional challenge.",
     ],
+    mobileParagraphs: [
+      "For over 10 years I worked alongside my father in a metalworking shop, manufacturing and repairing machinery. During the early years I studied Engineering and completed the core curriculum. There we integrated automation with Ladder diagrams and PLCs, which sparked the curiosity that led to my venture, Emme 3D, with over 10 printers running simultaneously.",
+
+      "Web development soon followed. I took the first stage of Argentina Programa, a QA Testing course, and then kept studying on my own. Along the way, I landed a position in the IT office at Poder Judicial de Tucumán. I currently work there in the mornings in IT Support and Security, and in the afternoons I keep taking courses, programming, and training as a developer.",
+
+      "Today I'm capable of building complete full-stack applications with React, Node.js, Express, and PostgreSQL. My differentiator: I use AI strategically — spec-driven development, model evaluation, and context optimization. It's not the typical path, but every step, from the workshop to code, gave me tools I want to apply in my next professional challenge.",
+    ],
     photoUrl: "https://picsum.photos/seed/mv-portrait/400/400",
     photoAlt: "Portrait of Maximiliano Vallejo",
   },

@@ -13,7 +13,10 @@ export default function Nav() {
     setMenuOpen(false);
     const target = document.querySelector(href);
     if (target) {
-      target.scrollIntoView({ behavior: "smooth" });
+      const header = document.querySelector("header");
+      const h = header?.offsetHeight ?? 56;
+      const y = target.getBoundingClientRect().top + window.scrollY - h;
+      window.scrollTo({ top: y, behavior: "smooth" });
     }
   };
 
