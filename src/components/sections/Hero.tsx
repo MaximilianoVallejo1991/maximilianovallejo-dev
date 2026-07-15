@@ -257,7 +257,7 @@ export default function Hero() {
       </div>
 
       {/* ─── MOBILE: compact SVG node map ─── */}
-      <div className="flex w-full flex-col items-center py-4 md:hidden">
+      <div className="flex w-full flex-col items-center py-4 -mt-[12dvh] md:hidden">
         {/*
           Mobile viewBox adapted to phone aspect ratio.
           Same 45° circuit-like nodes scaled compact,
