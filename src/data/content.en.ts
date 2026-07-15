@@ -21,7 +21,7 @@ export const en: PortfolioContent = {
       "Technical Knowledge",
     ],
     mobileGreeting: "Hi, I'm",
-    mobileName: "JMV",
+    mobileName: "Maxi Vallejo",
     mobileSubtitle: "Full Stack Dev",
   },
 
