@@ -92,6 +92,11 @@ export interface ContactData {
   linkLabels: ContactLinkLabels;
 }
 
+export interface ConstructionBanner {
+  label: string;
+  message: string;
+}
+
 export interface NavLinkData {
   href: string;
   label: string;
@@ -99,6 +104,7 @@ export interface NavLinkData {
 
 export interface PortfolioContent {
   meta: SiteMeta;
+  construction: ConstructionBanner;
   hero: HeroData;
   about: AboutData;
   skills: SkillCategory[];

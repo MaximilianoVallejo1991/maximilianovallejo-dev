@@ -63,6 +63,18 @@ export default function Nav() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-surface/90 backdrop-blur-sm">
+      <div
+        role="note"
+        className="border-b border-accent/20 bg-accent/10 px-4 py-1.5 text-center text-xs font-medium text-accent"
+      >
+        <span className="font-heading uppercase tracking-wide">
+          {content.construction.label}
+        </span>
+        <span className="mx-2 text-accent/50" aria-hidden="true">
+          &middot;
+        </span>
+        <span>{content.construction.message}</span>
+      </div>
       <nav
         aria-label={content.navAriaLabel}
         className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3"
