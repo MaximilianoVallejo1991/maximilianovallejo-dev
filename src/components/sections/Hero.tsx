@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { useContent } from "../../hooks/useContent";
 
@@ -117,9 +117,79 @@ export default function Hero() {
   /* Clockwise entrance order — Aplicación de Software first, then clockwise */
   const clockOrder = [0, 1, 2, 3, 4];
 
+  /* ─── Mobile-only: automatic, random, continuous node highlight ───
+     Runs only while the Hero section is in view, so it doesn't keep
+     animating (and using CPU/battery) once the user has scrolled past. */
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isInView, setIsInView] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsInView(entry.isIntersecting),
+      { threshold: 0.2 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const recentLitRef = useRef<number[]>([]);
+
+  useEffect(() => {
+    if (!isMobile || !isInView || prefersReduced || nodes.length < 2) {
+      return;
+    }
+
+    const HOLD_MS = 2000;
+    const PAUSE_MS = 900;
+
+    const pickNext = (exclude: number[]) => {
+      let next = Math.floor(Math.random() * nodes.length);
+      while (exclude.includes(next)) {
+        next = Math.floor(Math.random() * nodes.length);
+      }
+      return next;
+    };
+
+    let timeoutId: number;
+
+    const turnOn = () => {
+      const next = pickNext(recentLitRef.current);
+      recentLitRef.current = [...recentLitRef.current, next].slice(-3);
+      setHoveredIdx(next);
+      timeoutId = window.setTimeout(turnOff, HOLD_MS);
+    };
+
+    const turnOff = () => {
+      setHoveredIdx(null);
+      timeoutId = window.setTimeout(turnOn, PAUSE_MS);
+    };
+
+    turnOn();
+
+    return () => window.clearTimeout(timeoutId);
+  }, [isMobile, isInView, prefersReduced, nodes.length]);
+
+  useEffect(() => {
+    if (!isMobile || !isInView) {
+      setHoveredIdx(null);
+    }
+  }, [isMobile, isInView]);
+
   return (
     <section
       id="hero"
+      ref={sectionRef}
       className="relative flex min-h-screen flex-col items-center justify-center md:overflow-hidden px-4 scroll-mt-14"
     >
       {/* ─── DESKTOP: single SVG coordinate system ─── */}
@@ -266,7 +336,7 @@ export default function Hero() {
         {(() => {
           type MCfg = {
             id: string; path: string; cx: number; cy: number;
-            sw: number; foX: number; foY: number; foW: number;
+            sw: number; foX: number; foY: number; foYActive?: number; foW: number;
             ta: "left" | "right";
           };
           /* Mobile positions — viewBox 400×600 */
@@ -276,14 +346,14 @@ export default function Hero() {
               // Sube empinado y se estira en una plataforma horizontal larga arriba
               path: "M 230 240 L 290 140 L 380 140",
               cx: 230, cy: 240, sw: 2,
-              foX: 290, foY: 108, foW: 90,
+              foX: 290, foY: 108, foYActive: 88, foW: 90,
             },
             tecnico: {
               id: "tecnico", ta: "left",
               // Sale casi horizontal hacia la derecha, un quiebre corto y base baja
               path: "M 270 288 L 320 238 L 390 238",
               cx: 270, cy: 288, sw: 2,
-              foX: 320, foY: 205, foW: 75,
+              foX: 320, foY: 205, foYActive: 183, foW: 75,
             },
             problemas: {
               id: "problemas", ta: "left",
@@ -304,7 +374,7 @@ export default function Hero() {
               // Quiebre más pronunciado hacia arriba a la izquierda
               path: "M 160 250 L 105 170 L 20 170",
               cx: 160, cy: 250, sw: 1,
-              foX: 15, foY: 140, foW: 90,
+              foX: 15, foY: 140, foYActive: 125, foW: 90,
             },
           };
           /* map desktop nodes → mobile positions, keep label & target */
@@ -324,8 +394,11 @@ export default function Hero() {
                 {mNodes.map((n, i) => {
                   const active = hoveredIdx === i;
                   const stroke = active ? n.color : svgGrey;
-                  const sw = active ? n.sw + 1 : n.sw;
-                  const radius = active ? 4.5 : 2.5;
+                  const sw = active ? n.sw + 1.75 : n.sw;
+                  const radius = active ? 6.5 : 2.5;
+                  const ringRadius = active ? 9 : 6;
+                  const ringSw = active ? 1.5 : 1;
+                  const labelFontSize = active ? "13px" : "10px";
 
                   const step = clockOrder[i];
                   const delay = prefersReduced ? 0 : step * 0.35;
@@ -344,17 +417,17 @@ export default function Hero() {
                         strokeWidth={sw}
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        className="transition-all duration-300 ease-out"
+                        className="transition-all duration-[800ms] ease-in-out"
                       />
                       {/* Ring around start dot */}
                       <circle
                         cx={n.cx}
                         cy={n.cy}
-                        r={6}
+                        r={ringRadius}
                         stroke={stroke}
-                        strokeWidth={1}
+                        strokeWidth={ringSw}
                         fill="none"
-                        className="transition-all duration-300 ease-out"
+                        className="transition-all duration-[800ms] ease-in-out"
                       />
                       {/* Start circle */}
                       <circle
@@ -362,7 +435,7 @@ export default function Hero() {
                         cy={n.cy}
                         r={radius}
                         fill={stroke}
-                        className="transition-all duration-300 ease-out"
+                        className="transition-all duration-[800ms] ease-in-out"
                       />
 
                       {/* Interactive zone — pointer events unify mouse & touch */}
@@ -385,14 +458,18 @@ export default function Hero() {
                         {/* Wrapping text via foreignObject */}
                         <foreignObject
                           x={n.foX}
-                          y={n.foY}
+                          y={active && n.foYActive !== undefined ? n.foYActive : n.foY}
                           width={n.foW}
                           height={60}
+                          style={{
+                            transition: "y 800ms ease-in-out",
+                            overflow: n.id === "coordinacion" ? "visible" : undefined,
+                          }}
                         >
                           <div
-                            className="transition-all duration-300 ease-out"
+                            className="transition-all duration-[800ms] ease-in-out"
                             style={{
-                              fontSize: "10px",
+                              fontSize: labelFontSize,
                               fontFamily: "'Space Grotesk', sans-serif",
                               fontWeight: 500,
                               textTransform: "uppercase",
@@ -404,7 +481,24 @@ export default function Hero() {
                               overflowWrap: "break-word",
                             }}
                           >
-                            {n.label}
+                            {n.id === "coordinacion" ? (
+                              (() => {
+                                const words = n.label.split(" ");
+                                const mid = Math.ceil(words.length / 2);
+                                return (
+                                  <>
+                                    <div style={{ whiteSpace: "nowrap" }}>
+                                      {words.slice(0, mid).join(" ")}
+                                    </div>
+                                    <div style={{ whiteSpace: "nowrap" }}>
+                                      {words.slice(mid).join(" ")}
+                                    </div>
+                                  </>
+                                );
+                              })()
+                            ) : (
+                              n.label
+                            )}
                           </div>
                         </foreignObject>
                       </g>

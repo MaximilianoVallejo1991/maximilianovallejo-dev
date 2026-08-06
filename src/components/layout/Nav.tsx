@@ -74,6 +74,14 @@ export default function Nav() {
           &middot;
         </span>
         <span>{content.construction.message}</span>
+        <a
+          href={content.contact.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ml-1 underline decoration-accent/40 underline-offset-2 transition-colors hover:decoration-accent"
+        >
+          {content.contact.linkedin}
+        </a>
       </div>
       <nav
         aria-label={content.navAriaLabel}

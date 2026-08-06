@@ -9,6 +9,8 @@
   --color-text: #09090b;
   --color-muted: #52525b;
   --color-border: #e4e4e7;
+  --color-card: #fafafa;
+  --color-card-overlay: #e8e8eb;
 
   /* Typography */
   --font-heading: "Space Grotesk", sans-serif;
@@ -30,6 +32,8 @@
   --color-text: #fafafa;
   --color-muted: #a1a1aa;
   --color-border: #27272a;
+  --color-card: #18181c;
+  --color-card-overlay: #000000;
 }
 
 /* Base layer */
