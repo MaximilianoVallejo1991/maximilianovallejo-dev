@@ -125,7 +125,7 @@ export default function SkillCarousel({
   sideTilt = 0,
   gap: gapProp,
   opacity = 50,
-  autoplay = false,
+  autoplay = true,
   autoplayDelay = 3,
 }: SkillCarouselProps) {
   const responsiveSettings = useResponsiveSettings()
@@ -142,6 +142,7 @@ export default function SkillCarousel({
 
   const [active, setActive] = useState(0)
   const [isHovered, setIsHovered] = useState(false)
+  const [isInView, setIsInView] = useState(false)
   const lockRef = useRef(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const n = skills.length
@@ -176,11 +177,22 @@ export default function SkillCarousel({
   )
 
   useEffect(() => {
-    if (!autoplay || n < 2) return
+    const el = containerRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsInView(entry.isIntersecting),
+      { threshold: 0.3 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    if (!autoplay || !isInView || isHovered || n < 2) return
     const ms = Math.max(0.3, autoplayDelay) * 1000
     const id = window.setInterval(() => step(1), ms)
     return () => window.clearInterval(id)
-  }, [autoplay, autoplayDelay, n, step])
+  }, [autoplay, autoplayDelay, isInView, isHovered, n, step])
 
   useEffect(() => {
     const container = containerRef.current
