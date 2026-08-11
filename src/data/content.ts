@@ -2,6 +2,8 @@
    Both content.es.ts and content.en.ts must satisfy PortfolioContent.
    Shape parity is enforced at build time by TypeScript. */
 
+import type { BranchAccentKey } from "../lib/branchAccent";
+
 export type Lang = "es" | "en";
 
 export interface SiteMeta {
@@ -56,12 +58,10 @@ export interface Milestone {
   photoUrl?: string;
 }
 
-// TODO(Slice 2): tighten to the real `BranchAccentKey` union from `src/lib/branchAccent.ts`
-// once that file exists. Kept as `string` here to avoid a forward dependency on Slice 2.
 export interface ExperienceBranch {
   branchKey: string;
   branchLabel: string;
-  accentKey: string;
+  accentKey: BranchAccentKey;
   icon: string;
   milestones: Milestone[];
 }

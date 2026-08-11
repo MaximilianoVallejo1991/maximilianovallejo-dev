@@ -2,15 +2,27 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { fadeInItem } from "./SectionWrapper";
 import type { Milestone } from "../../data/content";
+import type { BranchAccentKey } from "../../lib/branchAccent";
+import { BRANCH_ACCENT } from "../../lib/branchAccent";
+import IconMap from "./IconMap";
 
 interface TimelineNodeProps {
   milestone: Milestone;
   isLast: boolean;
   index: number;
+  accentKey?: BranchAccentKey;
+  icon?: string;
 }
 
-export default function TimelineNode({ milestone, isLast, index }: TimelineNodeProps) {
+export default function TimelineNode({
+  milestone,
+  isLast,
+  index,
+  accentKey = "accent",
+  icon,
+}: TimelineNodeProps) {
   const [imgError, setImgError] = useState(false);
+  const accent = BRANCH_ACCENT[accentKey];
 
   return (
     <motion.li
@@ -23,13 +35,20 @@ export default function TimelineNode({ milestone, isLast, index }: TimelineNodeP
       )}
 
       {/* Dot */}
-      <div className="relative z-10 mt-1.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 border-accent bg-surface">
-        <div className="h-2 w-2 rounded-full bg-accent" />
+      <div
+        data-testid="timeline-dot"
+        className={`relative z-10 mt-1.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 bg-surface ${accent.ring}`}
+      >
+        {icon ? (
+          <IconMap name={icon} className={`h-3 w-3 ${accent.text}`} />
+        ) : (
+          <div className={`h-2 w-2 rounded-full ${accent.fill}`} />
+        )}
       </div>
 
       {/* Content */}
       <div className="flex-1">
-        <span className="font-body text-xs font-semibold uppercase tracking-wider text-accent">
+        <span className={`font-body text-xs font-semibold uppercase tracking-wider ${accent.text}`}>
           {milestone.year}
         </span>
         <h4 className="mt-0.5 font-heading text-base font-semibold text-primary">
