@@ -107,30 +107,30 @@ export const en: PortfolioContent = {
   projects: [
     {
       slug: "stock-control",
-      title: "Lorem Ipsum Dolor",
+      title: "Stock Control",
       description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
-      techTags: ["Lorem", "Ipsum", "Dolor", "Sit"],
+        "Full inventory management and point-of-sale (POS) system with dynamic discount engine, real-time stock control, sales tracking, current accounts, and advanced statistical reports.",
+      techTags: ["React", "Node.js", "Express", "PostgreSQL", "Prisma", "JWT"],
       liveUrl: "https://stockdetienda.vercel.app",
       repoUrl: "https://github.com/MaximilianoVallejo1991/stock-controll-main",
       screenshot: "https://picsum.photos/seed/stock-control/800/450",
     },
     {
       slug: "elianapp",
-      title: "Consectetur Adipiscing",
+      title: "ElianApp",
       description:
-        "Amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
-      techTags: ["Amet", "Consectetur", "Adipiscing", "Elit"],
+        "Shared expense tracking app: each person reports their own items, the system validates and balances. Supports equal, percentage, and exact splitting per participant.",
+      techTags: ["React 19", "Express 5", "Prisma 7", "PostgreSQL", "JWT"],
       liveUrl: "https://elianapp.vercel.app",
       repoUrl: "https://github.com/MaximilianoVallejo1991/ElianApp",
       screenshot: "https://picsum.photos/seed/elianapp/800/450",
     },
     {
       slug: "countdown-christmas",
-      title: "Sed Do Eiusmod",
+      title: "Countdown to Christmas",
       description:
-        "Tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-      techTags: ["Tempor", "Incididunt", "Labore"],
+        "Search for your country and watch the countdown to Christmas and New Year. Lightweight project deployed on Vercel.",
+      techTags: ["JavaScript", "HTML5", "CSS3", "Vercel"],
       liveUrl: "https://tochristmas.vercel.app",
       repoUrl: "https://github.com/MaximilianoVallejo1991/CountdownToChristmas",
       screenshot: "https://picsum.photos/seed/christmas/800/450",
