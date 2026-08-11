@@ -137,98 +137,129 @@ export const es: PortfolioContent = {
     },
   ],
 
-  experience: [
-    {
-      trackKey: "voluntariado",
-      trackLabel: "Lorem Ipsum Dolor Sit",
-      heroImage: "https://picsum.photos/seed/voluntariado/800/400",
-      milestones: [
-        {
-          year: "20XX",
-          title: "Consectetur Adipiscing",
-          description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-          photoUrl: "https://picsum.photos/seed/scout1/200/200",
-        },
-        {
-          year: "20XX",
-          title: "Sed Do Eiusmod Tempor",
-          description:
-            "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-        },
-        {
-          year: "20XX",
-          title: "Incididunt Ut Labore",
-          description:
-            "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-          photoUrl: "https://picsum.photos/seed/scout2/200/200",
-        },
-        {
-          year: "20XX",
-          title: "Dolore Magna Aliqua",
-          description:
-            "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-          photoUrl: "https://picsum.photos/seed/aconquija/200/200",
-        },
-      ],
-    },
-    {
-      trackKey: "industria",
-      trackLabel: "Amet Consectetur Elit",
-      heroImage: "https://picsum.photos/seed/industria/800/400",
-      milestones: [
-        {
-          year: "20XX",
-          title: "Sed Ut Perspiciatis",
-          description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-          photoUrl: "https://picsum.photos/seed/mecanica1/200/200",
-        },
-        {
-          year: "20XX",
-          title: "Unde Omnis Iste",
-          description:
-            "Natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis.",
-          photoUrl: "https://picsum.photos/seed/parque1/200/200",
-        },
-      ],
-    },
-    {
-      trackKey: "tech",
-      trackLabel: "Eiusmod Tempor Incididunt",
-      heroImage: "https://picsum.photos/seed/tech/800/400",
-      milestones: [
-        {
-          year: "20XX",
-          title: "At Vero Eos",
-          description:
-            "Et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores.",
-          photoUrl: "https://picsum.photos/seed/code1/200/200",
-        },
-        {
-          year: "20XX",
-          title: "Quas Molestias Excepturi",
-          description:
-            "Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.",
-          photoUrl: "https://picsum.photos/seed/pjudicial/200/200",
-        },
-      ],
-    },
-    {
-      trackKey: "oficios",
-      trackLabel: "Quis Autem Vel",
-      heroImage: "https://picsum.photos/seed/oficios/800/400",
-      milestones: [
-        {
-          year: "20XX",
-          title: "Eum Iure Reprehenderit",
-          description:
-            "Qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.",
-          photoUrl: "https://picsum.photos/seed/carpinteria/200/200",
-        },
-      ],
-    },
-  ],
+  experience: {
+    branches: [
+      {
+        branchKey: "soft",
+        branchLabel: "Hab. Blandas",
+        accentKey: "soft",
+        icon: "compass",
+        milestones: [
+          {
+            year: "2008",
+            title: "Scout",
+            description:
+              "Mi primera escuela de trabajo en equipo y disciplina.",
+          },
+          {
+            year: "2015",
+            title: "Instructor Scout",
+            description:
+              "Nivel II como Instructor, formando a las nuevas generaciones.",
+          },
+          {
+            year: "2017",
+            title: "Formación Dirigente Rover",
+            description:
+              "Formación en roverismo y liderazgo, Taller \"El Umbral\".",
+          },
+          {
+            year: "2020",
+            title: "Guía APN",
+            description:
+              "Habilitado como guía de sitio en el Parque Nacional Aconquija.",
+          },
+          {
+            year: "2024",
+            title: "Distinción Montañismo",
+            description:
+              "Reconocimiento municipal por mi trayectoria en la montaña.",
+          },
+        ],
+      },
+      {
+        branchKey: "trade",
+        branchLabel: "Oficio",
+        accentKey: "trade",
+        icon: "anvil",
+        milestones: [
+          {
+            year: "2008",
+            title: "Taller Metalmecánico",
+            description:
+              "Diez años junto a mi padre, fabricando y reparando maquinaria.",
+          },
+          {
+            year: "2017",
+            title: "PLC",
+            description:
+              "Automatización con Ladder y PLCs — mi primer contacto con la lógica de programar.",
+          },
+          {
+            year: "2019",
+            title: "Emme 3D",
+            description:
+              "Mi emprendimiento de impresión 3D. Llegué a tener 10 impresoras funcionando en simultáneo.",
+          },
+          {
+            year: "2022",
+            title: "PJT Sistemas",
+            description:
+              "Entré a la oficina de Sistemas del Poder Judicial de Tucumán — mi primer trabajo formal en tecnología.",
+          },
+        ],
+      },
+      {
+        branchKey: "study",
+        branchLabel: "Estudios Formales",
+        accentKey: "study",
+        icon: "graduation",
+        milestones: [
+          {
+            year: "2007",
+            title: "Téc. Electrónica y Rep. Electrodomésticos",
+            description: "Mi primer título técnico.",
+          },
+          {
+            year: "2009",
+            title: "Téc. Constructor",
+            description: "Formación técnica en construcción.",
+          },
+          {
+            year: "2010",
+            title: "MMO",
+            description:
+              "Maestro Mayor de Obras, un año extra de terciario en la secundaria.",
+          },
+          {
+            year: "2011",
+            title: "Ciclo Básico Ingeniería Química",
+            description:
+              "Dos años de Ingeniería Química — lógica y rigor desde el vamos.",
+          },
+          {
+            year: "2021",
+            title: "Argentina Programa",
+            description:
+              "Primera etapa de Argentina Programa: #SéProgramar. Mi entrada formal al código.",
+          },
+          {
+            year: "2021–2022",
+            title: "QA T.TEC Tucumán/UTN",
+            description:
+              "300 horas de QA, certificado por la UTN Facultad Regional Tucumán.",
+          },
+          {
+            year: "Continua",
+            title: "Capacitación continua",
+            description:
+              "Sigo formándome: IA, nuevas tecnologías, buenas prácticas.",
+          },
+        ],
+      },
+    ],
+    convergenceLabel: "Desarrollador Full Stack",
+  },
 
   certifications: [
     {

@@ -56,11 +56,19 @@ export interface Milestone {
   photoUrl?: string;
 }
 
-export interface ExperienceTrack {
-  trackKey: string;
-  trackLabel: string;
-  heroImage: string;
+// TODO(Slice 2): tighten to the real `BranchAccentKey` union from `src/lib/branchAccent.ts`
+// once that file exists. Kept as `string` here to avoid a forward dependency on Slice 2.
+export interface ExperienceBranch {
+  branchKey: string;
+  branchLabel: string;
+  accentKey: string;
+  icon: string;
   milestones: Milestone[];
+}
+
+export interface ExperienceData {
+  branches: ExperienceBranch[];
+  convergenceLabel: string;
 }
 
 export interface CertItem {
@@ -109,7 +117,7 @@ export interface PortfolioContent {
   about: AboutData;
   skills: SkillCategory[];
   projects: Project[];
-  experience: ExperienceTrack[];
+  experience: ExperienceData;
   certifications: CertCategory[];
   contact: ContactData;
   navLinks: NavLinkData[];

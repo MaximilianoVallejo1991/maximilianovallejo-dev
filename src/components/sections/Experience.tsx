@@ -8,10 +8,10 @@ import { fadeInItem } from "../ui/SectionWrapper";
 export default function Experience() {
   const content = useContent();
   const { experience } = content;
-  const [expandedTrack, setExpandedTrack] = useState<string | null>(null);
+  const [expandedBranch, setExpandedBranch] = useState<string | null>(null);
 
-  const toggleTrack = (key: string) => {
-    setExpandedTrack((prev) => (prev === key ? null : key));
+  const toggleBranch = (key: string) => {
+    setExpandedBranch((prev) => (prev === key ? null : key));
   };
 
   return (
@@ -24,22 +24,16 @@ export default function Experience() {
       </motion.h2>
 
       <div className="mt-10 flex flex-col gap-12">
-        {experience.map((track, trackIdx) => (
-          <motion.div key={track.trackKey} {...fadeInItem(trackIdx + 1)}>
-            {/* Track header */}
+        {experience.branches.map((branch, branchIdx) => (
+          <motion.div key={branch.branchKey} {...fadeInItem(branchIdx + 1)}>
+            {/* Branch header */}
             <button
-              onClick={() => toggleTrack(track.trackKey)}
+              onClick={() => toggleBranch(branch.branchKey)}
               className="group flex w-full cursor-pointer items-center gap-4 text-left transition-colors duration-200"
-              aria-expanded={expandedTrack === track.trackKey}
+              aria-expanded={expandedBranch === branch.branchKey}
             >
-              <img
-                src={track.heroImage}
-                alt={track.trackLabel}
-                loading="lazy"
-                className="h-16 w-24 shrink-0 rounded-lg object-cover md:h-20 md:w-32"
-              />
               <h3 className="font-heading text-xl font-semibold text-primary transition-colors duration-200 group-hover:text-accent md:text-2xl">
-                {track.trackLabel}
+                {branch.branchLabel}
               </h3>
               <svg
                 aria-hidden="true"
@@ -52,20 +46,20 @@ export default function Experience() {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className={`shrink-0 text-muted transition-transform duration-200 ${expandedTrack === track.trackKey ? "rotate-180" : ""}`}
+                className={`shrink-0 text-muted transition-transform duration-200 ${expandedBranch === branch.branchKey ? "rotate-180" : ""}`}
               >
                 <polyline points="6 9 12 15 18 9" />
               </svg>
             </button>
 
             {/* Timeline */}
-            {expandedTrack === track.trackKey && (
+            {expandedBranch === branch.branchKey && (
               <ol className="mt-6">
-                {track.milestones.map((m, i) => (
+                {branch.milestones.map((m, i) => (
                   <TimelineNode
                     key={m.year + m.title}
                     milestone={m}
-                    isLast={i === track.milestones.length - 1}
+                    isLast={i === branch.milestones.length - 1}
                     index={i}
                   />
                 ))}
