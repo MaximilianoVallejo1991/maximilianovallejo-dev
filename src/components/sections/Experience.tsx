@@ -11,6 +11,13 @@ import { resolveYear, getBranchLayout, buildTimelineWithSpacers } from "../../li
 import { motion } from "motion/react";
 import { fadeInItem } from "../ui/SectionWrapper";
 
+// Conservative estimate of a rendered TimelineNode's height (dot + year +
+// title + description, no photo). Used only to position the absolutely
+// positioned Spacer's connector line under the previous node's text — it
+// does not need to be pixel-perfect, only close enough that the line starts
+// visually after the node instead of overlapping it.
+const ESTIMATED_MILESTONE_HEIGHT_PX = 120;
+
 export default function Experience() {
   const content = useContent();
   const { experience } = content;
@@ -75,30 +82,38 @@ export default function Experience() {
                     aria-hidden="true"
                   />
                   <ol className="relative" style={{ minHeight: layout.height }}>
-                    {layout.items.map((item, itemIdx) =>
-                      item.type === "milestone" ? (
-                        <TimelineNode
-                          key={item.id}
-                          milestone={item.data}
-                          index={itemIdx}
-                          accentKey={branch.accentKey}
-                          icon={branch.icon}
-                          items={layout.items}
-                          onHover={(ids) => setDesktopHighlighted(new Set(ids))}
-                        />
-                      ) : (
-                        <li key={item.id}>
-                          <Spacer
-                            id={item.id}
-                            height={item.height}
-                            dataYearFrom={item.yearFrom}
-                            dataYearTo={item.yearTo}
+                    {(() => {
+                      let cumulativeHeight = 0;
+                      return layout.items.map((item, itemIdx) => {
+                        const itemTop = cumulativeHeight;
+                        cumulativeHeight +=
+                          item.type === "milestone" ? ESTIMATED_MILESTONE_HEIGHT_PX : item.height;
+
+                        return item.type === "milestone" ? (
+                          <TimelineNode
+                            key={item.id}
+                            milestone={item.data}
+                            index={itemIdx}
                             accentKey={branch.accentKey}
-                            highlighted={desktopHighlighted.has(item.id)}
+                            icon={branch.icon}
+                            items={layout.items}
+                            onHover={(ids) => setDesktopHighlighted(new Set(ids))}
                           />
-                        </li>
-                      ),
-                    )}
+                        ) : (
+                          <li key={item.id}>
+                            <Spacer
+                              id={item.id}
+                              height={item.height}
+                              dataYearFrom={item.yearFrom}
+                              dataYearTo={item.yearTo}
+                              accentKey={branch.accentKey}
+                              highlighted={desktopHighlighted.has(item.id)}
+                              top={itemTop}
+                            />
+                          </li>
+                        );
+                      });
+                    })()}
                   </ol>
                 </div>
               </motion.div>
@@ -133,7 +148,12 @@ export default function Experience() {
           <ol className="relative">
             {(() => {
               let milestoneCursor = 0;
+              let cumulativeHeight = 0;
               return mobileItems.map((item, itemIdx) => {
+                const itemTop = cumulativeHeight;
+                cumulativeHeight +=
+                  item.type === "milestone" ? ESTIMATED_MILESTONE_HEIGHT_PX : item.height;
+
                 if (item.type === "spacer") {
                   return (
                     <li key={item.id}>
@@ -143,6 +163,7 @@ export default function Experience() {
                         dataYearFrom={item.yearFrom}
                         dataYearTo={item.yearTo}
                         highlighted={mobileHighlighted.has(item.id)}
+                        top={itemTop}
                       />
                     </li>
                   );
