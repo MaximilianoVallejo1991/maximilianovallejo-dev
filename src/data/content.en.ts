@@ -149,30 +149,35 @@ export const en: PortfolioContent = {
             year: "2008",
             title: "Scout",
             description: "My first school in teamwork and discipline.",
+            hoverIllumination: { downwardsYears: 7 },
           },
           {
             year: "2015",
             title: "Scout Instructor",
             description:
               "Level II Instructor, training the next generation.",
+            hoverIllumination: { upwardsYears: 3, downwardsYears: 5 },
           },
           {
             year: "2017",
             title: "Rover Leader Training",
             description:
               "Leadership and roverism training, \"El Umbral\" workshop.",
+            hoverIllumination: { upwardsYears: 2, downwardsYears: 4 },
           },
           {
             year: "2020",
             title: "APN Guide",
             description:
               "Certified site guide at Aconquija National Park.",
+            hoverIllumination: { upwardsYears: 5 },
           },
           {
             year: "2024",
             title: "Mountaineering Recognition",
             description:
               "Municipal recognition for my trajectory in mountaineering.",
+            hoverIllumination: { upwardsYears: 8 },
           },
         ],
       },
@@ -187,24 +192,28 @@ export const en: PortfolioContent = {
             title: "Metalworking Shop",
             description:
               "Ten years alongside my father, building and repairing machinery.",
+            hoverIllumination: { downwardsYears: 5 },
           },
           {
             year: "2017",
             title: "PLC",
             description:
               "Automation with Ladder logic and PLCs — my first contact with the logic of programming.",
+            hoverIllumination: { upwardsYears: 4, downwardsYears: 2 },
           },
           {
             year: "2019",
             title: "Emme 3D",
             description:
               "My 3D printing venture. Grew to 10 printers running simultaneously.",
+            hoverIllumination: { upwardsYears: 5 },
           },
           {
             year: "2022",
             title: "PJT Systems",
             description:
               "Joined the Systems office at the Tucumán Judiciary — my first formal job in tech.",
+            hoverIllumination: { upwardsYears: 6 },
           },
         ],
       },
@@ -218,41 +227,48 @@ export const en: PortfolioContent = {
             year: "2007",
             title: "Electronics & Appliance Repair Technician",
             description: "My first technical degree.",
+            hoverIllumination: { downwardsYears: 6 },
           },
           {
             year: "2009",
             title: "Construction Technician",
             description: "Technical training in construction.",
+            hoverIllumination: { upwardsYears: 3, downwardsYears: 4 },
           },
           {
             year: "2010",
             title: "MMO (Master Builder)",
             description:
               "An extra year of tertiary-level training on top of high school.",
+            hoverIllumination: { upwardsYears: 2, downwardsYears: 3 },
           },
           {
             year: "2011",
             title: "Chemical Engineering Core Curriculum",
             description:
               "Two years of Chemical Engineering — logic and rigor from day one.",
+            hoverIllumination: { upwardsYears: 4, downwardsYears: 5 },
           },
           {
             year: "2021",
             title: "Argentina Programa",
             description:
               "First stage of Argentina Programa: #SéProgramar. My formal entry into code.",
+            hoverIllumination: { upwardsYears: 5 },
           },
           {
             year: "2021–2022",
             title: "QA T.TEC Tucumán/UTN",
             description:
               "300-hour QA course, certified by UTN Facultad Regional Tucumán.",
+            hoverIllumination: { upwardsYears: 4 },
           },
           {
             year: "Ongoing",
             title: "Continuous training",
             description:
               "Still learning: AI, new technologies, best practices.",
+            hoverIllumination: { upwardsYears: 3 },
           },
         ],
       },

@@ -51,11 +51,18 @@ export interface Project {
   screenshot: string;
 }
 
+export interface HoverIllumination {
+  upwardsYears?: number;
+  downwardsYears?: number;
+}
+
 export interface Milestone {
   year: string;
   title: string;
   description: string;
   photoUrl?: string;
+  /** Deferred behavior: event handlers/styling for illumination are out of scope. */
+  hoverIllumination?: HoverIllumination;
 }
 
 export interface ExperienceBranch {

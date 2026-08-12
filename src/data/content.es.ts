@@ -150,30 +150,35 @@ export const es: PortfolioContent = {
             title: "Scout",
             description:
               "Mi primera escuela de trabajo en equipo y disciplina.",
+            hoverIllumination: { downwardsYears: 7 },
           },
           {
             year: "2015",
             title: "Instructor Scout",
             description:
               "Nivel II como Instructor, formando a las nuevas generaciones.",
+            hoverIllumination: { upwardsYears: 3, downwardsYears: 5 },
           },
           {
             year: "2017",
             title: "Formación Dirigente Rover",
             description:
               "Formación en roverismo y liderazgo, Taller \"El Umbral\".",
+            hoverIllumination: { upwardsYears: 2, downwardsYears: 4 },
           },
           {
             year: "2020",
             title: "Guía APN",
             description:
               "Habilitado como guía de sitio en el Parque Nacional Aconquija.",
+            hoverIllumination: { upwardsYears: 5 },
           },
           {
             year: "2024",
             title: "Distinción Montañismo",
             description:
               "Reconocimiento municipal por mi trayectoria en la montaña.",
+            hoverIllumination: { upwardsYears: 8 },
           },
         ],
       },
@@ -188,24 +193,28 @@ export const es: PortfolioContent = {
             title: "Taller Metalmecánico",
             description:
               "Diez años junto a mi padre, fabricando y reparando maquinaria.",
+            hoverIllumination: { downwardsYears: 5 },
           },
           {
             year: "2017",
             title: "PLC",
             description:
               "Automatización con Ladder y PLCs — mi primer contacto con la lógica de programar.",
+            hoverIllumination: { upwardsYears: 4, downwardsYears: 2 },
           },
           {
             year: "2019",
             title: "Emme 3D",
             description:
               "Mi emprendimiento de impresión 3D. Llegué a tener 10 impresoras funcionando en simultáneo.",
+            hoverIllumination: { upwardsYears: 5 },
           },
           {
             year: "2022",
             title: "PJT Sistemas",
             description:
               "Entré a la oficina de Sistemas del Poder Judicial de Tucumán — mi primer trabajo formal en tecnología.",
+            hoverIllumination: { upwardsYears: 6 },
           },
         ],
       },
@@ -219,41 +228,48 @@ export const es: PortfolioContent = {
             year: "2007",
             title: "Téc. Electrónica y Rep. Electrodomésticos",
             description: "Mi primer título técnico.",
+            hoverIllumination: { downwardsYears: 6 },
           },
           {
             year: "2009",
             title: "Téc. Constructor",
             description: "Formación técnica en construcción.",
+            hoverIllumination: { upwardsYears: 3, downwardsYears: 4 },
           },
           {
             year: "2010",
             title: "MMO",
             description:
               "Maestro Mayor de Obras, un año extra de terciario en la secundaria.",
+            hoverIllumination: { upwardsYears: 2, downwardsYears: 3 },
           },
           {
             year: "2011",
             title: "Ciclo Básico Ingeniería Química",
             description:
               "Dos años de Ingeniería Química — lógica y rigor desde el vamos.",
+            hoverIllumination: { upwardsYears: 4, downwardsYears: 5 },
           },
           {
             year: "2021",
             title: "Argentina Programa",
             description:
               "Primera etapa de Argentina Programa: #SéProgramar. Mi entrada formal al código.",
+            hoverIllumination: { upwardsYears: 5 },
           },
           {
             year: "2021–2022",
             title: "QA T.TEC Tucumán/UTN",
             description:
               "300 horas de QA, certificado por la UTN Facultad Regional Tucumán.",
+            hoverIllumination: { upwardsYears: 4 },
           },
           {
             year: "Continua",
             title: "Capacitación continua",
             description:
               "Sigo formándome: IA, nuevas tecnologías, buenas prácticas.",
+            hoverIllumination: { upwardsYears: 3 },
           },
         ],
       },

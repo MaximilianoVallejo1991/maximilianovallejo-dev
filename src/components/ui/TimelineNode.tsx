@@ -4,40 +4,52 @@ import { fadeInItem } from "./SectionWrapper";
 import type { Milestone } from "../../data/content";
 import type { BranchAccentKey } from "../../lib/branchAccent";
 import { BRANCH_ACCENT } from "../../lib/branchAccent";
+import { getSpacersToHighlight, type TimelineItem } from "../../lib/timelineScale";
 import IconMap from "./IconMap";
 
 interface TimelineNodeProps {
   milestone: Milestone;
-  isLast: boolean;
   index: number;
   accentKey?: BranchAccentKey;
   icon?: string;
+  /** Full item list of the branch/merged list this milestone belongs to — required to resolve which spacers light up on hover. */
+  items?: TimelineItem[];
+  /** Called with the spacer ids to illuminate on hover, or `[]` on mouse leave. */
+  onHover?: (spacerIds: string[]) => void;
 }
 
 export default function TimelineNode({
   milestone,
-  isLast,
   index,
   accentKey = "accent",
   icon,
+  items,
+  onHover,
 }: TimelineNodeProps) {
   const [imgError, setImgError] = useState(false);
   const accent = BRANCH_ACCENT[accentKey];
 
+  const handleMouseEnter = () => {
+    if (!onHover || !items) return;
+    onHover(getSpacersToHighlight(milestone, items));
+  };
+
+  const handleMouseLeave = () => {
+    if (!onHover) return;
+    onHover([]);
+  };
+
   return (
     <motion.li
       {...fadeInItem(index)}
-      className="relative flex gap-4 pb-8"
+      className="group relative flex gap-4"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
-      {/* Connector line */}
-      {!isLast && (
-        <div className="absolute left-[11px] top-8 h-full w-px bg-border" aria-hidden="true" />
-      )}
-
-      {/* Dot */}
+      {/* Dot — only this element gets the hover ring/glow, never the whole card */}
       <div
         data-testid="timeline-dot"
-        className={`relative z-10 mt-1.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 bg-surface ${accent.ring}`}
+        className={`relative z-10 mt-1.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 bg-surface transition-shadow duration-200 ${accent.ring} ${accent.ringGlow}`}
       >
         {icon ? (
           <IconMap name={icon} className={`h-3 w-3 ${accent.text}`} />
@@ -46,15 +58,19 @@ export default function TimelineNode({
         )}
       </div>
 
-      {/* Content */}
+      {/* Content — text elements highlight individually on hover, the card itself never does */}
       <div className="flex-1">
-        <span className={`font-body text-xs font-semibold uppercase tracking-wider ${accent.text}`}>
+        <span
+          className={`font-body text-xs font-semibold uppercase tracking-wider ${accent.text} group-hover:font-bold`}
+        >
           {milestone.year}
         </span>
-        <h4 className="mt-0.5 font-heading text-base font-semibold text-primary">
+        <h4
+          className={`mt-0.5 font-heading text-base font-semibold text-primary transition-colors duration-200 ${accent.hoverText}`}
+        >
           {milestone.title}
         </h4>
-        <p className="mt-1 font-body text-sm leading-relaxed text-muted">
+        <p className="mt-1 font-body text-sm leading-relaxed text-muted transition-colors duration-200 group-hover:text-primary">
           {milestone.description}
         </p>
 
