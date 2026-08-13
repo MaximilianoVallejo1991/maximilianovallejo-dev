@@ -41,4 +41,22 @@ describe("TimelineNode", () => {
     const root = container.firstElementChild as HTMLElement;
     expect(root.style.top).toBe("0px");
   });
+
+  it("applies the always-on (non-group-hover) accent classes to the dot and title when highlighted=true, so a hovered SIBLING spacer can light this node up", () => {
+    const { getByTestId, getByText } = render(
+      <TimelineNode milestone={milestone} index={0} highlighted />,
+    );
+    const dotTokens = getByTestId("timeline-dot").className.split(/\s+/);
+    expect(dotTokens).toContain("ring-2"); // the bare, always-on token — not "group-hover:ring-2"
+    const titleTokens = getByText("Test milestone").className.split(/\s+/);
+    expect(titleTokens).toContain("text-accent"); // bare — not "group-hover:text-accent"
+  });
+
+  it("does not apply the always-on accent classes when highlighted is false (default)", () => {
+    const { getByTestId, getByText } = render(<TimelineNode milestone={milestone} index={0} />);
+    const dotTokens = getByTestId("timeline-dot").className.split(/\s+/);
+    expect(dotTokens).not.toContain("ring-2");
+    const titleTokens = getByText("Test milestone").className.split(/\s+/);
+    expect(titleTokens).not.toContain("text-accent");
+  });
 });

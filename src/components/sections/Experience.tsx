@@ -34,10 +34,14 @@ export default function Experience() {
   const content = useContent();
   const { experience } = content;
 
-  // Spacer ids illuminated by the currently hovered milestone (desktop and
-  // mobile timelines track their own hover state independently).
+  // Spacer ids illuminated by the currently hovered milestone OR spacer, and
+  // milestone ids illuminated by the currently hovered spacer (the reverse
+  // direction — hovering a node never highlights other nodes). Desktop and
+  // mobile timelines track their own hover state independently.
   const [desktopHighlighted, setDesktopHighlighted] = useState<Set<string>>(new Set());
+  const [desktopHighlightedNodes, setDesktopHighlightedNodes] = useState<Set<string>>(new Set());
   const [mobileHighlighted, setMobileHighlighted] = useState<Set<string>>(new Set());
+  const [mobileHighlightedNodes, setMobileHighlightedNodes] = useState<Set<string>>(new Set());
 
   const branchIconByKey = Object.fromEntries(
     experience.branches.map((branch) => [branch.branchKey, branch.icon]),
@@ -110,8 +114,12 @@ export default function Experience() {
                             accentKey={branch.accentKey}
                             icon={branch.icon}
                             items={layout.items}
-                            onHover={(ids) => setDesktopHighlighted(new Set(ids))}
+                            onHover={(ids) => {
+                              setDesktopHighlighted(new Set(ids));
+                              setDesktopHighlightedNodes(new Set());
+                            }}
                             top={itemTop}
+                            highlighted={desktopHighlightedNodes.has(item.id)}
                           />
                         ) : (
                           <li key={item.id}>
@@ -123,6 +131,11 @@ export default function Experience() {
                               accentKey={branch.accentKey}
                               highlighted={desktopHighlighted.has(item.id)}
                               top={itemTop}
+                              items={layout.items}
+                              onHover={(spacerIds, milestoneIds) => {
+                                setDesktopHighlighted(new Set(spacerIds));
+                                setDesktopHighlightedNodes(new Set(milestoneIds));
+                              }}
                             />
                           </li>
                         );
@@ -180,6 +193,11 @@ export default function Experience() {
                         dataYearTo={item.yearTo}
                         highlighted={mobileHighlighted.has(item.id)}
                         top={itemTop}
+                        items={mobileItems}
+                        onHover={(spacerIds, milestoneIds) => {
+                          setMobileHighlighted(new Set(spacerIds));
+                          setMobileHighlightedNodes(new Set(milestoneIds));
+                        }}
                       />
                     </li>
                   );
@@ -194,8 +212,12 @@ export default function Experience() {
                     accentKey={source.accentKey}
                     icon={branchIconByKey[source.branchKey]}
                     items={mobileItems}
-                    onHover={(ids) => setMobileHighlighted(new Set(ids))}
+                    onHover={(ids) => {
+                      setMobileHighlighted(new Set(ids));
+                      setMobileHighlightedNodes(new Set());
+                    }}
                     top={itemTop}
+                    highlighted={mobileHighlightedNodes.has(item.id)}
                   />
                 );
               });

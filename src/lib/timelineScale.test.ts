@@ -8,6 +8,7 @@ import {
   getBranchLayout,
   getTimelineHeight,
   getSpacersToHighlight,
+  getMilestonesToHighlight,
   type TimelineItem,
 } from "./timelineScale";
 import { es } from "../data/content.es";
@@ -308,5 +309,63 @@ describe("getSpacersToHighlight", () => {
     const items = buildTimelineWithSpacers(milestones);
     const result = getSpacersToHighlight(milestones[0], items);
     expect(result).toEqual([]);
+  });
+});
+
+describe("getMilestonesToHighlight", () => {
+  const makeMilestone = (year: string, overrides: Partial<Milestone> = {}): Milestone => ({
+    year,
+    title: `milestone-${year}`,
+    description: "",
+    ...overrides,
+  });
+
+  it("is the exact reverse of getSpacersToHighlight: a spacer claimed by a milestone reports that milestone back", () => {
+    const milestones = [
+      makeMilestone("2000"),
+      makeMilestone("2005"),
+      makeMilestone("2010", { hoverIllumination: { upwardsYears: 7, downwardsYears: 1 } }),
+      makeMilestone("2012"),
+    ];
+    const items = buildTimelineWithSpacers(milestones);
+    const target = milestones[2];
+    const claimedSpacerIds = getSpacersToHighlight(target, items);
+    const targetItem = items.find(
+      (i): i is Extract<TimelineItem, { type: "milestone" }> =>
+        i.type === "milestone" && i.data === target,
+    )!;
+
+    for (const spacerId of claimedSpacerIds) {
+      expect(getMilestonesToHighlight(spacerId, items)).toContain(targetItem.id);
+    }
+  });
+
+  it("returns multiple milestone ids when two neighbors' ranges both reach the same spacer", () => {
+    const milestones = [
+      makeMilestone("2010", { hoverIllumination: { downwardsYears: 3 } }),
+      makeMilestone("2012", { hoverIllumination: { upwardsYears: 3 } }),
+    ];
+    const items = buildTimelineWithSpacers(milestones);
+    const spacer = spacersOf(items)[0]; // the single 2010->2011 segment (2 total: 2010-2011,2011-2012)
+    const result = getMilestonesToHighlight(spacer.id, items);
+    const [first, second] = milestonesOf(items);
+    expect(result).toContain(first.id);
+    expect(result).toContain(second.id);
+    expect(result).toHaveLength(2);
+  });
+
+  it("returns an empty array for a spacer no milestone's hoverIllumination reaches", () => {
+    const milestones = [makeMilestone("2000"), makeMilestone("2010")];
+    const items = buildTimelineWithSpacers(milestones);
+    const spacer = spacersOf(items)[5]; // deep in the middle of a 10-year gap, unclaimed
+    const result = getMilestonesToHighlight(spacer.id, items);
+    expect(result).toEqual([]);
+  });
+
+  it("ignores milestones without a hoverIllumination config entirely", () => {
+    const milestones = [makeMilestone("2010"), makeMilestone("2012")];
+    const items = buildTimelineWithSpacers(milestones);
+    const spacer = spacersOf(items)[0];
+    expect(getMilestonesToHighlight(spacer.id, items)).toEqual([]);
   });
 });

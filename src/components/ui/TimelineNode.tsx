@@ -24,6 +24,14 @@ interface TimelineNodeProps {
    * (Experience.tsx) supplies the exact year-based offset.
    */
   top?: number;
+  /**
+   * True when a hovered SPACER (not this node) claims this milestone —
+   * i.e. this node's own hoverIllumination range reaches that connector
+   * segment. Native CSS `:hover`/`group-hover` can only react to the
+   * cursor being over THIS element, so illuminating a node from a sibling
+   * spacer's hover needs an explicit prop instead.
+   */
+  highlighted?: boolean;
 }
 
 export default function TimelineNode({
@@ -34,6 +42,7 @@ export default function TimelineNode({
   items,
   onHover,
   top = 0,
+  highlighted = false,
 }: TimelineNodeProps) {
   const [imgError, setImgError] = useState(false);
   const accent = BRANCH_ACCENT[accentKey];
@@ -59,7 +68,7 @@ export default function TimelineNode({
       {/* Dot — only this element gets the hover ring/glow, never the whole card */}
       <div
         data-testid="timeline-dot"
-        className={`relative z-10 mt-1.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 bg-surface transition-shadow duration-200 ${accent.ring} ${accent.ringGlow}`}
+        className={`relative z-10 mt-1.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 bg-surface transition-shadow duration-200 ${accent.ring} ${accent.ringGlow} ${highlighted ? accent.activeRingGlow : ""}`}
       >
         {icon ? (
           <IconMap name={icon} className={`h-3 w-3 ${accent.text}`} />
@@ -71,16 +80,18 @@ export default function TimelineNode({
       {/* Content — text elements highlight individually on hover, the card itself never does */}
       <div className="flex-1">
         <span
-          className={`font-body text-xs font-semibold uppercase tracking-wider ${accent.text} group-hover:font-bold`}
+          className={`font-body text-xs font-semibold uppercase tracking-wider ${accent.text} group-hover:font-bold ${highlighted ? "font-bold" : ""}`}
         >
           {milestone.year}
         </span>
         <h4
-          className={`mt-0.5 font-heading text-base font-semibold text-primary transition-colors duration-200 ${accent.hoverText}`}
+          className={`mt-0.5 font-heading text-base font-semibold text-primary transition-colors duration-200 ${accent.hoverText} ${highlighted ? accent.activeHoverText : ""}`}
         >
           {milestone.title}
         </h4>
-        <p className="mt-1 font-body text-sm leading-relaxed text-muted transition-colors duration-200 group-hover:text-primary">
+        <p
+          className={`mt-1 font-body text-sm leading-relaxed text-muted transition-colors duration-200 group-hover:text-primary ${highlighted ? "text-primary" : ""}`}
+        >
           {milestone.description}
         </p>
 

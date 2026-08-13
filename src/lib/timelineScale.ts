@@ -253,3 +253,22 @@ export function getSpacersToHighlight(
 
   return ids;
 }
+
+/**
+ * The reverse of getSpacersToHighlight: given a spacer's id, returns the
+ * ids of every milestone whose own hoverIllumination range reaches that
+ * spacer — i.e. hovering the connector segment itself should light up
+ * whichever node(s) "claim" that year. Reuses getSpacersToHighlight rather
+ * than re-deriving the counting logic, so the two directions can never
+ * drift out of sync with each other.
+ */
+export function getMilestonesToHighlight(spacerId: string, items: TimelineItem[]): string[] {
+  const ids: string[] = [];
+  for (const item of items) {
+    if (item.type !== "milestone" || !item.data.hoverIllumination) continue;
+    if (getSpacersToHighlight(item.data, items).includes(spacerId)) {
+      ids.push(item.id);
+    }
+  }
+  return ids;
+}
