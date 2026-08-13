@@ -149,14 +149,14 @@ export const en: PortfolioContent = {
             year: "2008",
             title: "Scout",
             description: "My first school in teamwork and discipline.",
-            hoverIllumination: { downwardsYears: 7 },
+            hoverIllumination: { downwardsYears: 18 },
           },
           {
             year: "2015",
             title: "Scout Instructor",
             description:
               "Level II Instructor, training the next generation.",
-            hoverIllumination: { upwardsYears: 3, downwardsYears: 5 },
+            hoverIllumination: { upwardsYears: 3, downwardsYears: 2 },
           },
           {
             year: "2017",
@@ -274,6 +274,7 @@ export const en: PortfolioContent = {
       },
     ],
     convergenceLabel: "Full Stack Developer",
+    presentLabel: "Present",
   },
 
   certifications: [

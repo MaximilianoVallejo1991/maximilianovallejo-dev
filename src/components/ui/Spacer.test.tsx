@@ -13,7 +13,7 @@ describe("Spacer", () => {
     expect(el.style.height).toBe("200px");
   });
 
-  it("renders a 0px spacer for a same-year pair without omitting the element", () => {
+  it("renders whatever height it's given without omitting the element, even 0px (Spacer itself doesn't know about the same-year 80px floor — that lives in timelineScale.ts)", () => {
     const { getByTestId } = render(
       <Spacer height={0} dataYearFrom={2021} dataYearTo={2021} id="study:spacer:4" />,
     );

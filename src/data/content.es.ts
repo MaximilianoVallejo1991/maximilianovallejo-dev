@@ -150,21 +150,21 @@ export const es: PortfolioContent = {
             title: "Scout",
             description:
               "Mi primera escuela de trabajo en equipo y disciplina.",
-            hoverIllumination: { downwardsYears: 7 },
+            hoverIllumination: { downwardsYears: 17 },
           },
           {
             year: "2015",
             title: "Instructor Scout",
             description:
               "Nivel II como Instructor, formando a las nuevas generaciones.",
-            hoverIllumination: { upwardsYears: 3, downwardsYears: 5 },
+            hoverIllumination: { upwardsYears: 10, downwardsYears: 2 },
           },
           {
             year: "2017",
             title: "Formación Dirigente Rover",
             description:
               "Formación en roverismo y liderazgo, Taller \"El Umbral\".",
-            hoverIllumination: { upwardsYears: 2, downwardsYears: 4 },
+            hoverIllumination: { upwardsYears: 2, downwardsYears: 1 },
           },
           {
             year: "2020",
@@ -275,6 +275,7 @@ export const es: PortfolioContent = {
       },
     ],
     convergenceLabel: "Desarrollador Full Stack",
+    presentLabel: "Actualidad",
   },
 
   certifications: [

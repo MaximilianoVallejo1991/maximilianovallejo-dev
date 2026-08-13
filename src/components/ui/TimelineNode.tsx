@@ -16,6 +16,14 @@ interface TimelineNodeProps {
   items?: TimelineItem[];
   /** Called with the spacer ids to illuminate on hover, or `[]` on mouse leave. */
   onHover?: (spacerIds: string[]) => void;
+  /**
+   * Pixel offset from the top of the parent `<ol>` (which must be
+   * `position: relative`) on the shared temporal scale — same coordinate
+   * space as `Spacer`'s `top`. This element is `position: absolute` so
+   * its real text height can never push a sibling's position; the caller
+   * (Experience.tsx) supplies the exact year-based offset.
+   */
+  top?: number;
 }
 
 export default function TimelineNode({
@@ -25,6 +33,7 @@ export default function TimelineNode({
   icon,
   items,
   onHover,
+  top = 0,
 }: TimelineNodeProps) {
   const [imgError, setImgError] = useState(false);
   const accent = BRANCH_ACCENT[accentKey];
@@ -42,7 +51,8 @@ export default function TimelineNode({
   return (
     <motion.li
       {...fadeInItem(index)}
-      className="group relative flex gap-4"
+      className="group absolute inset-x-0 flex gap-4"
+      style={{ top: `${top}px` }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >

@@ -28,4 +28,17 @@ describe("TimelineNode", () => {
     const { container } = render(<TimelineNode milestone={milestone} index={0} />);
     expect(container.querySelector('[aria-hidden="true"]')).toBeNull();
   });
+
+  it("is positioned absolutely at the given top, not left to normal document flow", () => {
+    const { container } = render(<TimelineNode milestone={milestone} index={0} top={340} />);
+    const root = container.firstElementChild as HTMLElement;
+    expect(root.className).toMatch(/\babsolute\b/);
+    expect(root.style.top).toBe("340px");
+  });
+
+  it("defaults top to 0px when not provided", () => {
+    const { container } = render(<TimelineNode milestone={milestone} index={0} />);
+    const root = container.firstElementChild as HTMLElement;
+    expect(root.style.top).toBe("0px");
+  });
 });

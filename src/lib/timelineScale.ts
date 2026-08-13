@@ -4,6 +4,12 @@ import { parseYearStart } from "./mergeMilestonesByYear";
 /** Pixels per year on the shared temporal scale (desktop + mobile). */
 export const YEAR_HEIGHT_PX = 100;
 
+/** Legibility floor for a same-year milestone pair — never collapse to 0px.
+ * Deliberately close to (but still distinguishable from) a real 1-year gap:
+ * real milestone text needs close to a full YEAR_HEIGHT_PX-scale row of
+ * room, confirmed by measuring rendered same-year pairs in the browser. */
+export const SAME_YEAR_SPACER_HEIGHT_PX = 100;
+
 /** Clamp target for open-ended milestones ("Continua" / "Ongoing"). */
 export const CURRENT_YEAR = 2026;
 
@@ -19,18 +25,19 @@ export type TimelineItem =
 
 export interface BranchLayout {
   branchKey: string;
-  /** (branchFirstYear - globalMinYear) * YEAR_HEIGHT_PX */
-  topOffset: number;
-  /** (branchLastYear - globalMinYear) * YEAR_HEIGHT_PX */
-  endOffset: number;
-  /** endOffset - topOffset */
+  /** Real, floor-adjusted pixel height of this branch's rendered content
+   * (sum of every spacer's height, including any leading/trailing spacers
+   * synthesized to share the globalMinYear/CURRENT_YEAR origin — see
+   * getBranchLayout). This is the authoritative value for sizing this
+   * branch's container; it is NOT the same as year-telescoping math once
+   * same-year floors or a branch's own internal date ranges are involved. */
   height: number;
   items: TimelineItem[];
 }
 
 /**
  * Resolves a year string to a numeric year for POSITIONING purposes
- * (sorting, topOffset, a milestone's own yearStart).
+ * (sorting, a milestone's own yearStart).
  * Ranges ("2021–2022") resolve to their START year. Open-ended tokens
  * ("Continua" / "Ongoing") clamp to currentYear rather than leaking
  * Number.POSITIVE_INFINITY into layout math.
@@ -59,49 +66,75 @@ function resolveYearEnd(
 }
 
 /**
- * Turns a chronologically-ordered list of milestones into a flat
- * TimelineItem[] alternating milestone/spacer, on the shared YEAR_HEIGHT_PX
- * scale. Generic over any `{ year: string }`-bearing entry ordered by the
- * caller — used for both a single branch (desktop) and the globally merged
- * mobile list.
+ * Appends one spacer TimelineItem PER YEAR crossed between `outgoingYear`
+ * and `yearTo`, instead of a single item spanning the whole gap. This is
+ * what makes hover-illumination a simple count ("light the next N spacer
+ * items") rather than a year-math distance check, and it's what lets a
+ * single spacer element stay either fully lit or fully unlit — every
+ * element already represents exactly one step on the scale.
  *
- * Open-ended last entry ("Continua"/"Ongoing", detected via `parseYearStart`
- * returning a non-finite value): rather than positioning that milestone's
- * own node at the clamped CURRENT_YEAR (which would visually sit at the
- * bottom of the scale instead of at its true start), it is ANCHORED at the
- * previous item's end year, and a TRAILING spacer is appended after it
- * running from that anchor to CURRENT_YEAR. This moves the "time since"
- * gap to where it visually belongs: after the open-ended node, leading
- * toward "now".
+ * A same-year pair (yearTo === outgoingYear, or a degenerate/negative
+ * diff clamped to it) still needs *some* visible room, so it gets exactly
+ * one step at the legibility floor instead of zero steps.
+ */
+function pushSpacerSteps(
+  items: TimelineItem[],
+  idPrefix: string,
+  indexLabel: number | string,
+  outgoingYear: number,
+  yearTo: number,
+): void {
+  const diff = Math.max(0, yearTo - outgoingYear);
+
+  if (diff === 0) {
+    items.push({
+      type: "spacer",
+      id: `${idPrefix}:spacer:${indexLabel}:0:${outgoingYear}-${yearTo}`,
+      yearFrom: outgoingYear,
+      yearTo,
+      height: SAME_YEAR_SPACER_HEIGHT_PX,
+    });
+    return;
+  }
+
+  for (let step = 0; step < diff; step++) {
+    const stepFrom = outgoingYear + step;
+    const stepTo = stepFrom + 1;
+    items.push({
+      type: "spacer",
+      id: `${idPrefix}:spacer:${indexLabel}:${step}:${stepFrom}-${stepTo}`,
+      yearFrom: stepFrom,
+      yearTo: stepTo,
+      height: YEAR_HEIGHT_PX,
+    });
+  }
+}
+
+/**
+ * Turns a chronologically-ordered list of milestones into a flat
+ * TimelineItem[] alternating milestone/spacer(s), on the shared
+ * YEAR_HEIGHT_PX scale. Generic over any `{ year: string }`-bearing entry
+ * ordered by the caller — used for both a single branch (desktop) and the
+ * globally merged mobile list. Purely local: every milestone (including
+ * open-ended tokens like "Continua"/"Ongoing", which resolveYear/
+ * resolveYearEnd naturally clamp to CURRENT_YEAR) is positioned at its own
+ * resolved year — no special-casing for "the last milestone". Callers that
+ * need every branch to share a common start/end point (see getBranchLayout)
+ * add leading spacers around this function's output, not inside it.
+ *
+ * Each inter-milestone gap becomes MULTIPLE one-year spacer items (see
+ * pushSpacerSteps) rather than one item spanning the whole gap — this is
+ * what lets hover-illumination light an exact number of years instead of
+ * an all-or-nothing whole segment.
  */
 export function buildTimelineWithSpacers(
   milestones: Milestone[],
-  // Accepted (not used in per-item math) to keep the call signature uniform
-  // across desktop/mobile callers. Item heights are relative between
-  // consecutive entries, not anchored — anchoring to globalMinYear happens
-  // one level up, in getBranchLayout's topOffset/endOffset.
-  _globalMinYear: number,
   idPrefix = "item",
 ): TimelineItem[] {
   const items: TimelineItem[] = [];
 
-  const lastIndex = milestones.length - 1;
-  const lastMilestone = milestones[lastIndex];
-  const isLastOpenEnded =
-    lastIndex >= 0 && !Number.isFinite(parseYearStart(lastMilestone.year));
-  // Anchor year for the open-ended last milestone: the previous item's end
-  // year. Falls back to resolveYear when there's no previous item to anchor
-  // against (single-milestone, open-ended branch — rare edge case).
-  const anchorYear =
-    isLastOpenEnded && lastIndex > 0
-      ? resolveYearEnd(milestones[lastIndex - 1].year)
-      : resolveYear(lastMilestone?.year ?? "");
-
   milestones.forEach((milestone, index) => {
-    const isLast = index === lastIndex;
-    const isAnchoredOpenEnded = isLast && isLastOpenEnded;
-
-    const yearStart = isAnchoredOpenEnded ? anchorYear : resolveYear(milestone.year);
+    const yearStart = resolveYear(milestone.year);
     items.push({
       type: "milestone",
       id: `${idPrefix}:milestone:${index}:${milestone.year}`,
@@ -109,72 +142,68 @@ export function buildTimelineWithSpacers(
       yearStart,
     });
 
-    const outgoingYear = isAnchoredOpenEnded ? anchorYear : resolveYearEnd(milestone.year);
     const next = milestones[index + 1];
+    if (!next) return;
 
-    if (next) {
-      // If `next` is the anchored open-ended last milestone, its resolved
-      // position is the anchor year (not CURRENT_YEAR) — this collapses the
-      // inline spacer immediately preceding it to 0px, since the trailing
-      // spacer after it now carries the "time since" gap instead.
-      const nextIsAnchoredOpenEnded = index + 1 === lastIndex && isLastOpenEnded;
-      const yearTo = nextIsAnchoredOpenEnded ? anchorYear : resolveYear(next.year);
-      const height = Math.max(0, yearTo - outgoingYear) * YEAR_HEIGHT_PX;
-
-      items.push({
-        type: "spacer",
-        id: `${idPrefix}:spacer:${index}:${outgoingYear}-${yearTo}`,
-        yearFrom: outgoingYear,
-        yearTo,
-        height,
-      });
-    } else if (isAnchoredOpenEnded) {
-      const height = Math.max(0, CURRENT_YEAR - outgoingYear) * YEAR_HEIGHT_PX;
-      items.push({
-        type: "spacer",
-        id: `${idPrefix}:spacer:${index}:trailing:${outgoingYear}-${CURRENT_YEAR}`,
-        yearFrom: outgoingYear,
-        yearTo: CURRENT_YEAR,
-        height,
-      });
-    }
+    const outgoingYear = resolveYearEnd(milestone.year);
+    const yearTo = resolveYear(next.year);
+    pushSpacerSteps(items, idPrefix, index, outgoingYear, yearTo);
   });
 
   return items;
 }
 
+/** Real, floor-adjusted pixel height needed to contain every
+ * absolutely-positioned item in `items` — milestones are points and
+ * contribute 0; only spacers occupy vertical space. This is the
+ * authoritative "how tall is this rendered content" value, distinct from
+ * (and generally larger than) naive year-telescoping once same-year floors
+ * or a milestone's own internal date range are involved. */
+export function getTimelineHeight(items: TimelineItem[]): number {
+  return items.reduce((sum, item) => (item.type === "spacer" ? sum + item.height : sum), 0);
+}
+
 /**
- * Computes a branch's position on the shared temporal scale: how far down
- * it starts (topOffset), where it ends (endOffset), its total height, and
- * its TimelineItem[] (milestones + spacers).
+ * Computes a branch's rendered timeline: its TimelineItem[] (milestones +
+ * spacers) and total real height, on a scale shared across all branches —
+ * every branch's items start at `globalMinYear` and end at CURRENT_YEAR,
+ * so that all branches can be rendered to the same total container height
+ * (see Experience.tsx, which pads every column to the tallest branch's
+ * height) and converge visually at the same point.
+ *
+ * - If the branch's own first milestone starts after globalMinYear, a
+ *   leading spacer (globalMinYear -> firstYear) is prepended so every
+ *   branch's rail starts at the same origin.
+ * - If the branch's own last milestone doesn't already resolve to
+ *   CURRENT_YEAR (i.e. isn't an open-ended token like "Continua"), a
+ *   synthetic `presentLabel` milestone is appended so every branch ends
+ *   with a visible "now" marker, connected by a real, proportional spacer.
  */
 export function getBranchLayout(
   branch: ExperienceBranch,
   globalMinYear: number,
+  presentLabel: string,
 ): BranchLayout {
-  const items = buildTimelineWithSpacers(
-    branch.milestones,
-    globalMinYear,
-    branch.branchKey,
-  );
+  const milestones = branch.milestones;
+  const lastMilestone = milestones[milestones.length - 1];
+  const alreadyReachesPresent = resolveYear(lastMilestone.year) === CURRENT_YEAR;
 
-  const firstYear = resolveYear(branch.milestones[0].year);
-  // Derive the end year from the last TimelineItem, not from re-resolving
-  // the last milestone's raw year string: when the branch ends on an
-  // open-ended milestone, buildTimelineWithSpacers appends a trailing
-  // spacer whose yearTo is the true end of the scale (CURRENT_YEAR) — the
-  // milestone itself is now anchored earlier and no longer carries that.
-  const lastItem = items[items.length - 1];
-  const lastYear = lastItem.type === "spacer" ? lastItem.yearTo : lastItem.yearStart;
+  const effectiveMilestones = alreadyReachesPresent
+    ? milestones
+    : [...milestones, { year: presentLabel, title: presentLabel, description: "" }];
 
-  const topOffset = Math.max(0, firstYear - globalMinYear) * YEAR_HEIGHT_PX;
-  const endOffset = Math.max(0, lastYear - globalMinYear) * YEAR_HEIGHT_PX;
+  const items = buildTimelineWithSpacers(effectiveMilestones, branch.branchKey);
+
+  const firstYear = resolveYear(milestones[0].year);
+  if (firstYear > globalMinYear) {
+    const leading: TimelineItem[] = [];
+    pushSpacerSteps(leading, branch.branchKey, "leading", globalMinYear, firstYear);
+    items.unshift(...leading);
+  }
 
   return {
     branchKey: branch.branchKey,
-    topOffset,
-    endOffset,
-    height: endOffset - topOffset,
+    height: getTimelineHeight(items),
     items,
   };
 }
@@ -183,6 +212,14 @@ export function getBranchLayout(
  * Returns the spacer ids that should be illuminated when hovering a
  * milestone, per its (optional) hoverIllumination config. Data-only — no
  * event handlers or styling are wired here (deferred behavior).
+ *
+ * Since buildTimelineWithSpacers now emits one spacer item per year (see
+ * pushSpacerSteps), illumination is a plain COUNT: `upwardsYears` lights
+ * the next N spacer items walking backward from the milestone, and
+ * `downwardsYears` lights the next N walking forward. No year-math is
+ * needed here anymore — every spacer item already represents exactly one
+ * step on the scale, so "3 years" and "the 3 nearest spacer items" are the
+ * same thing.
  */
 export function getSpacersToHighlight(
   milestone: Milestone,
@@ -195,25 +232,24 @@ export function getSpacersToHighlight(
   );
   if (targetIndex === -1) return [];
 
-  const target = items[targetIndex] as Extract<TimelineItem, { type: "milestone" }>;
   const { upwardsYears = 0, downwardsYears = 0 } = milestone.hoverIllumination;
-
   const ids: string[] = [];
-  items.forEach((item, index) => {
-    if (item.type !== "spacer") return;
 
-    // "Upward" = spacers preceding the milestone in render order; "downward"
-    // = spacers following it. Position (not just year math) disambiguates
-    // same-year adjacent spacers from actually being on the wrong side.
-    if (index < targetIndex && upwardsYears > 0) {
-      const distance = target.yearStart - Number(item.yearFrom);
-      if (distance <= upwardsYears) ids.push(item.id);
-    }
-    if (index > targetIndex && downwardsYears > 0) {
-      const distance = Number(item.yearTo) - target.yearStart;
-      if (distance <= downwardsYears) ids.push(item.id);
-    }
-  });
+  let remainingUp = upwardsYears;
+  for (let i = targetIndex - 1; i >= 0 && remainingUp > 0; i--) {
+    const item = items[i];
+    if (item.type !== "spacer") continue;
+    ids.push(item.id);
+    remainingUp -= 1;
+  }
+
+  let remainingDown = downwardsYears;
+  for (let i = targetIndex + 1; i < items.length && remainingDown > 0; i++) {
+    const item = items[i];
+    if (item.type !== "spacer") continue;
+    ids.push(item.id);
+    remainingDown -= 1;
+  }
 
   return ids;
 }

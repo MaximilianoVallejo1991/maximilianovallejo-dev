@@ -7,16 +7,28 @@ import ConvergenceGraphic from "../ui/ConvergenceGraphic";
 import IconMap from "../ui/IconMap";
 import { BRANCH_ACCENT } from "../../lib/branchAccent";
 import { mergeMilestonesByYear } from "../../lib/mergeMilestonesByYear";
-import { resolveYear, getBranchLayout, buildTimelineWithSpacers } from "../../lib/timelineScale";
+import {
+  resolveYear,
+  getBranchLayout,
+  buildTimelineWithSpacers,
+  getTimelineHeight,
+} from "../../lib/timelineScale";
 import { motion } from "motion/react";
 import { fadeInItem } from "../ui/SectionWrapper";
 
-// Conservative estimate of a rendered TimelineNode's height (dot + year +
-// title + description, no photo). Used only to position the absolutely
-// positioned Spacer's connector line under the previous node's text — it
-// does not need to be pixel-perfect, only close enough that the line starts
-// visually after the node instead of overlapping it.
-const ESTIMATED_MILESTONE_HEIGHT_PX = 120;
+// Flat header-row allowance applied uniformly to every column (icon + <h3>
+// row above the rail) — not year-based, since every branch's items now
+// already start at the shared globalMinYear origin internally (see
+// getBranchLayout's leading-spacer synthesis).
+const HEADER_OFFSET_PX = 24;
+
+// One-time, non-compounding buffer added once to the tallest branch's real
+// height so the very last node's real text (title/description, possibly a
+// photo) has breathing room before whatever renders below the column
+// (the convergence graphic). Deliberately NOT applied per-node — that was
+// the bug in the removed ESTIMATED_MILESTONE_HEIGHT_PX approach, which
+// guessed at every node's height and compounded drift down each column.
+const LAST_NODE_BREATHING_ROOM_PX = 140;
 
 export default function Experience() {
   const content = useContent();
@@ -38,15 +50,17 @@ export default function Experience() {
   );
 
   const branchLayouts = experience.branches.map((branch) =>
-    getBranchLayout(branch, globalMinYear),
+    getBranchLayout(branch, globalMinYear, experience.presentLabel),
   );
-  const branchEndOffsets = branchLayouts.map((layout) => layout.endOffset);
+  // Every column is padded to the tallest branch's real height so all 3
+  // rails end at the same point before ConvergenceGraphic draws them
+  // converging into one shared point below.
+  const maxBranchHeight = Math.max(...branchLayouts.map((layout) => layout.height));
+  const branchEndOffsets = branchLayouts.map(() => maxBranchHeight);
 
   const merged = mergeMilestonesByYear(experience.branches);
-  const mobileItems = buildTimelineWithSpacers(
-    merged.map((m) => m.milestone),
-    globalMinYear,
-  );
+  const mobileItems = buildTimelineWithSpacers(merged.map((m) => m.milestone));
+  const mobileTotalHeight = getTimelineHeight(mobileItems);
 
   return (
     <SectionWrapper id="experience" className="mx-auto max-w-6xl px-4 py-20 md:py-28">
@@ -72,22 +86,21 @@ export default function Experience() {
                   </h3>
                 </div>
 
-                <div
-                  className="relative"
-                  style={{ marginTop: layout.topOffset + 24 }}
-                >
+                <div className="relative" style={{ marginTop: HEADER_OFFSET_PX }}>
                   {/* Single continuous connector rail for the whole column */}
                   <div
                     className="absolute inset-y-0 left-[11px] w-px bg-border"
                     aria-hidden="true"
                   />
-                  <ol className="relative" style={{ minHeight: layout.height }}>
+                  <ol
+                    className="relative"
+                    style={{ minHeight: maxBranchHeight + LAST_NODE_BREATHING_ROOM_PX }}
+                  >
                     {(() => {
                       let cumulativeHeight = 0;
                       return layout.items.map((item, itemIdx) => {
                         const itemTop = cumulativeHeight;
-                        cumulativeHeight +=
-                          item.type === "milestone" ? ESTIMATED_MILESTONE_HEIGHT_PX : item.height;
+                        if (item.type === "spacer") cumulativeHeight += item.height;
 
                         return item.type === "milestone" ? (
                           <TimelineNode
@@ -98,6 +111,7 @@ export default function Experience() {
                             icon={branch.icon}
                             items={layout.items}
                             onHover={(ids) => setDesktopHighlighted(new Set(ids))}
+                            top={itemTop}
                           />
                         ) : (
                           <li key={item.id}>
@@ -145,14 +159,16 @@ export default function Experience() {
 
         <div className="relative mt-6">
           <div className="absolute inset-y-0 left-[11px] w-px bg-border" aria-hidden="true" />
-          <ol className="relative">
+          <ol
+            className="relative"
+            style={{ minHeight: mobileTotalHeight + LAST_NODE_BREATHING_ROOM_PX }}
+          >
             {(() => {
               let milestoneCursor = 0;
               let cumulativeHeight = 0;
               return mobileItems.map((item, itemIdx) => {
                 const itemTop = cumulativeHeight;
-                cumulativeHeight +=
-                  item.type === "milestone" ? ESTIMATED_MILESTONE_HEIGHT_PX : item.height;
+                if (item.type === "spacer") cumulativeHeight += item.height;
 
                 if (item.type === "spacer") {
                   return (
@@ -179,11 +195,15 @@ export default function Experience() {
                     icon={branchIconByKey[source.branchKey]}
                     items={mobileItems}
                     onHover={(ids) => setMobileHighlighted(new Set(ids))}
+                    top={itemTop}
                   />
                 );
               });
             })()}
-            <li className="relative flex gap-4">
+            <li
+              className="absolute inset-x-0 flex gap-4"
+              style={{ top: mobileTotalHeight }}
+            >
               <div className="relative z-10 mt-1.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 border-accent bg-surface">
                 <IconMap name="code" className="h-3 w-3 text-accent" />
               </div>

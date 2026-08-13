@@ -27,13 +27,17 @@ function renderExperience() {
 }
 
 describe("Experience", () => {
-  it("renders all 16 milestones on desktop (5 soft + 4 trade + 7 study) and 16 on the mobile merged list", () => {
+  it("renders 18 milestones on desktop (16 real + synthetic 'present' markers for soft and trade) and 16 on the mobile merged list", () => {
     const { container } = renderExperience();
     // Both the desktop and mobile trees are always mounted (visibility is
-    // CSS-only via `hidden md:block` / `md:hidden`), so every milestone dot
-    // appears twice in the DOM: 16 desktop + 16 mobile = 32.
+    // CSS-only via `hidden md:block` / `md:hidden`). Desktop's getBranchLayout
+    // appends a synthetic present-label milestone to any branch that doesn't
+    // already end at CURRENT_YEAR (soft, trade — study already ends on its
+    // own open-ended "Continua"), so desktop has 2 more dots than the 16 real
+    // milestones. Mobile's merged list doesn't synthesize these.
+    // 18 desktop + 16 mobile = 34.
     const dots = container.querySelectorAll('[data-testid="timeline-dot"]');
-    expect(dots).toHaveLength(32);
+    expect(dots).toHaveLength(34);
   });
 
   it("renders exactly one connector rail per branch column on desktop (3 branches)", () => {

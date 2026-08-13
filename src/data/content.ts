@@ -52,7 +52,16 @@ export interface Project {
 }
 
 export interface HoverIllumination {
+  /**
+   * How many one-year connector segments to light up going BACKWARD
+   * (toward earlier milestones) when this milestone is hovered. The
+   * timeline scale is built one spacer segment per year (see
+   * buildTimelineWithSpacers in lib/timelineScale.ts), so this is a plain
+   * count — e.g. 3 lights the nearest 3 segments before this milestone,
+   * regardless of how many milestones those segments span.
+   */
   upwardsYears?: number;
+  /** Same as `upwardsYears`, but counting FORWARD (toward later milestones). */
   downwardsYears?: number;
 }
 
@@ -61,7 +70,6 @@ export interface Milestone {
   title: string;
   description: string;
   photoUrl?: string;
-  /** Deferred behavior: event handlers/styling for illumination are out of scope. */
   hoverIllumination?: HoverIllumination;
 }
 
@@ -76,6 +84,15 @@ export interface ExperienceBranch {
 export interface ExperienceData {
   branches: ExperienceBranch[];
   convergenceLabel: string;
+  /**
+   * Shared label used both as the `year` and `title` of a synthetic
+   * "present" milestone appended (at render time, not stored per-branch)
+   * to any branch whose real last milestone doesn't already reach
+   * CURRENT_YEAR — see getBranchLayout in lib/timelineScale.ts. Also
+   * reused verbatim by branches whose real data already ends open-ended
+   * (e.g. "Continua"/"Ongoing"), which resolve to CURRENT_YEAR directly.
+   */
+  presentLabel: string;
 }
 
 export interface CertItem {

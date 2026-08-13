@@ -6,7 +6,9 @@ import ConvergenceGraphic from "./ConvergenceGraphic";
 
 describe("ConvergenceGraphic", () => {
   it("positions one endpoint circle per branch at cy derived from branchEndOffsets (normalized to the smallest offset)", () => {
-    // soft=1700, trade=1500, study=1900 (real branch endOffsets from getBranchLayout)
+    // Arbitrary distinct offsets — Experience.tsx now always passes 3 equal
+    // values (padded to the tallest branch), but this component stays
+    // generic and is exercised here with differing offsets on purpose.
     const { container } = render(<ConvergenceGraphic branchEndOffsets={[1700, 1500, 1900]} />);
     const endpoints = Array.from(container.querySelectorAll('circle[r="7"]'));
     expect(endpoints).toHaveLength(3);
