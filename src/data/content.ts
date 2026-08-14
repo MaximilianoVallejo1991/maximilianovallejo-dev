@@ -93,6 +93,11 @@ export interface ExperienceData {
    * (e.g. "Continua"/"Ongoing"), which resolve to CURRENT_YEAR directly.
    */
   presentLabel: string;
+  /** Label above the desktop divergence graphic (the single origin point
+   * the 3 branches fan out from) — the full name. */
+  originLabel: string;
+  /** Same origin label, shorter, for the mobile merged timeline. */
+  originLabelMobile: string;
 }
 
 export interface CertItem {

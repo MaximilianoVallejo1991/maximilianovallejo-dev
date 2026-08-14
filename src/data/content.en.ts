@@ -146,7 +146,7 @@ export const en: PortfolioContent = {
         icon: "compass",
         milestones: [
           {
-            year: "2008",
+            year: "2000",
             title: "Scout",
             description: "My first school in teamwork and discipline.",
             hoverIllumination: { downwardsYears: 18 },
@@ -275,6 +275,8 @@ export const en: PortfolioContent = {
     ],
     convergenceLabel: "Full Stack Developer",
     presentLabel: "Present",
+    originLabel: "José Maximiliano Vallejo",
+    originLabelMobile: "Maxi Vallejo",
   },
 
   certifications: [

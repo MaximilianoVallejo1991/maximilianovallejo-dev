@@ -1,8 +1,20 @@
 import { describe, expect, it } from "vitest";
-import { render } from "@testing-library/react";
+import { render, fireEvent } from "@testing-library/react";
 // Vite raw import — avoids requiring @types/node for this one source-inspection test.
 import source from "./ConvergenceGraphic.tsx?raw";
 import ConvergenceGraphic from "./ConvergenceGraphic";
+
+// Each branch renders TWO <line>s: the thin visible one and a wide
+// invisible hover hit-target layered on top of it (a 2.5px line is
+// impractical to hover precisely with a real mouse).
+const visibleLines = (container: HTMLElement) =>
+  Array.from(container.querySelectorAll("line")).filter(
+    (l) => l.getAttribute("stroke") !== "transparent",
+  );
+const hitLines = (container: HTMLElement) =>
+  Array.from(container.querySelectorAll("line")).filter(
+    (l) => l.getAttribute("stroke") === "transparent",
+  );
 
 describe("ConvergenceGraphic", () => {
   it("positions one endpoint circle per branch at cy derived from branchEndOffsets (normalized to the smallest offset)", () => {
@@ -37,6 +49,25 @@ describe("ConvergenceGraphic", () => {
     const cys = endpoints.map((c) => Number(c.getAttribute("cy")));
     expect(cys[0]).toBe(cys[1]);
     expect(cys[1]).toBe(cys[2]);
+  });
+
+  it("idles in the same neutral gray as the rail (stroke-border), not a branch color", () => {
+    const { container } = render(<ConvergenceGraphic branchEndOffsets={[1700, 1500, 1900]} />);
+    for (const line of visibleLines(container)) {
+      expect(line.getAttribute("class")).toContain("stroke-border");
+    }
+  });
+
+  it("lights up to that branch's accent color when its hit-target is hovered, and reverts on mouse leave", () => {
+    const { container } = render(<ConvergenceGraphic branchEndOffsets={[1700, 1500, 1900]} />);
+    const [firstHit] = hitLines(container);
+    fireEvent.mouseEnter(firstHit);
+    const [firstVisible] = visibleLines(container);
+    expect(firstVisible.getAttribute("class")).not.toContain("stroke-border");
+    expect(firstVisible.getAttribute("class")).toMatch(/stroke-branch-\w+/);
+
+    fireEvent.mouseLeave(firstHit);
+    expect(firstVisible.getAttribute("class")).toContain("stroke-border");
   });
 
   it("does not use DOM measurement APIs (ResizeObserver / getBoundingClientRect)", () => {

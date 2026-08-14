@@ -146,7 +146,7 @@ export const es: PortfolioContent = {
         icon: "compass",
         milestones: [
           {
-            year: "2008",
+            year: "2000",
             title: "Scout",
             description:
               "Mi primera escuela de trabajo en equipo y disciplina.",
@@ -276,6 +276,8 @@ export const es: PortfolioContent = {
     ],
     convergenceLabel: "Desarrollador Full Stack",
     presentLabel: "Actualidad",
+    originLabel: "José Maximiliano Vallejo",
+    originLabelMobile: "Maxi Vallejo",
   },
 
   certifications: [

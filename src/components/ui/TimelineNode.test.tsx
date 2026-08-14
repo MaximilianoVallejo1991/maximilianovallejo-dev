@@ -42,21 +42,24 @@ describe("TimelineNode", () => {
     expect(root.style.top).toBe("0px");
   });
 
-  it("applies the always-on (non-group-hover) accent classes to the dot and title when highlighted=true, so a hovered SIBLING spacer can light this node up", () => {
+  it("applies the always-on (non-group-hover) accent classes and the transition-delay when highlightDelayMs is set, so a hovered SIBLING spacer can light this node up on a delay", () => {
     const { getByTestId, getByText } = render(
-      <TimelineNode milestone={milestone} index={0} highlighted />,
+      <TimelineNode milestone={milestone} index={0} highlightDelayMs={140} />,
     );
-    const dotTokens = getByTestId("timeline-dot").className.split(/\s+/);
-    expect(dotTokens).toContain("ring-2"); // the bare, always-on token — not "group-hover:ring-2"
-    const titleTokens = getByText("Test milestone").className.split(/\s+/);
-    expect(titleTokens).toContain("text-accent"); // bare — not "group-hover:text-accent"
+    const dot = getByTestId("timeline-dot");
+    expect(dot.className.split(/\s+/)).toContain("ring-2"); // bare, always-on token — not "group-hover:ring-2"
+    expect(dot.style.transitionDelay).toBe("140ms");
+    const title = getByText("Test milestone");
+    expect(title.className.split(/\s+/)).toContain("text-accent"); // bare — not "group-hover:text-accent"
+    expect(title.style.transitionDelay).toBe("140ms");
   });
 
-  it("does not apply the always-on accent classes when highlighted is false (default)", () => {
+  it("does not apply the always-on accent classes or a transition-delay when highlightDelayMs is not provided (default)", () => {
     const { getByTestId, getByText } = render(<TimelineNode milestone={milestone} index={0} />);
-    const dotTokens = getByTestId("timeline-dot").className.split(/\s+/);
-    expect(dotTokens).not.toContain("ring-2");
-    const titleTokens = getByText("Test milestone").className.split(/\s+/);
-    expect(titleTokens).not.toContain("text-accent");
+    const dot = getByTestId("timeline-dot");
+    expect(dot.className.split(/\s+/)).not.toContain("ring-2");
+    expect(dot.style.transitionDelay).toBe("");
+    const title = getByText("Test milestone");
+    expect(title.className.split(/\s+/)).not.toContain("text-accent");
   });
 });

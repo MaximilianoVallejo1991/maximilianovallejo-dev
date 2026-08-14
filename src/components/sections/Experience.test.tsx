@@ -1,5 +1,5 @@
 import { describe, expect, it, beforeAll } from "vitest";
-import { render } from "@testing-library/react";
+import { render, fireEvent } from "@testing-library/react";
 import Experience from "./Experience";
 import { LanguageProvider } from "../../i18n/LanguageContext";
 
@@ -48,10 +48,52 @@ describe("Experience", () => {
     expect(rails).toHaveLength(3);
   });
 
-  it("renders no accordion toggle anywhere (no button, no aria-expanded)", () => {
+  it("renders no accordion toggle anywhere (no aria-expanded) — the branch-label buttons toggle a full-branch sweep highlight, not a collapse/expand", () => {
     const { container } = renderExperience();
-    expect(container.querySelector("button")).toBeNull();
     expect(container.querySelector("[aria-expanded]")).toBeNull();
+  });
+
+  it("clicking a branch's label button toggles it active, and clicking it again clears it", () => {
+    const { container } = renderExperience();
+    // "Hab. Blandas" also appears in the mobile legend row — scope to the
+    // desktop <h3> (inside a real <button>), not the mobile <span>.
+    const h3 = Array.from(container.querySelectorAll("h3")).find(
+      (el) => el.textContent === "Hab. Blandas",
+    )!;
+    expect(h3).not.toBeUndefined();
+    const button = h3.closest("button")!;
+    expect(button).not.toBeNull();
+
+    fireEvent.click(button);
+    expect(h3.className.split(/\s+/)).toContain("text-branch-soft");
+
+    fireEvent.click(button);
+    expect(h3.className.split(/\s+/)).not.toContain("text-branch-soft");
+  });
+
+  it("clicking the origin name sweeps every branch's title into its own accent color at once, and clicking it again clears all of them", () => {
+    const { container } = renderExperience();
+    const originButton = Array.from(container.querySelectorAll("button")).find((b) =>
+      b.textContent?.includes("José Maximiliano Vallejo"),
+    )!;
+    expect(originButton).not.toBeUndefined();
+
+    fireEvent.click(originButton);
+    const branchTitles = ["Hab. Blandas", "Oficio", "Estudios Formales"];
+    const h3s = branchTitles.map(
+      (label) =>
+        Array.from(container.querySelectorAll("h3")).find((el) => el.textContent === label)!,
+    );
+    for (const h3 of h3s) {
+      const classes = h3.className.split(/\s+/);
+      expect(classes.some((c) => c.startsWith("text-branch-"))).toBe(true);
+    }
+
+    fireEvent.click(originButton);
+    for (const h3 of h3s) {
+      const classes = h3.className.split(/\s+/);
+      expect(classes.some((c) => c.startsWith("text-branch-"))).toBe(false);
+    }
   });
 
   it("renders the mobile merged timeline with all 16 milestones in one chronological list", () => {
@@ -62,10 +104,12 @@ describe("Experience", () => {
     expect(mobileDots).toHaveLength(16);
   });
 
-  it("passes branchEndOffsets derived from real content into ConvergenceGraphic (3 endpoint circles)", () => {
+  it("passes branchEndOffsets derived from real content into ConvergenceGraphic, and renders DivergenceGraphic above the columns (3 + 3 = 6 endpoint circles)", () => {
     const { container } = renderExperience();
-    // ConvergenceGraphic renders one r=7 endpoint circle per branch (soft/trade/study).
+    // ConvergenceGraphic renders one r=7 endpoint circle per branch below the
+    // grid; DivergenceGraphic renders one r=7 branch-start circle per branch
+    // above it — 3 + 3 = 6 total.
     const endpoints = container.querySelectorAll('circle[r="7"]');
-    expect(endpoints).toHaveLength(3);
+    expect(endpoints).toHaveLength(6);
   });
 });

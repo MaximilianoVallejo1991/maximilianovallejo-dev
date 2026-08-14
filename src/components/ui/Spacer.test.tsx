@@ -36,7 +36,7 @@ describe("Spacer", () => {
     expect(line.className).toMatch(/left-\[11px\]/);
   });
 
-  it("calls onHover with this spacer's id and the milestone ids that claim it, on mouse enter", () => {
+  it("calls onHover with the hover-plan maps (spacer steps + milestone steps) on mouse enter, and empty maps on mouse leave", () => {
     const makeMilestone = (year: string, overrides: Partial<Milestone> = {}): Milestone => ({
       year,
       title: `m-${year}`,
@@ -63,13 +63,19 @@ describe("Spacer", () => {
     );
 
     fireEvent.mouseEnter(getByTestId("spacer"));
-    expect(onHover).toHaveBeenCalledWith(
-      [spacer.id],
-      [items.find((i) => i.type === "milestone" && i.data.year === "2012")!.id],
-    );
+    const [spacerSteps, milestoneSteps] = onHover.mock.calls[0];
+    expect(spacerSteps.get(spacer.id)).toBe(0); // the hovered segment lights first
+    // "2010" lights up via baseline adjacency (it directly borders this
+    // segment); "2012" lights up via its own upwardsYears reach.
+    const m2010 = items.find((i) => i.type === "milestone" && i.data.year === "2010")!.id;
+    const m2012 = items.find((i) => i.type === "milestone" && i.data.year === "2012")!.id;
+    expect(milestoneSteps.has(m2010)).toBe(true);
+    expect(milestoneSteps.has(m2012)).toBe(true);
 
     fireEvent.mouseLeave(getByTestId("spacer"));
-    expect(onHover).toHaveBeenCalledWith([], []);
+    const [emptySpacerSteps, emptyMilestoneSteps] = onHover.mock.calls[1];
+    expect(emptySpacerSteps.size).toBe(0);
+    expect(emptyMilestoneSteps.size).toBe(0);
   });
 
   it("does not call onHover when items or id are missing (defensive, mirrors TimelineNode's own guard)", () => {

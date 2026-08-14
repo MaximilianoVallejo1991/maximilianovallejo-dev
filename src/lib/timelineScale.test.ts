@@ -9,6 +9,9 @@ import {
   getTimelineHeight,
   getSpacersToHighlight,
   getMilestonesToHighlight,
+  getHighlightPlanFromMilestone,
+  getHighlightPlanFromSpacer,
+  getBranchSweepPlan,
   type TimelineItem,
 } from "./timelineScale";
 import { es } from "../data/content.es";
@@ -54,11 +57,11 @@ const milestonesOf = (items: TimelineItem[]) =>
 describe("buildTimelineWithSpacers", () => {
   const branches = es.experience.branches;
 
-  it("builds one spacer PER YEAR crossed, not one per milestone pair (soft: gaps of 7,2,3,4 -> 16 segments)", () => {
+  it("builds one spacer PER YEAR crossed, not one per milestone pair (soft: gaps of 15,2,3,4 -> 24 segments)", () => {
     const soft = branches.find((b) => b.branchKey === "soft")!;
     const items = buildTimelineWithSpacers(soft.milestones);
     expect(milestonesOf(items)).toHaveLength(5);
-    expect(spacersOf(items)).toHaveLength(7 + 2 + 3 + 4);
+    expect(spacersOf(items)).toHaveLength(15 + 2 + 3 + 4);
   });
 
   it("every spacer segment is exactly YEAR_HEIGHT_PX tall — no single element spans more than one year", () => {
@@ -117,16 +120,18 @@ describe("buildTimelineWithSpacers", () => {
     }
   });
 
-  it("is generic over merged (mobile) entries: splits every gap into per-year segments (22 segments across 15 gaps)", () => {
+  it("is generic over merged (mobile) entries: splits every gap into per-year segments (28 segments across 15 gaps)", () => {
     const merged = mergeMilestonesByYear(branches).map((m) => m.milestone);
     const items = buildTimelineWithSpacers(merged);
     expect(milestonesOf(items)).toHaveLength(16);
-    expect(spacersOf(items)).toHaveLength(22);
-    // merged order: study 2007, soft 2008, trade 2008, ... -> the segment right
-    // after the first (2007->2008) one is the cross-branch same-year floor.
-    expect(spacersOf(items)[1].height).toBe(SAME_YEAR_SPACER_HEIGHT_PX);
-    expect(spacersOf(items)[1].yearFrom).toBe(2008);
-    expect(spacersOf(items)[1].yearTo).toBe(2008);
+    expect(spacersOf(items)).toHaveLength(28);
+    // Cross-branch same-year adjacencies (e.g. soft/trade both landing on
+    // 2017) still resolve to the legibility floor, not 0px.
+    const sameYearSegments = spacersOf(items).filter((s) => s.yearFrom === s.yearTo);
+    expect(sameYearSegments.length).toBeGreaterThan(0);
+    for (const segment of sameYearSegments) {
+      expect(segment.height).toBe(SAME_YEAR_SPACER_HEIGHT_PX);
+    }
   });
 
   it("positions the merged list's open-ended entry ('Continua') at CURRENT_YEAR too", () => {
@@ -142,25 +147,24 @@ describe("buildTimelineWithSpacers", () => {
 
 describe("getBranchLayout", () => {
   const branches = es.experience.branches;
-  const globalMinYear = 2007;
+  // soft ("Scout") is the earliest real milestone across all branches (2000).
+  const globalMinYear = 2000;
 
-  it("does NOT prepend a leading spacer for the branch already starting at globalMinYear (study, 2007)", () => {
-    const study = branches.find((b) => b.branchKey === "study")!;
-    const layout = getBranchLayout(study, globalMinYear, PRESENT_LABEL);
+  it("does NOT prepend a leading spacer for the branch already starting at globalMinYear (soft, 2000)", () => {
+    const soft = branches.find((b) => b.branchKey === "soft")!;
+    const layout = getBranchLayout(soft, globalMinYear, PRESENT_LABEL);
     expect(layout.items[0].type).toBe("milestone");
   });
 
-  it("prepends a one-year leading spacer for a branch starting one year after globalMinYear (soft, 2008)", () => {
-    const soft = branches.find((b) => b.branchKey === "soft")!;
-    const layout = getBranchLayout(soft, globalMinYear, PRESENT_LABEL);
-    const first = layout.items[0];
-    expect(first.type).toBe("spacer");
-    if (first.type !== "spacer") throw new Error("unreachable");
-    expect(first.yearFrom).toBe(2007);
-    expect(first.yearTo).toBe(2008);
-    expect(first.height).toBe(YEAR_HEIGHT_PX);
-    // and only one segment, since the leading gap is exactly 1 year
-    expect(layout.items[1].type).toBe("milestone");
+  it("prepends a multi-year leading spacer, split into one-year segments, for a branch starting after globalMinYear (study, 2007 vs globalMinYear 2000)", () => {
+    const study = branches.find((b) => b.branchKey === "study")!;
+    const layout = getBranchLayout(study, globalMinYear, PRESENT_LABEL);
+    const leading = layout.items.slice(0, 7);
+    expect(leading.every((item) => item.type === "spacer")).toBe(true);
+    expect(leading.map((item) => (item.type === "spacer" ? item.yearFrom : null))).toEqual([
+      2000, 2001, 2002, 2003, 2004, 2005, 2006,
+    ]);
+    expect(layout.items[7].type).toBe("milestone"); // study's real first milestone, 2007
   });
 
   it("does NOT append a synthetic present-label milestone when the branch already ends open-ended (study)", () => {
@@ -186,25 +190,25 @@ describe("getBranchLayout", () => {
     expect(lastFour[lastFour.length - 1].yearTo).toBe(CURRENT_YEAR);
   });
 
-  it("computes the real (sum-of-segments) height for soft — 19 one-year segments * 100px", () => {
+  it("computes the real (sum-of-segments) height for soft — 26 one-year segments * 100px, no leading gap needed", () => {
     const soft = branches.find((b) => b.branchKey === "soft")!;
     const layout = getBranchLayout(soft, globalMinYear, PRESENT_LABEL);
-    // leading 1 + 7 + 2 + 3 + 4 + 2 (to present) = 19 segments
-    expect(layout.height).toBe(1900);
+    // 15 + 2 + 3 + 4 + 2 (to present) = 26 segments
+    expect(layout.height).toBe(2600);
   });
 
-  it("computes the real (sum-of-segments) height for trade", () => {
+  it("computes the real (sum-of-segments) height for trade, including its 8-year leading gap", () => {
     const trade = branches.find((b) => b.branchKey === "trade")!;
     const layout = getBranchLayout(trade, globalMinYear, PRESENT_LABEL);
-    // leading 1 + 9 + 2 + 3 + 4 (to present) = 19 segments
-    expect(layout.height).toBe(1900);
+    // leading 8 + 9 + 2 + 3 + 4 (to present) = 26 segments
+    expect(layout.height).toBe(2600);
   });
 
-  it("computes the real (sum-of-segments) height for study, including its same-year floor segment", () => {
+  it("computes the real (sum-of-segments) height for study, including its 7-year leading gap and same-year floor segment", () => {
     const study = branches.find((b) => b.branchKey === "study")!;
     const layout = getBranchLayout(study, globalMinYear, PRESENT_LABEL);
-    // no leading + 2+1+1+10+1(floor)+4 (to Continua@2026) = 19 segments
-    expect(layout.height).toBe(1900);
+    // leading 7 + 2+1+1+10+1(floor)+4 (to Continua@2026) = 26 segments
+    expect(layout.height).toBe(2600);
   });
 
   it("carries the branchKey through and matches the source branch", () => {
@@ -354,18 +358,173 @@ describe("getMilestonesToHighlight", () => {
     expect(result).toHaveLength(2);
   });
 
-  it("returns an empty array for a spacer no milestone's hoverIllumination reaches", () => {
+  it("returns an empty array for a segment buried in the middle of a large gap, touching no milestone directly and unreached by any hoverIllumination config", () => {
     const milestones = [makeMilestone("2000"), makeMilestone("2010")];
     const items = buildTimelineWithSpacers(milestones);
-    const spacer = spacersOf(items)[5]; // deep in the middle of a 10-year gap, unclaimed
+    const spacer = spacersOf(items)[5]; // deep in the middle of a 10-year gap
     const result = getMilestonesToHighlight(spacer.id, items);
     expect(result).toEqual([]);
   });
 
-  it("ignores milestones without a hoverIllumination config entirely", () => {
+  it("always includes the directly-bordering milestone via baseline adjacency, even when it has no hoverIllumination config at all — a segment should never light up 'orphaned' from the nodes it sits between", () => {
     const milestones = [makeMilestone("2010"), makeMilestone("2012")];
     const items = buildTimelineWithSpacers(milestones);
-    const spacer = spacersOf(items)[0];
-    expect(getMilestonesToHighlight(spacer.id, items)).toEqual([]);
+    const firstSegment = spacersOf(items)[0]; // 2010->2011, directly after the "2010" milestone
+    const result = getMilestonesToHighlight(firstSegment.id, items);
+    const [first] = milestonesOf(items);
+    expect(result).toEqual([first.id]);
+  });
+
+  it("baseline adjacency covers the exact case that motivated it: a segment right before a synthetic 'present' milestone (no hoverIllumination) still lights that milestone up", () => {
+    const soft = es.experience.branches.find((b) => b.branchKey === "soft")!;
+    const layout = getBranchLayout(soft, 2000, es.experience.presentLabel);
+    const spacers = spacersOf(layout.items);
+    const lastSegment = spacers[spacers.length - 1]; // right before the synthetic present-label milestone
+    const milestones = milestonesOf(layout.items);
+    const presentMilestone = milestones[milestones.length - 1];
+    expect(presentMilestone.data.hoverIllumination).toBeUndefined();
+
+    const result = getMilestonesToHighlight(lastSegment.id, layout.items);
+    expect(result).toContain(presentMilestone.id);
+  });
+});
+
+describe("getHighlightPlanFromMilestone", () => {
+  const makeMilestone = (year: string, overrides: Partial<Milestone> = {}): Milestone => ({
+    year,
+    title: `milestone-${year}`,
+    description: "",
+    ...overrides,
+  });
+
+  it("assigns increasing delay steps radiating outward from the node (nearest segment first)", () => {
+    const milestones = [
+      makeMilestone("2010", { hoverIllumination: { downwardsYears: 3 } }),
+      makeMilestone("2015"),
+    ];
+    const items = buildTimelineWithSpacers(milestones);
+    const plan = getHighlightPlanFromMilestone(milestones[0], items);
+
+    const spacers = spacersOf(items);
+    expect(plan.get(spacers[0].id)).toBe(0); // 2010-2011, nearest
+    expect(plan.get(spacers[1].id)).toBe(1); // 2011-2012
+    expect(plan.get(spacers[2].id)).toBe(2); // 2012-2013, farthest within budget
+    expect(plan.get(spacers[3].id)).toBeUndefined(); // 2013-2014, out of range
+  });
+
+  it("returns an empty plan when hoverIllumination is absent", () => {
+    const milestones = [makeMilestone("2010"), makeMilestone("2015")];
+    const items = buildTimelineWithSpacers(milestones);
+    expect(getHighlightPlanFromMilestone(milestones[0], items).size).toBe(0);
+  });
+});
+
+describe("getHighlightPlanFromSpacer", () => {
+  const makeMilestone = (year: string, overrides: Partial<Milestone> = {}): Milestone => ({
+    year,
+    title: `milestone-${year}`,
+    description: "",
+    ...overrides,
+  });
+
+  it("lights the whole path from the hovered segment up to the claiming node, arriving at the node last", () => {
+    const milestones = [
+      makeMilestone("2010"),
+      makeMilestone("2015", { hoverIllumination: { upwardsYears: 4 } }),
+    ];
+    const items = buildTimelineWithSpacers(milestones);
+    const spacers = spacersOf(items);
+    // gap is 2010->2015 (5 segments): 2011-2012,2012-2013,2013-2014,2014-2015
+    // are within upwardsYears:4 of "2015" (distances 4,3,2,1); hover the
+    // 3rd-from-node segment (2012-2013, distance=3 from "2015").
+    const hovered = spacers.find((s) => s.yearFrom === 2012)!;
+    const plan = getHighlightPlanFromSpacer(hovered.id, items);
+
+    // Path from the hovered segment to the node: 2012-2013 (step 0, hovered),
+    // 2013-2014 (step 1, closer to the node), then the node itself (step 3,
+    // since 2014-2015 — the segment right before the node — is step 2).
+    const closer = spacers.find((s) => s.yearFrom === 2013)!;
+    const farther = spacers.find((s) => s.yearFrom === 2011)!; // on the far side of the hover point, not part of this path
+
+    expect(plan.spacers.get(hovered.id)).toBe(0);
+    expect(plan.spacers.get(closer.id)).toBe(1);
+    expect(plan.spacers.has(farther.id)).toBe(false);
+
+    const node = milestonesOf(items).find((m) => m.data.year === "2015")!;
+    expect(plan.milestones.get(node.id)).toBe(3);
+  });
+
+  it("baseline-adjacent milestones always get delay step 0, regardless of hoverIllumination", () => {
+    const milestones = [makeMilestone("2010"), makeMilestone("2012")];
+    const items = buildTimelineWithSpacers(milestones);
+    const firstSegment = spacersOf(items)[0];
+    const plan = getHighlightPlanFromSpacer(firstSegment.id, items);
+    const [before] = milestonesOf(items);
+    expect(plan.milestones.get(before.id)).toBe(0);
+  });
+
+  it("takes the minimum delay when a segment/node is reachable via more than one path", () => {
+    const milestones = [
+      makeMilestone("2010", { hoverIllumination: { downwardsYears: 5 } }),
+      makeMilestone("2012", { hoverIllumination: { upwardsYears: 1 } }),
+    ];
+    const items = buildTimelineWithSpacers(milestones);
+    // gap is 2010->2012 (2 segments). "2012"'s upwardsYears:1 reaches only
+    // the nearest segment (2011-2012) at distance 1 from itself; "2010"'s
+    // downwardsYears:5 reaches both, at distances 1 and 2 from itself.
+    const nearSecondNode = spacersOf(items).find((s) => s.yearFrom === 2011)!;
+    const plan = getHighlightPlanFromSpacer(nearSecondNode.id, items);
+    const second = milestonesOf(items)[1];
+    // Reached directly (baseline adjacency, step 0) rather than via the
+    // longer path from "2010" (which would compute step 1) — minimum wins.
+    expect(plan.milestones.get(second.id)).toBe(0);
+  });
+
+  it("returns just the hovered segment itself (step 0) when no milestone claims it beyond baseline adjacency", () => {
+    const milestones = [makeMilestone("2000"), makeMilestone("2010")];
+    const items = buildTimelineWithSpacers(milestones);
+    const buried = spacersOf(items)[5]; // deep in the middle, touches no milestone directly
+    const plan = getHighlightPlanFromSpacer(buried.id, items);
+    expect(Array.from(plan.spacers.entries())).toEqual([[buried.id, 0]]);
+    expect(plan.milestones.size).toBe(0);
+  });
+});
+
+describe("getBranchSweepPlan", () => {
+  const makeMilestone = (year: string): Milestone => ({ year, title: year, description: "" });
+
+  it("assigns the first item delay 0 and the last item close to the full duration, proportional to real position", () => {
+    const milestones = [makeMilestone("2000"), makeMilestone("2005"), makeMilestone("2010")];
+    const items = buildTimelineWithSpacers(milestones); // 10 one-year segments total, height 1000
+    const plan = getBranchSweepPlan(items, 1000, 1000);
+
+    const firstMilestone = milestonesOf(items)[0];
+    expect(plan.milestones.get(firstMilestone.id)).toBe(0);
+
+    const midSpacer = spacersOf(items)[4]; // 2004-2005, top=400 of 1000
+    expect(plan.spacers.get(midSpacer.id)).toBe(400);
+
+    const lastMilestone = milestonesOf(items)[2];
+    expect(plan.milestones.get(lastMilestone.id)).toBe(1000); // top = full height
+  });
+
+  it("scales to a fixed total duration regardless of how many years the branch spans (a 3-year and a 30-year branch both finish in the same time)", () => {
+    const short = buildTimelineWithSpacers([makeMilestone("2000"), makeMilestone("2003")]);
+    const long = buildTimelineWithSpacers([makeMilestone("2000"), makeMilestone("2030")]);
+
+    const shortPlan = getBranchSweepPlan(short, 300, 900);
+    const longPlan = getBranchSweepPlan(long, 3000, 900);
+
+    const shortLast = milestonesOf(short)[1];
+    const longLast = milestonesOf(long)[1];
+    expect(shortPlan.milestones.get(shortLast.id)).toBe(900);
+    expect(longPlan.milestones.get(longLast.id)).toBe(900);
+  });
+
+  it("does not crash and returns 0 delays for a degenerate zero-height branch", () => {
+    const items = buildTimelineWithSpacers([makeMilestone("2000")]);
+    const plan = getBranchSweepPlan(items, 0, 900);
+    const milestone = milestonesOf(items)[0];
+    expect(plan.milestones.get(milestone.id)).toBe(0);
   });
 });

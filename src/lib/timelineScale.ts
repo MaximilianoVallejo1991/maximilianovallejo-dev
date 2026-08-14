@@ -164,6 +164,37 @@ export function getTimelineHeight(items: TimelineItem[]): number {
 }
 
 /**
+ * The cumulative `top` (px, shared temporal scale) of every item in
+ * `items`, in the same order — exactly the running total that
+ * Experience.tsx's render loop assigns to each TimelineNode/Spacer's own
+ * `top` prop. Exposed standalone so other callers (e.g. a cross-branch
+ * decorative connector) can look up "where does milestone X land" without
+ * duplicating that accumulation logic.
+ */
+export function getCumulativeOffsets(items: TimelineItem[]): number[] {
+  const offsets: number[] = [];
+  let cumulative = 0;
+  for (const item of items) {
+    offsets.push(cumulative);
+    if (item.type === "spacer") cumulative += item.height;
+  }
+  return offsets;
+}
+
+/**
+ * Finds a milestone's own `top` (px) within `items` by year — years are
+ * stable across locales (unlike titles, which translate), so this is the
+ * safe way to anchor a decorative cross-branch connector to a specific
+ * real-world milestone regardless of language. Returns `null` if no
+ * milestone with that year exists.
+ */
+export function findMilestoneTopByYear(items: TimelineItem[], year: string): number | null {
+  const offsets = getCumulativeOffsets(items);
+  const index = items.findIndex((item) => item.type === "milestone" && item.data.year === year);
+  return index === -1 ? null : offsets[index];
+}
+
+/**
  * Computes a branch's rendered timeline: its TimelineItem[] (milestones +
  * spacers) and total real height, on a scale shared across all branches —
  * every branch's items start at `globalMinYear` and end at CURRENT_YEAR,
@@ -208,23 +239,30 @@ export function getBranchLayout(
   };
 }
 
+/** Milliseconds of CSS transition-delay per step of "distance" in the
+ * traveling-light hover animation — the farther a segment/node is from
+ * where the animation originates, the later it lights up. */
+export const HIGHLIGHT_STEP_DELAY_MS = 70;
+
+export interface SpacerDistanceStep {
+  id: string;
+  /** 1-indexed distance (in one-year segments) from the milestone that claims it. */
+  distance: number;
+}
+
 /**
- * Returns the spacer ids that should be illuminated when hovering a
- * milestone, per its (optional) hoverIllumination config. Data-only — no
- * event handlers or styling are wired here (deferred behavior).
- *
- * Since buildTimelineWithSpacers now emits one spacer item per year (see
- * pushSpacerSteps), illumination is a plain COUNT: `upwardsYears` lights
- * the next N spacer items walking backward from the milestone, and
- * `downwardsYears` lights the next N walking forward. No year-math is
- * needed here anymore — every spacer item already represents exactly one
- * step on the scale, so "3 years" and "the 3 nearest spacer items" are the
- * same thing.
+ * Returns the spacer ids a milestone's (optional) hoverIllumination config
+ * reaches, each tagged with its distance (in year-segments) from that
+ * milestone — `upwardsYears`/`downwardsYears` walked step by step, exactly
+ * as getSpacersToHighlight does, but keeping the step count instead of
+ * discarding it. This is what lets the hover animation "travel" outward
+ * from the node one year at a time instead of snapping everything on at
+ * once.
  */
-export function getSpacersToHighlight(
+export function getSpacersWithDistance(
   milestone: Milestone,
   items: TimelineItem[],
-): string[] {
+): SpacerDistanceStep[] {
   if (!milestone.hoverIllumination) return [];
 
   const targetIndex = items.findIndex(
@@ -233,42 +271,157 @@ export function getSpacersToHighlight(
   if (targetIndex === -1) return [];
 
   const { upwardsYears = 0, downwardsYears = 0 } = milestone.hoverIllumination;
-  const ids: string[] = [];
+  const steps: SpacerDistanceStep[] = [];
 
+  let distance = 0;
   let remainingUp = upwardsYears;
   for (let i = targetIndex - 1; i >= 0 && remainingUp > 0; i--) {
     const item = items[i];
     if (item.type !== "spacer") continue;
-    ids.push(item.id);
+    distance += 1;
+    steps.push({ id: item.id, distance });
     remainingUp -= 1;
   }
 
+  distance = 0;
   let remainingDown = downwardsYears;
   for (let i = targetIndex + 1; i < items.length && remainingDown > 0; i++) {
     const item = items[i];
     if (item.type !== "spacer") continue;
-    ids.push(item.id);
+    distance += 1;
+    steps.push({ id: item.id, distance });
     remainingDown -= 1;
   }
 
-  return ids;
+  return steps;
+}
+
+/**
+ * Returns the spacer ids that should be illuminated when hovering a
+ * milestone, per its (optional) hoverIllumination config. Data-only — no
+ * event handlers or styling are wired here (deferred behavior). A thin
+ * wrapper over getSpacersWithDistance for callers that only need ids.
+ */
+export function getSpacersToHighlight(
+  milestone: Milestone,
+  items: TimelineItem[],
+): string[] {
+  return getSpacersWithDistance(milestone, items).map((s) => s.id);
+}
+
+/**
+ * Hover-from-a-NODE animation plan: every reached spacer, mapped to its
+ * delay step (0-indexed — the nearest segment lights first, each next one
+ * `HIGHLIGHT_STEP_DELAY_MS` later), radiating outward from the node.
+ */
+export function getHighlightPlanFromMilestone(
+  milestone: Milestone,
+  items: TimelineItem[],
+): Map<string, number> {
+  const plan = new Map<string, number>();
+  for (const step of getSpacersWithDistance(milestone, items)) {
+    plan.set(step.id, step.distance - 1);
+  }
+  return plan;
+}
+
+export interface SpacerHighlightPlan {
+  /** spacer id -> delay step (0 = lights first, i.e. the hovered segment itself) */
+  spacers: Map<string, number>;
+  /** milestone id -> delay step (0 = lights immediately, i.e. baseline adjacency) */
+  milestones: Map<string, number>;
+}
+
+/**
+ * Hover-from-a-SPACER animation plan: the reverse of
+ * getHighlightPlanFromMilestone. The hovered segment itself always lights
+ * first (step 0); from there:
+ *
+ * 1. Baseline adjacency — the milestone(s) immediately bordering this
+ *    segment light up immediately too (step 0), regardless of any
+ *    hoverIllumination config — a segment should never look "orphaned"
+ *    from the nodes it sits between.
+ * 2. Extended reach — for every OTHER milestone whose hoverIllumination
+ *    range also covers this segment, the WHOLE path between the hovered
+ *    segment and that milestone lights up, one step at a time, arriving
+ *    at the milestone last — "marking the path" rather than lighting the
+ *    hovered segment in isolation.
+ */
+export function getHighlightPlanFromSpacer(
+  spacerId: string,
+  items: TimelineItem[],
+): SpacerHighlightPlan {
+  const spacers = new Map<string, number>([[spacerId, 0]]);
+  const milestones = new Map<string, number>();
+
+  const spacerIndex = items.findIndex((item) => item.type === "spacer" && item.id === spacerId);
+  if (spacerIndex === -1) return { spacers, milestones };
+
+  const before = items[spacerIndex - 1];
+  if (before?.type === "milestone") milestones.set(before.id, 0);
+  const after = items[spacerIndex + 1];
+  if (after?.type === "milestone") milestones.set(after.id, 0);
+
+  for (const item of items) {
+    if (item.type !== "milestone" || !item.data.hoverIllumination) continue;
+    const claimed = getSpacersWithDistance(item.data, items);
+    const hoveredStep = claimed.find((s) => s.id === spacerId);
+    if (!hoveredStep) continue;
+
+    for (const step of claimed) {
+      if (step.distance > hoveredStep.distance) continue; // only between the hover point and this node
+      const delay = hoveredStep.distance - step.distance;
+      const existing = spacers.get(step.id);
+      if (existing === undefined || delay < existing) spacers.set(step.id, delay);
+    }
+
+    const arrivalDelay = hoveredStep.distance;
+    const existingMilestoneDelay = milestones.get(item.id);
+    if (existingMilestoneDelay === undefined || arrivalDelay < existingMilestoneDelay) {
+      milestones.set(item.id, arrivalDelay);
+    }
+  }
+
+  return { spacers, milestones };
 }
 
 /**
  * The reverse of getSpacersToHighlight: given a spacer's id, returns the
- * ids of every milestone whose own hoverIllumination range reaches that
- * spacer — i.e. hovering the connector segment itself should light up
- * whichever node(s) "claim" that year. Reuses getSpacersToHighlight rather
- * than re-deriving the counting logic, so the two directions can never
- * drift out of sync with each other.
+ * ids of the milestone(s) that should light up when this connector segment
+ * is hovered. A thin wrapper over getHighlightPlanFromSpacer for callers
+ * that only need ids (see that function's doc for the two sources —
+ * baseline adjacency + extended reach — this combines).
  */
 export function getMilestonesToHighlight(spacerId: string, items: TimelineItem[]): string[] {
-  const ids: string[] = [];
-  for (const item of items) {
-    if (item.type !== "milestone" || !item.data.hoverIllumination) continue;
-    if (getSpacersToHighlight(item.data, items).includes(spacerId)) {
-      ids.push(item.id);
-    }
-  }
-  return ids;
+  return Array.from(getHighlightPlanFromSpacer(spacerId, items).milestones.keys());
+}
+
+/**
+ * Full-branch "sweep" plan: every item in `items` (spacer or milestone)
+ * gets a delay proportional to its own `top` as a FRACTION of `totalHeight`
+ * — first item near delay 0, last item near delay `totalDurationMs` — so
+ * clicking a branch's label (or its divergence-graphic line) lights the
+ * whole column top-to-bottom in one smooth wave that always takes the same
+ * total time, regardless of how many years that particular branch spans.
+ * This is deliberately proportional-to-height rather than reusing
+ * HIGHLIGHT_STEP_DELAY_MS (a fixed ms-per-year): a fixed per-year rate
+ * would make a 26-year branch take ~10x longer to sweep than a 3-year one,
+ * which reads as broken, not smooth.
+ */
+export function getBranchSweepPlan(
+  items: TimelineItem[],
+  totalHeight: number,
+  totalDurationMs: number,
+): SpacerHighlightPlan {
+  const offsets = getCumulativeOffsets(items);
+  const spacers = new Map<string, number>();
+  const milestones = new Map<string, number>();
+
+  items.forEach((item, index) => {
+    const delay = totalHeight > 0 ? Math.round((offsets[index] / totalHeight) * totalDurationMs) : 0;
+    if (item.type === "spacer") spacers.set(item.id, delay);
+    else milestones.set(item.id, delay);
+  });
+
+  return { spacers, milestones };
 }

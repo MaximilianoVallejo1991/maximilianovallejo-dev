@@ -4,7 +4,7 @@ import { fadeInItem } from "./SectionWrapper";
 import type { Milestone } from "../../data/content";
 import type { BranchAccentKey } from "../../lib/branchAccent";
 import { BRANCH_ACCENT } from "../../lib/branchAccent";
-import { getSpacersToHighlight, type TimelineItem } from "../../lib/timelineScale";
+import { getHighlightPlanFromMilestone, type TimelineItem } from "../../lib/timelineScale";
 import IconMap from "./IconMap";
 
 interface TimelineNodeProps {
@@ -14,8 +14,8 @@ interface TimelineNodeProps {
   icon?: string;
   /** Full item list of the branch/merged list this milestone belongs to — required to resolve which spacers light up on hover. */
   items?: TimelineItem[];
-  /** Called with the spacer ids to illuminate on hover, or `[]` on mouse leave. */
-  onHover?: (spacerIds: string[]) => void;
+  /** Called with the hover animation plan (spacer id -> delay step) on hover, or an empty map on mouse leave. */
+  onHover?: (spacerSteps: Map<string, number>) => void;
   /**
    * Pixel offset from the top of the parent `<ol>` (which must be
    * `position: relative`) on the shared temporal scale — same coordinate
@@ -25,13 +25,15 @@ interface TimelineNodeProps {
    */
   top?: number;
   /**
-   * True when a hovered SPACER (not this node) claims this milestone —
-   * i.e. this node's own hoverIllumination range reaches that connector
-   * segment. Native CSS `:hover`/`group-hover` can only react to the
-   * cursor being over THIS element, so illuminating a node from a sibling
-   * spacer's hover needs an explicit prop instead.
+   * Defined (as a CSS transition-delay in ms) when a hovered SPACER (not
+   * this node) claims this milestone — i.e. this node's own
+   * hoverIllumination range reaches that connector segment, or it's the
+   * segment's direct neighbor. Native CSS `:hover`/`group-hover` can only
+   * react to the cursor being over THIS element, so illuminating a node
+   * from a sibling spacer's hover needs an explicit prop instead.
+   * `undefined` means not externally highlighted.
    */
-  highlighted?: boolean;
+  highlightDelayMs?: number;
 }
 
 export default function TimelineNode({
@@ -42,19 +44,23 @@ export default function TimelineNode({
   items,
   onHover,
   top = 0,
-  highlighted = false,
+  highlightDelayMs,
 }: TimelineNodeProps) {
   const [imgError, setImgError] = useState(false);
   const accent = BRANCH_ACCENT[accentKey];
+  const highlighted = highlightDelayMs !== undefined;
+  // Only ever applied alongside the *active* (highlighted) classes below —
+  // the real :hover-driven group-hover transitions stay instant/CSS-timed.
+  const activeStyle = highlighted ? { transitionDelay: `${highlightDelayMs}ms` } : undefined;
 
   const handleMouseEnter = () => {
     if (!onHover || !items) return;
-    onHover(getSpacersToHighlight(milestone, items));
+    onHover(getHighlightPlanFromMilestone(milestone, items));
   };
 
   const handleMouseLeave = () => {
     if (!onHover) return;
-    onHover([]);
+    onHover(new Map());
   };
 
   return (
@@ -69,6 +75,7 @@ export default function TimelineNode({
       <div
         data-testid="timeline-dot"
         className={`relative z-10 mt-1.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 bg-surface transition-shadow duration-200 ${accent.ring} ${accent.ringGlow} ${highlighted ? accent.activeRingGlow : ""}`}
+        style={activeStyle}
       >
         {icon ? (
           <IconMap name={icon} className={`h-3 w-3 ${accent.text}`} />
@@ -86,11 +93,13 @@ export default function TimelineNode({
         </span>
         <h4
           className={`mt-0.5 font-heading text-base font-semibold text-primary transition-colors duration-200 ${accent.hoverText} ${highlighted ? accent.activeHoverText : ""}`}
+          style={activeStyle}
         >
           {milestone.title}
         </h4>
         <p
           className={`mt-1 font-body text-sm leading-relaxed text-muted transition-colors duration-200 group-hover:text-primary ${highlighted ? "text-primary" : ""}`}
+          style={activeStyle}
         >
           {milestone.description}
         </p>
