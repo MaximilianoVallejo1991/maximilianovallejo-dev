@@ -2,6 +2,8 @@
    Both content.es.ts and content.en.ts must satisfy PortfolioContent.
    Shape parity is enforced at build time by TypeScript. */
 
+import type { BranchAccentKey } from "../lib/branchAccent";
+
 export type Lang = "es" | "en";
 
 export interface SiteMeta {
@@ -49,18 +51,53 @@ export interface Project {
   screenshot: string;
 }
 
+export interface HoverIllumination {
+  /**
+   * How many one-year connector segments to light up going BACKWARD
+   * (toward earlier milestones) when this milestone is hovered. The
+   * timeline scale is built one spacer segment per year (see
+   * buildTimelineWithSpacers in lib/timelineScale.ts), so this is a plain
+   * count — e.g. 3 lights the nearest 3 segments before this milestone,
+   * regardless of how many milestones those segments span.
+   */
+  upwardsYears?: number;
+  /** Same as `upwardsYears`, but counting FORWARD (toward later milestones). */
+  downwardsYears?: number;
+}
+
 export interface Milestone {
   year: string;
   title: string;
   description: string;
   photoUrl?: string;
+  hoverIllumination?: HoverIllumination;
 }
 
-export interface ExperienceTrack {
-  trackKey: string;
-  trackLabel: string;
-  heroImage: string;
+export interface ExperienceBranch {
+  branchKey: string;
+  branchLabel: string;
+  accentKey: BranchAccentKey;
+  icon: string;
   milestones: Milestone[];
+}
+
+export interface ExperienceData {
+  branches: ExperienceBranch[];
+  convergenceLabel: string;
+  /**
+   * Shared label used both as the `year` and `title` of a synthetic
+   * "present" milestone appended (at render time, not stored per-branch)
+   * to any branch whose real last milestone doesn't already reach
+   * CURRENT_YEAR — see getBranchLayout in lib/timelineScale.ts. Also
+   * reused verbatim by branches whose real data already ends open-ended
+   * (e.g. "Continua"/"Ongoing"), which resolve to CURRENT_YEAR directly.
+   */
+  presentLabel: string;
+  /** Label above the desktop divergence graphic (the single origin point
+   * the 3 branches fan out from) — the full name. */
+  originLabel: string;
+  /** Same origin label, shorter, for the mobile merged timeline. */
+  originLabelMobile: string;
 }
 
 export interface CertItem {
@@ -109,7 +146,7 @@ export interface PortfolioContent {
   about: AboutData;
   skills: SkillCategory[];
   projects: Project[];
-  experience: ExperienceTrack[];
+  experience: ExperienceData;
   certifications: CertCategory[];
   contact: ContactData;
   navLinks: NavLinkData[];

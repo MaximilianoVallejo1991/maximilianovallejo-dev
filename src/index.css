@@ -11,6 +11,9 @@
   --color-border: #e4e4e7;
   --color-card: #fafafa;
   --color-card-overlay: #e8e8eb;
+  --color-branch-soft: #d97706;
+  --color-branch-trade: #0d9488;
+  --color-branch-study: #7c3aed;
 
   /* Typography */
   --font-heading: "Space Grotesk", sans-serif;
@@ -34,6 +37,9 @@
   --color-border: #27272a;
   --color-card: #18181c;
   --color-card-overlay: #000000;
+  --color-branch-soft: #fbbf24;
+  --color-branch-trade: #2dd4bf;
+  --color-branch-study: #a78bfa;
 }
 
 /* Base layer */

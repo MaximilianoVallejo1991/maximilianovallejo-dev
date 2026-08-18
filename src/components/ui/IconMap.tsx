@@ -184,6 +184,34 @@ const icons: Record<string, JSX.Element> = {
       <path d="M7.5 16.5L12 12" />
     </svg>
   ),
+  compass: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <path d="M15 9l-2 6-6 2 2-6z" />
+    </svg>
+  ),
+  anvil: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 10h6l2-3h6l2 3v2H4z" />
+      <path d="M9 12v3h6v-3" />
+      <path d="M10 15h4v4h-4z" />
+      <path d="M8 19h8" />
+    </svg>
+  ),
+  graduation: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M2 9l10-5 10 5-10 5-10-5z" />
+      <path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5" />
+      <path d="M22 9v6" />
+    </svg>
+  ),
+  code: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M8 6L2 12l6 6" />
+      <path d="M16 6l6 6-6 6" />
+      <path d="M13 4l-2 16" />
+    </svg>
+  ),
 };
 
 interface IconMapProps {
