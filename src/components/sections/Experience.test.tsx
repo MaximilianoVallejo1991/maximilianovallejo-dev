@@ -44,8 +44,33 @@ describe("Experience", () => {
     const { container } = renderExperience();
     const desktopWrapper = container.querySelector(".hidden.md\\:block");
     expect(desktopWrapper).not.toBeNull();
-    const rails = desktopWrapper!.querySelectorAll('[aria-hidden="true"].absolute.inset-y-0');
+    const rails = desktopWrapper!.querySelectorAll('[data-testid="branch-rail"]');
     expect(rails).toHaveLength(3);
+  });
+
+  it("renders a bigger header node per branch, with the rail extended upward to touch its bottom edge (no empty gap between the branch title and its rail)", () => {
+    const { container } = renderExperience();
+    const desktopWrapper = container.querySelector(".hidden.md\\:block");
+    const nodes = desktopWrapper!.querySelectorAll('[data-testid="branch-header-node"]');
+    expect(nodes).toHaveLength(3);
+
+    const rails = desktopWrapper!.querySelectorAll('[data-testid="branch-rail"]');
+    // Rail is extended HEADER_OFFSET_PX (24px) above its own wrapper's top
+    // so it starts right at the header node's bottom edge, instead of
+    // stopping at inset-y-0 and leaving that marginTop gap empty.
+    for (const rail of Array.from(rails)) {
+      expect((rail as HTMLElement).style.top).toBe("-24px");
+    }
+  });
+
+  it("renders a small vertical separator per branch, above the header node, bridging it to the divergence graphic's fan-line endpoint", () => {
+    const { container } = renderExperience();
+    const desktopWrapper = container.querySelector(".hidden.md\\:block");
+    const connectors = desktopWrapper!.querySelectorAll('[data-testid="branch-top-connector"]');
+    expect(connectors).toHaveLength(3);
+    for (const connector of Array.from(connectors)) {
+      expect((connector as HTMLElement).style.height).toBe("12px");
+    }
   });
 
   it("renders no accordion toggle anywhere (no aria-expanded) — the branch-label buttons toggle a full-branch sweep highlight, not a collapse/expand", () => {

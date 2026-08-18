@@ -51,6 +51,17 @@ describe("ConvergenceGraphic", () => {
     expect(cys[1]).toBe(cys[2]);
   });
 
+  it("sets the top margin above the branch endpoint circles to EXACTLY their own radius, so they sit flush on the viewBox's top edge at any scale, without shrinking the terminal node's own clearance", () => {
+    const { container } = render(<ConvergenceGraphic branchEndOffsets={[1000, 1000, 1000]} />);
+    const endpoints = Array.from(container.querySelectorAll('circle[r="7"]'));
+    const cys = endpoints.map((c) => Number(c.getAttribute("cy")));
+    // All three share the same offset, so all share the same top margin —
+    // must equal the radius exactly (7), not "radius + a buffer": a buffer
+    // would scale into a real, viewport-width-dependent gap against the
+    // fixed-px HTML rail rendered just above this viewBox-scaled SVG.
+    expect(cys[0]).toBe(7);
+  });
+
   it("idles in the same neutral gray as the rail (stroke-border), not a branch color", () => {
     const { container } = render(<ConvergenceGraphic branchEndOffsets={[1700, 1500, 1900]} />);
     for (const line of visibleLines(container)) {

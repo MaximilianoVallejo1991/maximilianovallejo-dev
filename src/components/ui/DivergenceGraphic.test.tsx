@@ -50,6 +50,18 @@ describe("DivergenceGraphic", () => {
     expect(container.querySelectorAll("path")).toHaveLength(0);
   });
 
+  it("sets the viewBox's bottom margin below the branch circles to EXACTLY their own radius, so they sit flush on the viewBox's bottom edge at any scale, without shrinking the origin node's own clearance", () => {
+    const { container } = render(<DivergenceGraphic />);
+    const svg = container.querySelector("svg")!;
+    const viewBoxHeight = Number(svg.getAttribute("viewBox")!.split(" ")[3]);
+    const branchCy = Number(container.querySelector('circle[r="7"]')!.getAttribute("cy"));
+    const bottomMargin = viewBoxHeight - branchCy;
+    // Must equal the radius exactly (7), not "radius + a buffer": a buffer
+    // would scale into a real, viewport-width-dependent gap against the
+    // fixed-px HTML separator rendered just below this viewBox-scaled SVG.
+    expect(bottomMargin).toBe(7);
+  });
+
   it("idles in the same neutral gray as the rail (stroke-border), not a branch color", () => {
     const { container } = render(<DivergenceGraphic />);
     for (const line of visibleLines(container)) {

@@ -149,7 +149,7 @@ export const es: PortfolioContent = {
             year: "2000",
             title: "Scout",
             description:
-              "Mi primera escuela de trabajo en equipo y disciplina.",
+              "De niño, mi primera escuela de trabajo en equipo y disciplina.",
             hoverIllumination: { downwardsYears: 17 },
           },
           {
@@ -179,6 +179,13 @@ export const es: PortfolioContent = {
             description:
               "Reconocimiento municipal por mi trayectoria en la montaña.",
             hoverIllumination: { upwardsYears: 1, downwardsYears: 1 },
+          },
+                    {
+            year: "Actualidad",
+            title: "Hobbie Montañismo",
+            description:
+              "Disfruto de la montaña como hobbie en lugar de verlo como una actividad comercial.",
+            hoverIllumination: { upwardsYears: 3 },
           },
         ],
       },
@@ -215,6 +222,14 @@ export const es: PortfolioContent = {
             description:
               "Entré a la oficina de Sistemas del Poder Judicial de Tucumán — mi primer trabajo formal en tecnología.",
             hoverIllumination: { downwardsYears: 4 },
+            
+          },
+                    {
+            year: "Actualidad",
+            title: "Crecimiento profesional",
+            description:
+              "Sigo creciendo profesionalmente en el área de Sistemas, con foco en Soporte IT y Seguridad Informática.",
+            hoverIllumination: { upwardsYears: 3 },
           },
         ],
       },
@@ -265,7 +280,7 @@ export const es: PortfolioContent = {
             hoverIllumination: { upwardsYears: 1, downwardsYears: 1 },
           },
           {
-            year: "Continua",
+            year: "Actualidad",
             title: "Capacitación continua",
             description:
               "Sigo formándome: IA, nuevas tecnologías, buenas prácticas.",

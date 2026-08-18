@@ -34,6 +34,16 @@ interface TimelineNodeProps {
    * `undefined` means not externally highlighted.
    */
   highlightDelayMs?: number;
+  /**
+   * Overrides whether this node renders as highlighted right now, decoupled
+   * from `highlightDelayMs` — defaults to `highlightDelayMs !== undefined`
+   * when omitted. Needed for the auto-fade-off animation: a sweep in its
+   * "fading" phase still needs `highlightDelayMs` to carry the SAME delay
+   * it lit up with (so the transition back to idle waits the same amount,
+   * retracing the wave in the same order), while `highlighted` itself has
+   * already flipped to `false`.
+   */
+  highlighted?: boolean;
 }
 
 export default function TimelineNode({
@@ -45,13 +55,18 @@ export default function TimelineNode({
   onHover,
   top = 0,
   highlightDelayMs,
+  highlighted: highlightedProp,
 }: TimelineNodeProps) {
   const [imgError, setImgError] = useState(false);
   const accent = BRANCH_ACCENT[accentKey];
-  const highlighted = highlightDelayMs !== undefined;
-  // Only ever applied alongside the *active* (highlighted) classes below —
-  // the real :hover-driven group-hover transitions stay instant/CSS-timed.
-  const activeStyle = highlighted ? { transitionDelay: `${highlightDelayMs}ms` } : undefined;
+  const highlighted = highlightedProp ?? highlightDelayMs !== undefined;
+  // Keyed off highlightDelayMs (not `highlighted`) — the delay must stay
+  // attached even while `highlighted` is false during an auto-fade-off, so
+  // the transition back to idle still waits the right amount instead of
+  // snapping instantly. The real :hover-driven group-hover transitions
+  // stay instant/CSS-timed, unaffected by this.
+  const activeStyle =
+    highlightDelayMs !== undefined ? { transitionDelay: `${highlightDelayMs}ms` } : undefined;
 
   const handleMouseEnter = () => {
     if (!onHover || !items) return;

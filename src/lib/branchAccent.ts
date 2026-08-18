@@ -13,17 +13,27 @@ export const BRANCH_GRAPHIC_VIEWBOX_WIDTH = 900;
 
 /**
  * Rail x-position per branch column (soft/trade/study, left-to-right),
- * in BRANCH_GRAPHIC_VIEWBOX_WIDTH units. NOT derived from an equal-thirds
- * assumption — that undershoots, because the grid's fixed 32px (`gap-8`)
- * column gaps eat a bigger/smaller fraction of the total width depending
- * on viewport, shifting real column start positions left of a naive guess.
- * Calibrated by measuring the real rendered grid at a common desktop width
- * (1280px window / 1120px grid: real rail x = 11px, 395px, 779px -> scaled
- * to a 900-unit viewBox). Good enough at typical desktop widths; not exact
- * at every viewport size without DOM measurement (see the no-ResizeObserver
- * guard test on these graphics).
+ * in BRANCH_GRAPHIC_VIEWBOX_WIDTH units.
+ *
+ * Derived analytically, not measured, from the grid's own layout formula
+ * (see Experience.tsx's `gap-x-[2.857%]` column gap): with a PERCENTAGE
+ * column gap, each column's start is a pure fraction of the grid's width —
+ * `frac_i = i * ((1 - 2*gap) / 3 + gap)` for gap = 0.02857 — so scaling that
+ * fraction by the 900-unit viewBox is exact at ANY viewport width, unlike
+ * the old fixed-32px-gap calibration (only exact at the one width it was
+ * measured against, drifting worse per column further from the left edge).
+ *
+ * The one irreducible piece is the rail's own `left-[11px]` offset within
+ * each column (fixed, to line up with the dot's real on-screen size — that
+ * shouldn't scale with viewport) — converted to viewBox units against the
+ * MIDDLE of the practical desktop width range (768-1152px content, i.e.
+ * ~928px) rather than one endpoint, so residual error stays small and
+ * symmetric across the whole supported range instead of growing toward one
+ * side. Not derivable without DOM measurement (banned in these graphics —
+ * see the no-ResizeObserver guard test); good enough that the residual
+ * (a couple px at worst) is imperceptible.
  */
-export const BRANCH_RAIL_CX = [9, 317, 626];
+export const BRANCH_RAIL_CX = [10.7, 319.2, 627.8];
 
 export interface BranchAccentClasses {
   ring: string; // dot border

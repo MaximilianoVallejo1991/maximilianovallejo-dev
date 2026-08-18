@@ -10,6 +10,48 @@ export const YEAR_HEIGHT_PX = 100;
  * room, confirmed by measuring rendered same-year pairs in the browser. */
 export const SAME_YEAR_SPACER_HEIGHT_PX = 100;
 
+/**
+ * Year ranges with NO milestone in ANY branch — real dead stretches on the
+ * shared scale, not just one branch's own gap. `[from, to)`: every one-year
+ * step fully inside the range (stepFrom >= from && stepTo <= to) renders at
+ * COMPRESSED_YEAR_HEIGHT_PX instead of the normal YEAR_HEIGHT_PX.
+ *
+ * This lives in the CORE year->height mapping (yearStepHeight, used by
+ * every branch's own pushSpacerSteps call, including leading spacers and
+ * the merged mobile list) rather than as a per-branch special case — that's
+ * what keeps it safe: since the SAME compressed height applies to every
+ * branch whenever THEY cross this range too, a year outside the range still
+ * lands at the exact same pixel offset in every column. Compressing one
+ * branch's own gap independently would have desynced the shared temporal
+ * scale (see BRANCH_RAIL_CX / DIAGONAL_CONNECTORS, which both assume it).
+ *
+ * Must stay in sync with the real milestone data (data/content.*.ts) — if a
+ * milestone is ever added inside one of these ranges, it would render
+ * compressed too and this range should shrink to exclude it.
+ */
+const COMPRESSED_YEAR_RANGES: ReadonlyArray<{ from: number; to: number }> = [
+  // No branch has anything between 2000 (soft's "Scout") and 2007 (study's
+  // first técnico) — 6 fully empty years.
+  { from: 2000, to: 2007 },
+  // No branch has anything between 2011 (study's "Ciclo Básico Ingeniería
+  // Química") and 2015 (soft's "Instructor Scout") — 4 fully empty years.
+  { from: 2011, to: 2015 },
+];
+/** Height per compressed year-step — small, not zero: a bare rail with
+ * literally no vertical run would read as a broken/overlapping connector,
+ * not "fast-forwarded". */
+const COMPRESSED_YEAR_HEIGHT_PX = 16;
+
+/** Height for the one-year step `stepFrom -> stepTo`: the normal
+ * YEAR_HEIGHT_PX, or COMPRESSED_YEAR_HEIGHT_PX if the whole step falls
+ * inside a COMPRESSED_YEAR_RANGES entry. */
+function yearStepHeight(stepFrom: number, stepTo: number): number {
+  const isCompressed = COMPRESSED_YEAR_RANGES.some(
+    (range) => stepFrom >= range.from && stepTo <= range.to,
+  );
+  return isCompressed ? COMPRESSED_YEAR_HEIGHT_PX : YEAR_HEIGHT_PX;
+}
+
 /** Clamp target for open-ended milestones ("Continua" / "Ongoing"). */
 export const CURRENT_YEAR = 2026;
 
@@ -105,7 +147,7 @@ function pushSpacerSteps(
       id: `${idPrefix}:spacer:${indexLabel}:${step}:${stepFrom}-${stepTo}`,
       yearFrom: stepFrom,
       yearTo: stepTo,
-      height: YEAR_HEIGHT_PX,
+      height: yearStepHeight(stepFrom, stepTo),
     });
   }
 }

@@ -16,6 +16,17 @@ interface SpacerProps {
    * `undefined` means idle/not highlighted.
    */
   highlightDelayMs?: number;
+  /**
+   * Overrides whether this segment renders as highlighted right now,
+   * decoupled from `highlightDelayMs` — defaults to
+   * `highlightDelayMs !== undefined` when omitted. Needed for the
+   * auto-fade-off animation: a sweep in its "fading" phase still needs
+   * `highlightDelayMs` to carry the SAME delay it lit up with (so the
+   * transition back to idle waits the same amount, retracing the wave in
+   * the same order), while `highlighted` itself has already flipped to
+   * `false`.
+   */
+  highlighted?: boolean;
   /** Branch accent used for the highlight color; defaults to the generic accent. */
   accentKey?: BranchAccentKey;
   /**
@@ -60,13 +71,14 @@ export function Spacer({
   dataYearTo,
   id,
   highlightDelayMs,
+  highlighted: highlightedProp,
   accentKey = "accent",
   top,
   items,
   onHover,
 }: SpacerProps) {
   const accent = BRANCH_ACCENT[accentKey];
-  const highlighted = highlightDelayMs !== undefined;
+  const highlighted = highlightedProp ?? highlightDelayMs !== undefined;
 
   const handleMouseEnter = () => {
     if (!onHover || !id || !items) return;
@@ -99,7 +111,13 @@ export function Spacer({
         className={`absolute inset-y-0 left-[11px] border-l-2 transition-colors duration-200 ${
           highlighted ? accent.ring : "border-transparent"
         }`}
-        style={{ transitionDelay: highlighted ? `${highlightDelayMs}ms` : "0ms" }}
+        // Keyed off highlightDelayMs (not `highlighted`) — the delay must
+        // stay attached even while `highlighted` is false during an
+        // auto-fade-off, so the transition back to idle still waits the
+        // right amount instead of snapping instantly.
+        style={{
+          transitionDelay: highlightDelayMs !== undefined ? `${highlightDelayMs}ms` : "0ms",
+        }}
       />
     </div>
   );
