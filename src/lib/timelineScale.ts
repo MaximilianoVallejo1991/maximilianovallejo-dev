@@ -195,6 +195,61 @@ export function buildTimelineWithSpacers(
   return items;
 }
 
+/**
+ * Mobile-only post-process: raises the total height between any two
+ * CONSECUTIVE milestones in `items` up to `minGapPx` if the spacer(s)
+ * between them fall short, scaling every spacer in that run up
+ * proportionally (not just padding the last one) so a compressed range
+ * still reads as "faster" than normal, just not so fast the text collides.
+ *
+ * Needed because COMPRESSED_YEAR_RANGES (see yearStepHeight) shrinks a real
+ * dead year-range down to COMPRESSED_YEAR_HEIGHT_PX/year — safe on desktop,
+ * where a compressed range only ever eats into ONE branch's own (much
+ * longer) gap between its two milestones either side of it. On mobile's
+ * single merged list, a compressed range can end up being the ENTIRE gap
+ * between two milestones from DIFFERENT branches that happen to land right
+ * next to each other chronologically (e.g. study's 2011 and soft's 2015,
+ * with nothing from any branch in between) — 4 compressed years is only
+ * 64px, nowhere near enough room for two real (multi-line title +
+ * description) milestone blocks, so they visually collide even though
+ * their `top` coordinates are correctly distinct. `minGapPx` should be
+ * SAME_YEAR_SPACER_HEIGHT_PX — the same measured "minimum legible gap
+ * between two milestones" value already used for the same-year case, just
+ * applied here to compressed-range runs instead of same-year ones.
+ */
+export function enforceMinimumMilestoneGap(
+  items: TimelineItem[],
+  minGapPx: number,
+): TimelineItem[] {
+  const result: TimelineItem[] = [];
+  let pendingRun: TimelineItem[] = [];
+
+  const flushRun = () => {
+    const sum = pendingRun.reduce((s, it) => s + (it.type === "spacer" ? it.height : 0), 0);
+    if (sum === 0 || sum >= minGapPx) {
+      result.push(...pendingRun);
+    } else {
+      const scale = minGapPx / sum;
+      for (const it of pendingRun) {
+        result.push(it.type === "spacer" ? { ...it, height: it.height * scale } : it);
+      }
+    }
+    pendingRun = [];
+  };
+
+  for (const item of items) {
+    if (item.type === "spacer") {
+      pendingRun.push(item);
+      continue;
+    }
+    flushRun();
+    result.push(item);
+  }
+  flushRun(); // any trailing spacer run after the last milestone
+
+  return result;
+}
+
 /** Real, floor-adjusted pixel height needed to contain every
  * absolutely-positioned item in `items` — milestones are points and
  * contribute 0; only spacers occupy vertical space. This is the

@@ -12,11 +12,13 @@ import {
   resolveYear,
   getBranchLayout,
   buildTimelineWithSpacers,
+  enforceMinimumMilestoneGap,
   getTimelineHeight,
   getBranchSweepPlan,
   HIGHLIGHT_STEP_DELAY_MS,
+  SAME_YEAR_SPACER_HEIGHT_PX,
 } from "../../lib/timelineScale";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { fadeInItem } from "../ui/SectionWrapper";
 
 /** Converts a hover-plan step map (id -> 0-indexed step) into a delay-ms
@@ -123,9 +125,53 @@ const TANGENT_BRIDGE_PX = 10;
 // guessed at every node's height and compounded drift down each column.
 const LAST_NODE_BREATHING_ROOM_PX = 130;
 
+// Mobile only: floor passed to enforceMinimumMilestoneGap for the merged
+// list — deliberately a bit MORE than SAME_YEAR_SPACER_HEIGHT_PX (not that
+// value directly). SAME_YEAR_SPACER_HEIGHT_PX was measured against
+// same-year pairs, which tend to be brief; a COMPRESSED_YEAR_RANGES gap
+// bridges two FULL milestone blocks (real title + description on both
+// sides), so it needs more slack. Confirmed by measurement: at exactly
+// SAME_YEAR_SPACER_HEIGHT_PX (100px) the tightest real case (2011 Ciclo
+// Básico -> 2015 Instructor Scout) left only ~1px of clearance — technically
+// no longer overlapping, but thin enough that a bigger font or a slightly
+// longer translation could tip it back into collision.
+const MOBILE_MIN_MILESTONE_GAP_PX = SAME_YEAR_SPACER_HEIGHT_PX + 20;
+
+// Mobile only: vertical gap between the last real milestone in the merged
+// list and the convergence node rendered right below it. Without this,
+// convergence sat at `top: mobileTotalHeight` — but buildTimelineWithSpacers
+// never appends a trailing spacer after the LAST milestone (there's no
+// "next" item to build one towards), so that last milestone's own `top` is
+// ALSO exactly `mobileTotalHeight`: the two nodes shared one coordinate and
+// rendered stacked directly on top of each other instead of one below the
+// other. Reuses LAST_NODE_BREATHING_ROOM_PX's own value (not a smaller
+// number) for the same reason that constant exists in the first place: the
+// last milestone's real (possibly multi-line) title/description can render
+// up to that far below its own `top`, so anything less would still
+// visually collide with that trailing text even once the coordinates
+// themselves no longer match.
+const CONVERGENCE_NODE_GAP_PX = LAST_NODE_BREATHING_ROOM_PX;
+// Breathing room below convergence itself, inside the `<ol>`'s own height —
+// convergence is a single short line (no description), so it needs much
+// less than LAST_NODE_BREATHING_ROOM_PX, just enough that its own text
+// isn't flush against the container's bottom edge.
+const CONVERGENCE_NODE_TRAILING_ROOM_PX = 40;
+
+// Mobile-only: branches whose own "present" milestone becomes redundant once
+// forced adjacent to the other branches' "present" milestones AND the
+// convergence node, purely a side-effect of merging 3 independent timelines
+// into ONE chronological list (see mergeMilestonesByYear — everything
+// without a 4-digit year sorts last and ties break by branch order, so all
+// "present" milestones land back-to-back right before convergence). On
+// desktop each branch is its own column, never adjacent to the others', so
+// this redundancy never exists there — this filter is intentionally mobile-
+// only, never applied to the desktop columns or the underlying data.
+const MOBILE_HIDDEN_PRESENT_BRANCHES = new Set(["soft", "trade"]);
+
 export default function Experience() {
   const content = useContent();
   const { experience } = content;
+  const prefersReducedMotion = useReducedMotion();
 
   // Spacer id -> delay ms, and milestone id -> delay ms, for the currently
   // hovered milestone OR spacer's traveling-light animation (hovering a
@@ -187,6 +233,40 @@ export default function Experience() {
     };
   }, [desktopSweepTarget]);
 
+  // Mobile's own sweep target/lit pair — same shape and same auto-fade-off
+  // behavior as the desktop one above, but tracked independently: the merged
+  // single-column mobile timeline has no columns/divergence graphic to click,
+  // so it gets its own two triggers instead (see the mobile JSX below):
+  // tapping the origin node sweeps the WHOLE merged list top-to-bottom
+  // ("all"), tapping a legend chip isolates just that branch's own
+  // milestones (branchKey).
+  const [mobileSweepTarget, setMobileSweepTarget] = useState<SweepTarget>(null);
+  const [mobileSweepLit, setMobileSweepLit] = useState(true);
+
+  const toggleMobileBranchSweep = (branchKey: string) => {
+    setMobileSweepTarget((current) => (current === branchKey ? null : branchKey));
+    setMobileSweepLit(true);
+  };
+  const toggleMobileAllSweep = () => {
+    setMobileSweepTarget((current) => (current === "all" ? null : "all"));
+    setMobileSweepLit(true);
+  };
+
+  useEffect(() => {
+    if (!mobileSweepTarget) return;
+    const onWaveMs =
+      mobileSweepTarget === "all" ? ALL_BRANCHES_SWEEP_DURATION_MS : BRANCH_SWEEP_DURATION_MS;
+    const fadeTimer = setTimeout(() => setMobileSweepLit(false), onWaveMs + SWEEP_HOLD_MS);
+    const clearTimer = setTimeout(
+      () => setMobileSweepTarget(null),
+      onWaveMs + SWEEP_HOLD_MS + onWaveMs + CSS_TRANSITION_DURATION_MS,
+    );
+    return () => {
+      clearTimeout(fadeTimer);
+      clearTimeout(clearTimer);
+    };
+  }, [mobileSweepTarget]);
+
   const branchIconByKey = Object.fromEntries(
     experience.branches.map((branch) => [branch.branchKey, branch.icon]),
   );
@@ -207,8 +287,33 @@ export default function Experience() {
   const branchEndOffsets = branchLayouts.map(() => maxBranchHeight);
 
   const merged = mergeMilestonesByYear(experience.branches);
-  const mobileItems = buildTimelineWithSpacers(merged.map((m) => m.milestone));
+  // See MOBILE_HIDDEN_PRESENT_BRANCHES's own doc — drops the redundant
+  // "present" milestones for soft/trade from the MOBILE list only; `merged`
+  // itself (used by desktop's per-branch layouts above) stays untouched.
+  const mobileMerged = merged.filter(
+    (m) => !(MOBILE_HIDDEN_PRESENT_BRANCHES.has(m.branchKey) && m.milestone.year === experience.presentLabel),
+  );
+  // enforceMinimumMilestoneGap: see its own doc — a COMPRESSED_YEAR_RANGES
+  // stretch that lands as the ENTIRE gap between two milestones from
+  // different branches (only possible in this merged mobile list, never on
+  // desktop's own per-branch columns) can compress well below what two real
+  // milestone text blocks need, causing them to visually collide even
+  // though their `top` coordinates are correctly distinct.
+  const mobileItems = enforceMinimumMilestoneGap(
+    buildTimelineWithSpacers(mobileMerged.map((m) => m.milestone)),
+    MOBILE_MIN_MILESTONE_GAP_PX,
+  );
   const mobileTotalHeight = getTimelineHeight(mobileItems);
+  // Mobile sweep plan: proportional-to-top delays across the WHOLE merged
+  // list (one shared physical rail, so the wave always travels its real
+  // length regardless of which target is active) — see the mobile JSX for
+  // how "all" vs a specific branchKey differ in which items actually render
+  // lit vs merely timed.
+  const mobileSweepDurationMs =
+    mobileSweepTarget === "all" ? ALL_BRANCHES_SWEEP_DURATION_MS : BRANCH_SWEEP_DURATION_MS;
+  const mobileSweepPlan = mobileSweepTarget
+    ? getBranchSweepPlan(mobileItems, mobileTotalHeight, mobileSweepDurationMs)
+    : null;
 
   // Which branches are currently sweeping, and the per-branch plan for
   // each — "all" sweeps every branch (each independently, all starting at
@@ -492,30 +597,76 @@ export default function Experience() {
         </p>
       </div>
 
-      {/* Mobile: single merged chronological timeline, same shared scale */}
+      {/* Mobile: single merged chronological timeline, same shared scale.
+          Bookended by two accent-colored nodes (origin above, convergence
+          below) so the rail visibly STARTS and ENDS at a real anchor instead
+          of floating text at the top and an unmatched node style at the
+          bottom — accent (the same blue convergence already used) reads as
+          "this is about the person/outcome", kept visually distinct from the
+          3 branch colors running between the two anchors. The legend
+          (rendered fixed to the bottom of the viewport — see
+          mobileLegendVisible above) doubles as the mobile sweep trigger:
+          tapping the origin node sweeps the whole rail ("all"), tapping a
+          legend chip isolates just that branch's own milestones. */}
       <div className="md:hidden mt-10">
-        <p className="text-center font-heading text-lg font-semibold text-primary">
-          {experience.originLabelMobile}
-        </p>
-        <ul className="mt-4 flex flex-wrap items-center gap-4">
-          {experience.branches.map((branch) => {
-            const accent = BRANCH_ACCENT[branch.accentKey];
-            return (
-              <li key={branch.branchKey} className="flex items-center gap-2">
-                <span className={`h-2.5 w-2.5 rounded-full ${accent.fill}`} aria-hidden="true" />
-                <span className="font-body text-xs font-medium text-muted">
-                  {branch.branchLabel}
-                </span>
-              </li>
-            );
-          })}
-        </ul>
+        {/* Origin node — same row shape as every TimelineNode/the
+            convergence node below (dot flush at the LEFT edge, label beside
+            it), not a centered standalone block — so it visually reads as
+            the FIRST item on the rail instead of floating text above it.
+            The dot sits in a relative wrapper so the pulsing "tap me" ring
+            can be absolutely centered behind it without affecting layout. */}
+        <button
+          type="button"
+          onClick={toggleMobileAllSweep}
+          className="group flex w-full items-center gap-4 text-left"
+        >
+          <span className="relative flex h-6 w-6 shrink-0 items-center justify-center">
+            {/* Pulsing ring hinting the node is tappable — same idea (and
+                same numbers) as DivergenceGraphic's origin pulse on desktop:
+                infinite grow-and-fade loop, paused once a full sweep is
+                already lit (no point pulsing under an already-lit ring) and
+                skipped entirely for prefers-reduced-motion (purely
+                decorative, not informational). */}
+            {!prefersReducedMotion && !(mobileSweepTarget === "all" && mobileSweepLit) && (
+              <motion.span
+                className={`absolute inset-0 rounded-full border-2 ${BRANCH_ACCENT.accent.ring}`}
+                style={{ originX: 0.5, originY: 0.5 }}
+                initial={{ opacity: 0.6, scale: 0.85 }}
+                animate={{ opacity: 0, scale: 1.7 }}
+                transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
+                aria-hidden="true"
+              />
+            )}
+            <span
+              className={`relative z-10 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 bg-surface transition-shadow duration-200 ${BRANCH_ACCENT.accent.ring} ${
+                mobileSweepTarget === "all" && mobileSweepLit ? BRANCH_ACCENT.accent.activeRingGlow : ""
+              }`}
+            >
+              <span className={`h-2 w-2 rounded-full ${BRANCH_ACCENT.accent.fill}`} />
+            </span>
+          </span>
+          <p
+            className={`font-heading text-lg font-semibold text-primary transition-colors duration-200 ${BRANCH_ACCENT.accent.hoverText} ${
+              mobileSweepTarget === "all" && mobileSweepLit ? BRANCH_ACCENT.accent.activeHoverText : ""
+            }`}
+          >
+            {experience.originLabelMobile}
+          </p>
+        </button>
+        {/* Short stub connecting the origin node to the rail below, aligned
+            to the SAME left-[11px] x-position the rail and every dot share
+            — same idiom as TOP_CONNECTOR_PX on desktop, just simpler (one
+            column, no divergence graphic to bridge). */}
+        <div className="ml-[11px] h-4 w-px bg-border" aria-hidden="true" />
 
-        <div className="relative mt-6">
+        <div className="relative mt-2">
           <div className="absolute inset-y-0 left-[11px] w-px bg-border" aria-hidden="true" />
           <ol
             className="relative"
-            style={{ minHeight: mobileTotalHeight + LAST_NODE_BREATHING_ROOM_PX }}
+            style={{
+              minHeight:
+                mobileTotalHeight + CONVERGENCE_NODE_GAP_PX + CONVERGENCE_NODE_TRAILING_ROOM_PX,
+            }}
           >
             {(() => {
               let milestoneCursor = 0;
@@ -525,6 +676,18 @@ export default function Experience() {
                 if (item.type === "spacer") cumulativeHeight += item.height;
 
                 if (item.type === "spacer") {
+                  // The upcoming (not-yet-consumed) milestone this segment
+                  // arrives at — used only to color the sweep/hover
+                  // highlight, so a lit connector always matches the branch
+                  // color of the node it leads into instead of a hardcoded
+                  // generic accent (previously every mobile connector lit up
+                  // blue regardless of which branch it belonged to).
+                  const arrival = mobileMerged[milestoneCursor];
+                  const spacerCombined = combinedHighlight(
+                    mobileHighlighted.get(item.id),
+                    mobileSweepPlan?.spacers.get(item.id),
+                    mobileSweepLit,
+                  );
                   return (
                     <li key={item.id}>
                       <Spacer
@@ -532,7 +695,9 @@ export default function Experience() {
                         height={item.height}
                         dataYearFrom={item.yearFrom}
                         dataYearTo={item.yearTo}
-                        highlightDelayMs={mobileHighlighted.get(item.id)}
+                        accentKey={arrival?.accentKey}
+                        highlightDelayMs={spacerCombined.delayMs}
+                        highlighted={spacerCombined.highlighted}
                         top={itemTop}
                         items={mobileItems}
                         onHover={(spacerSteps, milestoneSteps) => {
@@ -543,8 +708,22 @@ export default function Experience() {
                     </li>
                   );
                 }
-                const source = merged[milestoneCursor];
+                const source = mobileMerged[milestoneCursor];
                 milestoneCursor += 1;
+                // Sweeping "all" lights every milestone as the wave passes;
+                // sweeping a single branch only lights THAT branch's own
+                // milestones — the connector above still sweeps its full
+                // real length either way (one shared physical rail), but
+                // only the isolated branch's dots get the glow, so it
+                // visually pops out from the other two.
+                const milestoneSweepLit =
+                  mobileSweepLit &&
+                  (mobileSweepTarget === "all" || mobileSweepTarget === source.branchKey);
+                const milestoneCombined = combinedHighlight(
+                  mobileHighlightedNodes.get(item.id),
+                  mobileSweepPlan?.milestones.get(item.id),
+                  milestoneSweepLit,
+                );
                 return (
                   <TimelineNode
                     key={item.id}
@@ -558,25 +737,85 @@ export default function Experience() {
                       setMobileHighlightedNodes(new Map());
                     }}
                     top={itemTop}
-                    highlightDelayMs={mobileHighlightedNodes.get(item.id)}
+                    highlightDelayMs={milestoneCombined.delayMs}
+                    highlighted={milestoneCombined.highlighted}
                   />
                 );
               });
             })()}
             <li
               className="absolute inset-x-0 flex gap-4"
-              style={{ top: mobileTotalHeight }}
+              style={{ top: mobileTotalHeight + CONVERGENCE_NODE_GAP_PX }}
             >
-              <div className="relative z-10 mt-1.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 border-accent bg-surface">
-                <IconMap name="code" className="h-3 w-3 text-accent" />
+              <div
+                className={`relative z-10 mt-1.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 bg-surface transition-shadow duration-200 ${BRANCH_ACCENT.accent.ring} ${
+                  mobileSweepTarget === "all" && mobileSweepLit ? BRANCH_ACCENT.accent.activeRingGlow : ""
+                }`}
+                // Only "all" ever reaches this node (isolating a single
+                // branch stops at that branch's own milestones) — the delay
+                // matches the wave's real travel time, so convergence lights
+                // up when the wave actually ARRIVES instead of jumping lit
+                // the instant you tap the origin. Kept attached (not reset
+                // to "0ms") even once `mobileSweepLit` flips false, so the
+                // auto-fade-off retraces the same timing on the way out.
+                style={{
+                  transitionDelay: mobileSweepTarget === "all" ? `${mobileSweepDurationMs}ms` : "0ms",
+                }}
+              >
+                <IconMap name="code" className={`h-3 w-3 ${BRANCH_ACCENT.accent.text}`} />
               </div>
               <div className="flex-1">
-                <h4 className="font-heading text-base font-semibold text-primary">
+                <h4
+                  className={`font-heading text-base font-semibold text-primary transition-colors duration-200 ${
+                    mobileSweepTarget === "all" && mobileSweepLit ? BRANCH_ACCENT.accent.activeHoverText : ""
+                  }`}
+                  style={{
+                    transitionDelay: mobileSweepTarget === "all" ? `${mobileSweepDurationMs}ms` : "0ms",
+                  }}
+                >
                   {experience.convergenceLabel}
                 </h4>
               </div>
             </li>
           </ol>
+        </div>
+
+        {/* Color legend — a plain static block at the very end, not sticky
+            or fixed. Tried following the user's scroll (sticky, then fixed
+            + IntersectionObserver visibility) but neither held up reliably
+            on mobile (sticky's bottom-anchoring is a known-flaky browser
+            behavior; the fixed+IO version couldn't even be confirmed in
+            this session's test harness) — a plain block that's simply
+            readable once you scroll to the end is the version that can't
+            break. Still doubles as the per-branch sweep trigger (see
+            toggleMobileBranchSweep above). */}
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-4 border-t border-border pt-4">
+          {experience.branches.map((branch) => {
+            const accent = BRANCH_ACCENT[branch.accentKey];
+            const active = mobileSweepTarget === branch.branchKey;
+            return (
+              <button
+                key={branch.branchKey}
+                type="button"
+                onClick={() => toggleMobileBranchSweep(branch.branchKey)}
+                className="flex items-center gap-2 rounded px-1 py-1"
+              >
+                <span
+                  className={`h-2.5 w-2.5 rounded-full ${accent.fill} transition-shadow duration-200 ${
+                    active && mobileSweepLit ? accent.activeRingGlow : ""
+                  }`}
+                  aria-hidden="true"
+                />
+                <span
+                  className={`font-body text-xs font-medium transition-colors duration-200 ${
+                    active ? `${accent.text} font-semibold` : "text-muted"
+                  }`}
+                >
+                  {branch.branchLabel}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
     </SectionWrapper>
