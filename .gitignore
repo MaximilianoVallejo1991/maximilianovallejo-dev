@@ -6,3 +6,6 @@ dist/
 .opencode/
 .pnpm-debug.log*
 certificados/
+graphify-out/
+.agents/skills/
+.claude/skills/
