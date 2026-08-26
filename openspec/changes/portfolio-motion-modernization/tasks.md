@@ -77,10 +77,10 @@ At ~390/400 lines the change sits at the review-budget ceiling with no margin. P
 
 ## WU5: Hero line-stagger (`src/components/sections/Hero.tsx`)
 
-- [ ] 5.1 Add `textOrder = [0,1,2]`, `TEXT_STAGGER_DESKTOP = 0.18`, `TEXT_STAGGER_MOBILE = 0.15`, `TEXT_BASE_DELAY = 0.1` near `clockOrder`; extract `NODE_STAGGER_DESKTOP`/`NODE_STAGGER_MOBILE` constants (pure refactor, no behavior change).
-- [ ] 5.2 Replace the desktop text block (lines 291-325): wrap each of the 3 `<text>` elements — byte-for-byte unchanged (`x`, `y`, `textAnchor`, `fill`, `style`) — in `motion.g` with `initial={{opacity:0, y: prefersReduced?0:12}}`, `animate={{opacity:1, y:0}}`, delay `TEXT_BASE_DELAY + textOrder[i]*TEXT_STAGGER_DESKTOP` (reusing the existing `prefersReduced` at Hero.tsx:109).
-- [ ] 5.3 Replace the mobile text block (lines 510-544) equivalently with mobile constants/content (`mobileGreeting`/`mobileName`/`mobileSubtitle`).
-- [ ] 5.4 Tests: desktop stagger (EN) and mobile stagger (ES) reveal in sequence; rendered `<text>` `x`/`y` attributes unchanged vs current `main` across 2 viewports × 2 locales (coordinate-lock regression); stagger suppressed under reduce (all lines fade together, no offset/delay). Satisfies interaction-motion "Hero line-stagger reveal" + motion-accessibility "Hero reveal" scenarios.
+- [x] 5.1 Add `textOrder = [0,1,2]`, `TEXT_STAGGER_DESKTOP = 0.18`, `TEXT_STAGGER_MOBILE = 0.15`, `TEXT_BASE_DELAY = 0.1` near `clockOrder`; extract `NODE_STAGGER_DESKTOP`/`NODE_STAGGER_MOBILE` constants (pure refactor, no behavior change).
+- [x] 5.2 Replace the desktop text block (lines 291-325): wrap each of the 3 `<text>` elements — byte-for-byte unchanged (`x`, `y`, `textAnchor`, `fill`, `style`) — in `motion.g` with `initial={{opacity:0, y: prefersReduced?0:12}}`, `animate={{opacity:1, y:0}}`, delay `TEXT_BASE_DELAY + textOrder[i]*TEXT_STAGGER_DESKTOP` (reusing the existing `prefersReduced` at Hero.tsx:109).
+- [x] 5.3 Replace the mobile text block (lines 510-544) equivalently with mobile constants/content (`mobileGreeting`/`mobileName`/`mobileSubtitle`).
+- [x] 5.4 Tests: desktop stagger (EN) and mobile stagger (ES) reveal in sequence; rendered `<text>` `x`/`y` attributes unchanged vs current `main` across 2 viewports × 2 locales (coordinate-lock regression); stagger suppressed under reduce (all lines fade together, no offset/delay). Satisfies interaction-motion "Hero line-stagger reveal" + motion-accessibility "Hero reveal" scenarios.
 
 ## WU6: Card hover lift (`src/components/ui/SectionWrapper.tsx`, `CertCard.tsx`, `ProjectCard.tsx`)
 
