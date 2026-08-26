@@ -1,0 +1,70 @@
+# openspec/config.yaml
+schema: spec-driven
+
+context: |
+  Project: maximilianovallejo-dev (personal portfolio/CV site)
+  Tech stack: React 19.2 + TypeScript 5.9 (strict) + Vite 6 + Tailwind CSS v4 (@tailwindcss/vite) + motion 12.
+  Package manager: pnpm ONLY — every script (dev/build/preview/test/test:watch) runs
+    scripts/check-package-manager.mjs first and hard-fails under npm/yarn.
+  Architecture: single-package app (no monorepo despite pnpm-workspace.yaml), src/ organized by
+    components/{layout,sections,ui}, data/, hooks/, i18n/, lib/, theme/, test/.
+    Feature history shows a "Career Timeline" domain (Experience section, milestone spacers,
+    branch layout, convergence/divergence graphics, hover illumination) as the main area of
+    active SDD work.
+  Testing: vitest 4 + jsdom + @testing-library/react + @testing-library/jest-dom, setup at
+    src/test/setup.ts (jest-dom matchers + afterEach cleanup). Tests colocated next to source
+    (*.test.tsx / *.test.ts). No coverage tool, no e2e runner configured.
+  Style/Tooling: no ESLint config, no Prettier config, no CI workflow found. Type safety is
+    enforced via `tsc -b` (strict: true) as part of the build script — this is the de facto lint gate.
+  Persistence: hybrid — openspec/ (git-tracked, source of truth) + Engram (cross-session recovery).
+    Local working mirror at .atl/ is git-ignored (not committed).
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes
+    - Portfolio is a visual/interactive site — call out visual regression risk explicitly
+  specs:
+    - Use Given/When/Then for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+  design:
+    - Include sequence/interaction diagrams for animation or timeline layout changes
+    - Document architecture decisions with rationale
+  tasks:
+    - Group by phase, use hierarchical numbering
+    - Keep tasks completable in one session
+  apply:
+    - Follow existing code patterns (functional components, colocated *.test.tsx)
+    - Always run `pnpm test` (never `npm`/`npx`) before marking a task done
+    tdd: true           # Strict TDD — vitest detected, no existing marker overriding it
+    test_command: "pnpm test"
+  verify:
+    test_command: "pnpm test"
+    build_command: "pnpm build"
+    coverage_threshold: 0   # no coverage tool configured; revisit if one is added
+  archive:
+    - Warn before merging destructive deltas
+    - Do not touch archived changes under openspec/changes/archive/ — audit trail, immutable
+
+testing:
+  runner: vitest
+  runner_version: "^4.1.10"
+  environment: jsdom
+  libraries:
+    - "@testing-library/react ^16.3.2"
+    - "@testing-library/dom ^10.4.1"
+    - "@testing-library/jest-dom ^7.0.1"
+  setup_file: src/test/setup.ts
+  test_layers:
+    - "component/unit (colocated *.test.tsx / *.test.ts, testing-library + jsdom)"
+  test_file_count: 8
+  commands:
+    test: "pnpm test"          # vitest run
+    test_watch: "pnpm test:watch"  # vitest watch
+  coverage: none
+  linter: none
+  formatter: none
+  type_checker: "tsc -b (strict: true) — part of `pnpm build`"
+  ci: none
+  package_manager: "pnpm only (enforced by scripts/check-package-manager.mjs)"
+  strict_tdd: true
+  strict_tdd_source: "no existing marker found; defaulted true because vitest is present (decision gate: no marker + test runner exists -> strict_tdd: true)"

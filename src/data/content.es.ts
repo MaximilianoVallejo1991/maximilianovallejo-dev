@@ -47,7 +47,7 @@ export const es: PortfolioContent = {
 
       "Hoy soy capaz de construir aplicaciones full-stack completas con React, Node.js, Express y PostgreSQL. Mi diferencial: uso la IA estratégicamente —spec-driven development, evaluación de modelos y optimización de contextos. No es el camino típico, pero cada paso, desde el taller hasta el código, me dio herramientas que quiero aplicar en mi próximo desafío profesional.",
     ],
-    photoUrl: "https://picsum.photos/seed/mv-portrait/400/400",
+    photoUrl: "https://res.cloudinary.com/dc3kybsmr/image/upload/v1752021992/max_foto_yqzdwl.png",
     photoAlt: "Retrato de Maximiliano Vallejo",
   },
 
@@ -292,7 +292,7 @@ export const es: PortfolioContent = {
     convergenceLabel: "Desarrollador Full Stack",
     presentLabel: "Actualidad",
     originLabel: "José Maximiliano Vallejo",
-    originLabelMobile: "Maxi Vallejo",
+    originLabelMobile: "Maxi Vallejo", 
   },
 
   certifications: [

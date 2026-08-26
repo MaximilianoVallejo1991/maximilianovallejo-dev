@@ -7,6 +7,7 @@ import {
   useRef,
   type CSSProperties,
 } from "react"
+import { useReducedMotion } from "motion/react"
 import IconMap from "./IconMap"
 import type { Skill } from "../../data/content"
 
@@ -146,6 +147,7 @@ export default function SkillCarousel({
   const lockRef = useRef(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const n = skills.length
+  const prefersReduced = useReducedMotion()
 
   if (n === 0) return null
 
@@ -188,11 +190,11 @@ export default function SkillCarousel({
   }, [])
 
   useEffect(() => {
-    if (!autoplay || !isInView || isHovered || n < 2) return
+    if (prefersReduced || !autoplay || !isInView || isHovered || n < 2) return
     const ms = Math.max(0.3, autoplayDelay) * 1000
     const id = window.setInterval(() => step(1), ms)
     return () => window.clearInterval(id)
-  }, [autoplay, autoplayDelay, isInView, isHovered, n, step])
+  }, [prefersReduced, autoplay, autoplayDelay, isInView, isHovered, n, step])
 
   useEffect(() => {
     const container = containerRef.current

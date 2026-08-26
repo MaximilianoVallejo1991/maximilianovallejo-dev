@@ -1,12 +1,23 @@
 import { useState, useEffect, useCallback, type MouseEvent } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useContent } from "../../hooks/useContent";
 import LanguageSwitch from "../../i18n/LanguageSwitch";
 import ThemeToggle from "../../theme/ThemeToggle";
+
+const SCROLL_THRESHOLD = 8;
+
+const INDICATOR_TRANSITION = { type: "spring", stiffness: 380, damping: 32 } as const;
+const INDICATOR_INSTANT = { duration: 0 } as const;
+
+const MENU_TRANSITION = { duration: 0.24, ease: [0.16, 1, 0.3, 1] } as const;
+const MENU_INSTANT = { duration: 0 } as const;
 
 export default function Nav() {
   const content = useContent();
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("#hero");
+  const [scrolled, setScrolled] = useState(false);
+  const prefersReduced = useReducedMotion();
 
   const handleNavClick = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
@@ -49,6 +60,7 @@ export default function Nav() {
 
     // Hero fallback when at top
     const onScroll = () => {
+      setScrolled(window.scrollY > SCROLL_THRESHOLD);
       if (window.scrollY < 100) {
         setActiveSection("#hero");
       }
@@ -62,7 +74,13 @@ export default function Nav() {
   }, [handleIntersect, content.navLinks]);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-surface/90 backdrop-blur-sm">
+    <header
+      className={`sticky top-0 z-40 border-b transition-shadow duration-200 ${
+        scrolled
+          ? "border-border bg-surface/95 shadow-sm backdrop-blur-md"
+          : "border-transparent bg-surface/90 backdrop-blur-sm"
+      }`}
+    >
       <div
         role="note"
         className="border-b border-accent/20 bg-accent/10 px-4 py-1.5 text-center text-xs font-medium text-accent"
@@ -103,12 +121,20 @@ export default function Nav() {
               key={link.href}
               href={link.href}
               onClick={(e) => handleNavClick(e, link.href)}
-              className={`text-sm font-medium no-underline transition-colors duration-200 ${activeSection === link.href
+              className={`relative text-sm font-medium no-underline transition-colors duration-200 ${activeSection === link.href
                   ? "text-accent"
                   : "text-muted hover:text-accent"
                 }`}
             >
               {link.label}
+              {activeSection === link.href && (
+                <motion.span
+                  layoutId="nav-indicator-desktop"
+                  data-testid="nav-indicator-desktop"
+                  className="absolute -bottom-1.5 left-0 right-0 h-0.5 rounded-full bg-accent"
+                  transition={prefersReduced ? INDICATOR_INSTANT : INDICATOR_TRANSITION}
+                />
+              )}
             </a>
           ))}
         </div>
@@ -154,23 +180,42 @@ export default function Nav() {
       </nav>
 
       {/* Mobile menu */}
-      {menuOpen && (
-        <div className="border-t border-border bg-surface px-4 pb-4 pt-2 md:hidden">
-          {content.navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={(e) => handleNavClick(e, link.href)}
-              className={`block rounded-md px-3 py-2 text-sm font-medium no-underline transition-colors duration-200 ${activeSection === link.href
-                  ? "text-accent bg-accent/5"
-                  : "text-muted hover:bg-border/50 hover:text-primary"
-                }`}
-            >
-              {link.label}
-            </a>
-          ))}
-        </div>
-      )}
+      <AnimatePresence initial={false}>
+        {menuOpen && (
+          <motion.div
+            key="mobile-menu"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={prefersReduced ? MENU_INSTANT : MENU_TRANSITION}
+            className="overflow-hidden border-t border-border bg-surface md:hidden"
+          >
+            <div className="px-4 pb-4 pt-2">
+              {content.navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={(e) => handleNavClick(e, link.href)}
+                  className={`relative block rounded-md px-3 py-2 text-sm font-medium no-underline transition-colors duration-200 ${activeSection === link.href
+                      ? "text-accent bg-accent/5"
+                      : "text-muted hover:bg-border/50 hover:text-primary"
+                    }`}
+                >
+                  {activeSection === link.href && (
+                    <motion.span
+                      layoutId="nav-indicator-mobile"
+                      data-testid="nav-indicator-mobile"
+                      className="absolute inset-y-1 left-0 w-0.5 rounded-full bg-accent"
+                      transition={prefersReduced ? INDICATOR_INSTANT : INDICATOR_TRANSITION}
+                    />
+                  )}
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

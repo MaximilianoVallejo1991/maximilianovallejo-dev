@@ -116,6 +116,14 @@ export default function Hero() {
 
   /* Clockwise entrance order — Aplicación de Software first, then clockwise */
   const clockOrder = [0, 1, 2, 3, 4];
+  const NODE_STAGGER_DESKTOP = 0.4;
+  const NODE_STAGGER_MOBILE = 0.35;
+
+  /* Text entrance order — greeting, name, subtitle (top to bottom) */
+  const textOrder = [0, 1, 2] as const;
+  const TEXT_STAGGER_DESKTOP = 0.18;
+  const TEXT_STAGGER_MOBILE = 0.15;
+  const TEXT_BASE_DELAY = 0.1;
 
   /* ─── Mobile-only: automatic, random, continuous node highlight ───
      Runs only while the Hero section is in view, so it doesn't keep
@@ -212,7 +220,7 @@ export default function Hero() {
             const fs = active ? n.fontSize + 3 : n.fontSize;
 
             const step = clockOrder[i];
-            const delay = prefersReduced ? 0 : step * 0.4;
+            const delay = prefersReduced ? 0 : step * NODE_STAGGER_DESKTOP;
 
             return (
               <motion.g
@@ -288,41 +296,73 @@ export default function Hero() {
           })}
 
           {/* ─── Center text inside SVG (shared coordinate space) ─── */}
-          <text
-            x={500}
-            y={308}
-            textAnchor="middle"
-            fill="var(--color-muted)"
-            style={{ fontSize: 20, fontFamily: "Archivo, sans-serif" }}
-          >
-            {content.hero.greeting}
-          </text>
-          <text
-            x={500}
-            y={356}
-            textAnchor="middle"
-            fill="var(--color-primary)"
-            style={{
-              fontSize: 52,
-              fontFamily: '"Space Grotesk", sans-serif',
-              fontWeight: 700,
-            }}
-          >
-            {content.hero.name}
-          </text>
-          <text
-            x={500}
-            y={400}
-            textAnchor="middle"
-            fill="var(--color-accent)"
-            style={{
-              fontSize: 26,
-              fontFamily: "Archivo, sans-serif",
-              fontWeight: 600,
-            }}
-          >
-            {content.hero.subtitle}
-          </text>
+          {[
+            {
+              key: "greeting",
+              node: (
+                <text
+                  x={500}
+                  y={308}
+                  textAnchor="middle"
+                  fill="var(--color-muted)"
+                  style={{ fontSize: 20, fontFamily: "Archivo, sans-serif" }}
+                >
+                  {content.hero.greeting}
+                </text>
+              ),
+            },
+            {
+              key: "name",
+              node: (
+                <text
+                  x={500}
+                  y={356}
+                  textAnchor="middle"
+                  fill="var(--color-primary)"
+                  style={{
+                    fontSize: 52,
+                    fontFamily: '"Space Grotesk", sans-serif',
+                    fontWeight: 700,
+                  }}
+                >
+                  {content.hero.name}
+                </text>
+              ),
+            },
+            {
+              key: "subtitle",
+              node: (
+                <text
+                  x={500}
+                  y={400}
+                  textAnchor="middle"
+                  fill="var(--color-accent)"
+                  style={{
+                    fontSize: 26,
+                    fontFamily: "Archivo, sans-serif",
+                    fontWeight: 600,
+                  }}
+                >
+                  {content.hero.subtitle}
+                </text>
+              ),
+            },
+          ].map((line, i) => (
+            <motion.g
+              key={line.key}
+              initial={{ opacity: 0, y: prefersReduced ? 0 : 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.8,
+                delay: prefersReduced
+                  ? 0
+                  : TEXT_BASE_DELAY + textOrder[i] * TEXT_STAGGER_DESKTOP,
+                ease: "easeOut",
+              }}
+            >
+              {line.node}
+            </motion.g>
+          ))}
         </svg>
       </div>
 
@@ -401,7 +441,7 @@ export default function Hero() {
                   const labelFontSize = active ? "13px" : "10px";
 
                   const step = clockOrder[i];
-                  const delay = prefersReduced ? 0 : step * 0.35;
+                  const delay = prefersReduced ? 0 : step * NODE_STAGGER_MOBILE;
 
                   return (
                     <motion.g
@@ -507,41 +547,73 @@ export default function Hero() {
                 })}
 
                 {/* Center text — 33% from left edge */}
-                <text
-                  x={195}
-                  y={274}
-                  textAnchor="middle"
-                  fill="var(--color-muted)"
-                  style={{ fontSize: 13, fontFamily: "Archivo, sans-serif" }}
-                >
-                  {content.hero.mobileGreeting}
-                </text>
-                <text
-                  x={195}
-                  y={296}
-                  textAnchor="middle"
-                  fill="var(--color-primary)"
-                  style={{
-                    fontSize: 22,
-                    fontFamily: '"Space Grotesk", sans-serif',
-                    fontWeight: 700,
-                  }}
-                >
-                  {content.hero.mobileName}
-                </text>
-                <text
-                  x={195}
-                  y={314}
-                  textAnchor="middle"
-                  fill="var(--color-accent)"
-                  style={{
-                    fontSize: 13,
-                    fontFamily: "Archivo, sans-serif",
-                    fontWeight: 600,
-                  }}
-                >
-                  {content.hero.mobileSubtitle}
-                </text>
+                {[
+                  {
+                    key: "mobileGreeting",
+                    node: (
+                      <text
+                        x={195}
+                        y={274}
+                        textAnchor="middle"
+                        fill="var(--color-muted)"
+                        style={{ fontSize: 13, fontFamily: "Archivo, sans-serif" }}
+                      >
+                        {content.hero.mobileGreeting}
+                      </text>
+                    ),
+                  },
+                  {
+                    key: "mobileName",
+                    node: (
+                      <text
+                        x={195}
+                        y={296}
+                        textAnchor="middle"
+                        fill="var(--color-primary)"
+                        style={{
+                          fontSize: 22,
+                          fontFamily: '"Space Grotesk", sans-serif',
+                          fontWeight: 700,
+                        }}
+                      >
+                        {content.hero.mobileName}
+                      </text>
+                    ),
+                  },
+                  {
+                    key: "mobileSubtitle",
+                    node: (
+                      <text
+                        x={195}
+                        y={314}
+                        textAnchor="middle"
+                        fill="var(--color-accent)"
+                        style={{
+                          fontSize: 13,
+                          fontFamily: "Archivo, sans-serif",
+                          fontWeight: 600,
+                        }}
+                      >
+                        {content.hero.mobileSubtitle}
+                      </text>
+                    ),
+                  },
+                ].map((line, i) => (
+                  <motion.g
+                    key={line.key}
+                    initial={{ opacity: 0, y: prefersReduced ? 0 : 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: 0.7,
+                      delay: prefersReduced
+                        ? 0
+                        : TEXT_BASE_DELAY + textOrder[i] * TEXT_STAGGER_MOBILE,
+                      ease: "easeOut",
+                    }}
+                  >
+                    {line.node}
+                  </motion.g>
+                ))}
               </g>
             </svg>
           );

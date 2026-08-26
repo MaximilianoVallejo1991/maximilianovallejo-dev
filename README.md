@@ -98,7 +98,7 @@ maximilianovallejo-dev/
 │   ├── components/
 │   │   ├── layout/              # Layout, Nav, Footer, SkipLink
 │   │   ├── sections/            # Hero, About, Skills, Projects, Experience, Certifications, Contact
-│   │   └── ui/                  # SectionWrapper, SkillCard, ProjectCard, CertCard, Tag, TimelineNode
+│   │   └── ui/                  # SectionWrapper, ProjectCard, CertCard, Tag, TimelineNode
 │   └── vite-env.d.ts
 ├── index.html                   # SEO meta, OG tags, blocking theme script
 ├── vercel.json                  # CSP + cache headers
@@ -226,7 +226,6 @@ npm run build
 
 This project shipped with 3 known issues from the initial spec verification (see [HANDOFF.md](./HANDOFF.md) for full details). They are documented and will be addressed in a follow-up:
 
-- **C1**: `SkillCard` renders only text labels, not the SVG icons defined in the content data
 - **C2**: 6 hardcoded Spanish strings in `SkipLink`, `Footer`, `Nav`, and `Contact` don't switch to English
 - **C3**: Hero SVG paths still animate via JavaScript when `prefers-reduced-motion: reduce` is active
 
