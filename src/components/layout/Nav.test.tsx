@@ -1,5 +1,5 @@
 import { describe, expect, it, beforeAll, afterEach } from "vitest";
-import { render, fireEvent } from "@testing-library/react";
+import { render, fireEvent, waitFor } from "@testing-library/react";
 import Nav from "./Nav";
 import { LanguageProvider } from "../../i18n/LanguageContext";
 import { ThemeProvider } from "../../theme/ThemeContext";
@@ -112,5 +112,55 @@ describe("Nav — active-section indicator", () => {
     setPrefersReducedMotion(false);
     const { getByTestId } = renderNav();
     expect(getByTestId("nav-indicator-desktop")).toBeInTheDocument();
+  });
+});
+
+describe("Nav — animated mobile menu (AnimatePresence)", () => {
+  function openMenu(container: HTMLElement) {
+    const hamburger = container.querySelector('button[aria-expanded]') as HTMLButtonElement;
+    fireEvent.click(hamburger);
+  }
+
+  it("is not mounted when closed", () => {
+    const { container } = renderNav();
+    expect(container.querySelector('[aria-expanded="false"]')).not.toBeNull();
+    expect(container.querySelectorAll('a[href="#about"]')).toHaveLength(1); // desktop only
+  });
+
+  it("mounts and opens with a height/opacity transition when the hamburger is clicked", () => {
+    const { container } = renderNav();
+    openMenu(container);
+    // Mobile list is now mounted alongside the desktop list.
+    expect(container.querySelectorAll('a[href="#about"]')).toHaveLength(2);
+  });
+
+  it("plays its exit animation instead of disappearing instantly when the menu closes", async () => {
+    const { container } = renderNav();
+    openMenu(container);
+    expect(container.querySelectorAll('a[href="#about"]')).toHaveLength(2);
+
+    // Close it
+    openMenu(container);
+
+    // Eventually the exit animation resolves and the mobile copy unmounts,
+    // leaving only the desktop link.
+    await waitFor(() => {
+      expect(container.querySelectorAll('a[href="#about"]')).toHaveLength(1);
+    });
+  });
+
+  it("closing via a nav link tap plays the exit animation and clears menuOpen", async () => {
+    const { container } = renderNav();
+    openMenu(container);
+
+    const mobileLinks = Array.from(container.querySelectorAll('a[href="#about"]'));
+    expect(mobileLinks).toHaveLength(2);
+    const mobileLink = mobileLinks[1] as HTMLAnchorElement;
+    fireEvent.click(mobileLink);
+
+    await waitFor(() => {
+      expect(container.querySelectorAll('a[href="#about"]')).toHaveLength(1);
+    });
+    expect(container.querySelector('[aria-expanded="false"]')).not.toBeNull();
   });
 });

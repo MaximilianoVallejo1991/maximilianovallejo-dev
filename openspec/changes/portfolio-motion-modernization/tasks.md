@@ -59,9 +59,9 @@ At ~390/400 lines the change sits at the review-budget ceiling with no margin. P
 
 ## WU2: Mobile menu `AnimatePresence` (`src/components/layout/Nav.tsx`) — after WU1
 
-- [ ] 2.1 Wrap the existing `{menuOpen && ...}` block in `AnimatePresence initial={false}`, converting the child to `motion.div key="mobile-menu"` with `overflow-hidden`.
-- [ ] 2.2 Move `px-4 pb-4 pt-2` padding to a new inner `<div>` so `height: 0` collapses fully; add `initial/animate/exit` for `height`/`opacity` and `transition={prefersReduced ? MENU_INSTANT : MENU_TRANSITION}` (`MENU_TRANSITION = { duration: 0.24, ease: [0.16,1,0.3,1] }`).
-- [ ] 2.3 Tests: menu opens with height `0→auto` + opacity `0→1`; closes via exit animation before unmount (no instant disappearance); tapping a nav link plays the exit animation. Satisfies nav-interaction "Animated mobile menu open/close" scenarios.
+- [x] 2.1 Wrap the existing `{menuOpen && ...}` block in `AnimatePresence initial={false}`, converting the child to `motion.div key="mobile-menu"` with `overflow-hidden`.
+- [x] 2.2 Move `px-4 pb-4 pt-2` padding to a new inner `<div>` so `height: 0` collapses fully; add `initial/animate/exit` for `height`/`opacity` and `transition={prefersReduced ? MENU_INSTANT : MENU_TRANSITION}` (`MENU_TRANSITION = { duration: 0.24, ease: [0.16,1,0.3,1] }`).
+- [x] 2.3 Tests: menu opens with height `0→auto` + opacity `0→1`; closes via exit animation before unmount (no instant disappearance); tapping a nav link plays the exit animation. Satisfies nav-interaction "Animated mobile menu open/close" scenarios.
 
 ## WU3: Carousel reduced-motion guard (`src/components/ui/SkillCarousel.tsx`)
 

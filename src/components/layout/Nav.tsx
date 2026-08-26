@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, type MouseEvent } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useContent } from "../../hooks/useContent";
 import LanguageSwitch from "../../i18n/LanguageSwitch";
 import ThemeToggle from "../../theme/ThemeToggle";
@@ -8,6 +8,9 @@ const SCROLL_THRESHOLD = 8;
 
 const INDICATOR_TRANSITION = { type: "spring", stiffness: 380, damping: 32 } as const;
 const INDICATOR_INSTANT = { duration: 0 } as const;
+
+const MENU_TRANSITION = { duration: 0.24, ease: [0.16, 1, 0.3, 1] } as const;
+const MENU_INSTANT = { duration: 0 } as const;
 
 export default function Nav() {
   const content = useContent();
@@ -177,31 +180,42 @@ export default function Nav() {
       </nav>
 
       {/* Mobile menu */}
-      {menuOpen && (
-        <div className="border-t border-border bg-surface px-4 pb-4 pt-2 md:hidden">
-          {content.navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={(e) => handleNavClick(e, link.href)}
-              className={`relative block rounded-md px-3 py-2 text-sm font-medium no-underline transition-colors duration-200 ${activeSection === link.href
-                  ? "text-accent bg-accent/5"
-                  : "text-muted hover:bg-border/50 hover:text-primary"
-                }`}
-            >
-              {activeSection === link.href && (
-                <motion.span
-                  layoutId="nav-indicator-mobile"
-                  data-testid="nav-indicator-mobile"
-                  className="absolute inset-y-1 left-0 w-0.5 rounded-full bg-accent"
-                  transition={prefersReduced ? INDICATOR_INSTANT : INDICATOR_TRANSITION}
-                />
-              )}
-              {link.label}
-            </a>
-          ))}
-        </div>
-      )}
+      <AnimatePresence initial={false}>
+        {menuOpen && (
+          <motion.div
+            key="mobile-menu"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={prefersReduced ? MENU_INSTANT : MENU_TRANSITION}
+            className="overflow-hidden border-t border-border bg-surface md:hidden"
+          >
+            <div className="px-4 pb-4 pt-2">
+              {content.navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={(e) => handleNavClick(e, link.href)}
+                  className={`relative block rounded-md px-3 py-2 text-sm font-medium no-underline transition-colors duration-200 ${activeSection === link.href
+                      ? "text-accent bg-accent/5"
+                      : "text-muted hover:bg-border/50 hover:text-primary"
+                    }`}
+                >
+                  {activeSection === link.href && (
+                    <motion.span
+                      layoutId="nav-indicator-mobile"
+                      data-testid="nav-indicator-mobile"
+                      className="absolute inset-y-1 left-0 w-0.5 rounded-full bg-accent"
+                      transition={prefersReduced ? INDICATOR_INSTANT : INDICATOR_TRANSITION}
+                    />
+                  )}
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
