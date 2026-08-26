@@ -3,7 +3,14 @@ import { render, fireEvent, waitFor } from "@testing-library/react";
 import Nav from "./Nav";
 import { LanguageProvider } from "../../i18n/LanguageContext";
 import { ThemeProvider } from "../../theme/ThemeContext";
-import { setPrefersReducedMotion } from "../../test/setup";
+
+/*
+ * This file never calls `setPrefersReducedMotion` — the default matchMedia
+ * stub (src/test/setup.ts) returns `matches: false`, so `useReducedMotion()`
+ * is locked to `false` for every render in this file (see the gotcha
+ * documented in setup.ts). The reduced-motion scenario for the nav
+ * indicator lives in `Nav.reduced-motion.test.tsx`.
+ */
 
 beforeAll(() => {
   // jsdom does not implement IntersectionObserver; Nav's scroll-spy effect
@@ -100,18 +107,6 @@ describe("Nav — active-section indicator", () => {
     expect(desktopIndicator).toBeInTheDocument();
     expect(mobileIndicator).toBeInTheDocument();
     expect(desktopIndicator).not.toBe(mobileIndicator);
-  });
-
-  it("renders the indicator regardless of the reduced-motion preference (slide is gated on the transition, not on presence)", () => {
-    setPrefersReducedMotion(true);
-    const { getByTestId } = renderNav();
-    expect(getByTestId("nav-indicator-desktop")).toBeInTheDocument();
-  });
-
-  it("renders the indicator under no-preference too", () => {
-    setPrefersReducedMotion(false);
-    const { getByTestId } = renderNav();
-    expect(getByTestId("nav-indicator-desktop")).toBeInTheDocument();
   });
 });
 

@@ -65,9 +65,9 @@ At ~390/400 lines the change sits at the review-budget ceiling with no margin. P
 
 ## WU3: Carousel reduced-motion guard (`src/components/ui/SkillCarousel.tsx`)
 
-- [ ] 3.1 Import `useReducedMotion` from `motion/react`; add `const prefersReduced = useReducedMotion()` at ~line 145, above the `if (n === 0) return null` early return and alongside the other pre-existing hooks (do not worsen the hooks-order bug — D5).
-- [ ] 3.2 Update the autoplay `useEffect` guard to `if (prefersReduced || !autoplay || !isInView || isHovered || n < 2) return;` and add `prefersReduced` to the dependency array.
-- [ ] 3.3 Tests: autoplay does not advance under `prefers-reduced-motion: reduce`; arrow/dot/wheel/touch/keyboard nav still advance under reduce; autoplay advances normally under `no-preference`. Satisfies motion-accessibility "Carousel autoplay" scenarios.
+- [x] 3.1 Import `useReducedMotion` from `motion/react`; add `const prefersReduced = useReducedMotion()` at ~line 145, above the `if (n === 0) return null` early return and alongside the other pre-existing hooks (do not worsen the hooks-order bug — D5).
+- [x] 3.2 Update the autoplay `useEffect` guard to `if (prefersReduced || !autoplay || !isInView || isHovered || n < 2) return;` and add `prefersReduced` to the dependency array.
+- [x] 3.3 Tests: autoplay does not advance under `prefers-reduced-motion: reduce`; arrow/dot/wheel/touch/keyboard nav still advance under reduce; autoplay advances normally under `no-preference`. Satisfies motion-accessibility "Carousel autoplay" scenarios.
 
 ## WU4: ThemeToggle icon crossfade (`src/theme/ThemeToggle.tsx`)
 
