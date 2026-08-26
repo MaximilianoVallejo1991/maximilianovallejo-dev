@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { motion } from "motion/react";
-import { fadeInItem } from "./SectionWrapper";
+import { motion, useReducedMotion } from "motion/react";
+import { fadeInItem, hoverLift } from "./SectionWrapper";
 import Tag from "./Tag";
 import type { Project } from "../../data/content";
 
@@ -11,10 +11,12 @@ interface ProjectCardProps {
 
 export default function ProjectCard({ project, index }: ProjectCardProps) {
   const [imgError, setImgError] = useState(false);
+  const prefersReduced = useReducedMotion();
 
   return (
     <motion.article
       {...fadeInItem(index)}
+      whileHover={prefersReduced ? undefined : hoverLift}
       className="group cursor-pointer overflow-hidden rounded-xl border border-border bg-surface transition-colors duration-200 hover:border-accent/40"
     >
       {/* Screenshot / fallback */}
@@ -28,7 +30,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
             src={project.screenshot}
             alt={project.title}
             loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
             onError={() => setImgError(true)}
           />
         )}

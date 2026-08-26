@@ -1,5 +1,5 @@
-import { motion } from "motion/react";
-import { fadeInItem } from "./SectionWrapper";
+import { motion, useReducedMotion } from "motion/react";
+import { fadeInItem, hoverLift } from "./SectionWrapper";
 import type { CertItem } from "../../data/content";
 
 interface CertCardProps {
@@ -8,9 +8,12 @@ interface CertCardProps {
 }
 
 export default function CertCard({ cert, index }: CertCardProps) {
+  const prefersReduced = useReducedMotion();
+
   return (
     <motion.article
       {...fadeInItem(index)}
+      whileHover={prefersReduced ? undefined : hoverLift}
       className="flex cursor-pointer flex-col rounded-lg border border-border bg-surface p-5 transition-colors duration-200 hover:border-accent/40"
     >
       <h3 className="font-heading text-base font-semibold text-primary">

@@ -31,6 +31,12 @@ export function fadeInItem(index: number) {
   };
 }
 
+export const hoverLift = {
+  y: -4,
+  scale: 1.02,
+  transition: { type: "spring", stiffness: 400, damping: 30 },
+} as const;
+
 export default function SectionWrapper({
   id,
   children,

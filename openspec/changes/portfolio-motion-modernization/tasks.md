@@ -84,11 +84,11 @@ At ~390/400 lines the change sits at the review-budget ceiling with no margin. P
 
 ## WU6: Card hover lift (`src/components/ui/SectionWrapper.tsx`, `CertCard.tsx`, `ProjectCard.tsx`)
 
-- [ ] 6.1 Export `hoverLift` from `SectionWrapper.tsx`: `{ y: -4, scale: 1.02, transition: { type: "spring", stiffness: 400, damping: 30 } }`.
-- [ ] 6.2 `CertCard.tsx`: import `useReducedMotion`/`hoverLift`; add `prefersReduced`; set `whileHover={prefersReduced ? undefined : hoverLift}` on the `motion.article`.
-- [ ] 6.3 `ProjectCard.tsx`: same wiring, `prefersReduced` added after the existing `useState`; `whileHover` on `motion.article`.
-- [ ] 6.4 `ProjectCard.tsx`: change the inner `<img>` class `duration-500` → `duration-300` (D2 — fixes lag between the 250ms card spring and the 500ms image zoom).
-- [ ] 6.5 Tests: lift applies (`y:-4, scale:1.02`) under `no-preference` on both cards; suppressed (no transform) under reduce; returns to rest on hover-out; no `box-shadow` present at any state; `ProjectCard` image scale composes with card lift without clipping. Satisfies interaction-motion "Card hover lift is transform/opacity only" + motion-accessibility "Card hover lift" scenarios.
+- [x] 6.1 Export `hoverLift` from `SectionWrapper.tsx`: `{ y: -4, scale: 1.02, transition: { type: "spring", stiffness: 400, damping: 30 } }`.
+- [x] 6.2 `CertCard.tsx`: import `useReducedMotion`/`hoverLift`; add `prefersReduced`; set `whileHover={prefersReduced ? undefined : hoverLift}` on the `motion.article`.
+- [x] 6.3 `ProjectCard.tsx`: same wiring, `prefersReduced` added after the existing `useState`; `whileHover` on `motion.article`.
+- [x] 6.4 `ProjectCard.tsx`: change the inner `<img>` class `duration-500` → `duration-300` (D2 — fixes lag between the 250ms card spring and the 500ms image zoom).
+- [x] 6.5 Tests: lift applies (`y:-4, scale:1.02`) under `no-preference` on both cards; suppressed (no transform) under reduce; returns to rest on hover-out; no `box-shadow` present at any state; `ProjectCard` image scale composes with card lift without clipping. Satisfies interaction-motion "Card hover lift is transform/opacity only" + motion-accessibility "Card hover lift" scenarios.
 
 ## WU7: Delete `SkillCard.tsx` + README cleanup
 
