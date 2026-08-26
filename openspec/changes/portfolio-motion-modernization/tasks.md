@@ -49,13 +49,13 @@ At ~390/400 lines the change sits at the review-budget ceiling with no margin. P
 
 ## WU1: Nav scroll state + `layoutId` indicator (`src/components/layout/Nav.tsx`)
 
-- [ ] 1.1 Add `const [scrolled, setScrolled] = useState(false)` and `SCROLL_THRESHOLD = 8`; extend the existing `onScroll` (Nav.tsx:34-62) with `setScrolled(window.scrollY > SCROLL_THRESHOLD)`. Satisfies nav-interaction "Crosses threshold" / "Reverts below threshold".
-- [ ] 1.2 Update header `className` template to swap blur/shadow classes on `scrolled`, keeping `border-transparent` (not removed) in the unscrolled state. Satisfies nav-interaction "No flicker at boundary" (no height jump).
-- [ ] 1.3 Add module constants `INDICATOR_TRANSITION` (spring, stiffness 380, damping 32) and `INDICATOR_INSTANT` (`duration: 0`).
-- [ ] 1.4 Add `const prefersReduced = useReducedMotion()` at the top of the component body (RM-6).
-- [ ] 1.5 Inside the active desktop `<a>` (Nav.tsx:100-114), add `relative` and render `motion.span layoutId="nav-indicator-desktop"` conditionally, `transition={prefersReduced ? INDICATOR_INSTANT : INDICATOR_TRANSITION}`. Satisfies nav-interaction "Desktop indicator slides" + motion-accessibility "Nav active-indicator slide".
-- [ ] 1.6 Inside the active mobile `<a>` (Nav.tsx:159-171), add `relative` and render `motion.span layoutId="nav-indicator-mobile"` before the label. Satisfies nav-interaction "Mobile indicator slides" / "No cross-list jump" / "Distinct layoutId values".
-- [ ] 1.7 Tests: scroll toggles cleanly at threshold (crosses/reverts/no thrash); both `layoutId` spans coexist with different id values when both lists are mounted; indicator animates with `prefersReduced=false` and renders without an animated slide with `prefersReduced=true` (needs WU0 mock).
+- [x] 1.1 Add `const [scrolled, setScrolled] = useState(false)` and `SCROLL_THRESHOLD = 8`; extend the existing `onScroll` (Nav.tsx:34-62) with `setScrolled(window.scrollY > SCROLL_THRESHOLD)`. Satisfies nav-interaction "Crosses threshold" / "Reverts below threshold".
+- [x] 1.2 Update header `className` template to swap blur/shadow classes on `scrolled`, keeping `border-transparent` (not removed) in the unscrolled state. Satisfies nav-interaction "No flicker at boundary" (no height jump).
+- [x] 1.3 Add module constants `INDICATOR_TRANSITION` (spring, stiffness 380, damping 32) and `INDICATOR_INSTANT` (`duration: 0`).
+- [x] 1.4 Add `const prefersReduced = useReducedMotion()` at the top of the component body (RM-6).
+- [x] 1.5 Inside the active desktop `<a>` (Nav.tsx:100-114), add `relative` and render `motion.span layoutId="nav-indicator-desktop"` conditionally, `transition={prefersReduced ? INDICATOR_INSTANT : INDICATOR_TRANSITION}`. Satisfies nav-interaction "Desktop indicator slides" + motion-accessibility "Nav active-indicator slide".
+- [x] 1.6 Inside the active mobile `<a>` (Nav.tsx:159-171), add `relative` and render `motion.span layoutId="nav-indicator-mobile"` before the label. Satisfies nav-interaction "Mobile indicator slides" / "No cross-list jump" / "Distinct layoutId values".
+- [x] 1.7 Tests: scroll toggles cleanly at threshold (crosses/reverts/no thrash); both `layoutId` spans coexist with different id values when both lists are mounted; indicator animates with `prefersReduced=false` and renders without an animated slide with `prefersReduced=true` (needs WU0 mock).
 
 ## WU2: Mobile menu `AnimatePresence` (`src/components/layout/Nav.tsx`) — after WU1
 
