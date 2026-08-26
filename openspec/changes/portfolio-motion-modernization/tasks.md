@@ -92,9 +92,9 @@ At ~390/400 lines the change sits at the review-budget ceiling with no margin. P
 
 ## WU7: Delete `SkillCard.tsx` + README cleanup
 
-- [ ] 7.1 Delete `src/components/ui/SkillCard.tsx` (no barrel files exist in `src/`; zero code importers confirmed in design.md).
-- [ ] 7.2 Update `README.md:101` (remove `SkillCard` from the `ui/` inventory) and remove `README.md:229` (known-issue C1, now stale). Leave `HANDOFF.md` untouched (historical log).
-- [ ] 7.3 Verify: `pnpm build` (`tsc -b`) passes with zero missed importer errors.
+- [x] 7.1 Delete `src/components/ui/SkillCard.tsx` (no barrel files exist in `src/`; zero code importers confirmed in design.md).
+- [x] 7.2 Update `README.md:101` (remove `SkillCard` from the `ui/` inventory) and remove `README.md:229` (known-issue C1, now stale). Leave `HANDOFF.md` untouched (historical log).
+- [x] 7.3 Verify: `pnpm build` (`tsc -b`) passes with zero missed importer errors.
 
 ---
 
