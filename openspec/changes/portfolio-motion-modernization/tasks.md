@@ -71,9 +71,9 @@ At ~390/400 lines the change sits at the review-budget ceiling with no margin. P
 
 ## WU4: ThemeToggle icon crossfade (`src/theme/ThemeToggle.tsx`)
 
-- [ ] 4.1 Add `ICON_PX = 18`, `ICON_SHOWN`/`ICON_HIDDEN` animate targets, `ICON_TRANSITION` (`duration: 0.28`)/`ICON_INSTANT` (`duration: 0`), and `const prefersReduced = useReducedMotion()`.
-- [ ] 4.2 Wrap button content in a fixed-size `relative` `<span>`; render two always-mounted `motion.span` (absolute, `initial={false}`) around the existing unchanged sun/moon `<svg>`, animate targets swapped on `isDark`, `transition={prefersReduced ? ICON_INSTANT : ICON_TRANSITION}`.
-- [ ] 4.3 Tests: crossfade plays both directions (sun→moon, moon→sun); both icon elements exist mid-transition, differentiated by opacity; rotation/scale suppressed under reduce while crossfade may still play; full morph plays under `no-preference`. Satisfies interaction-motion "Theme toggle icon morph" + motion-accessibility "Theme-toggle rotation" scenarios.
+- [x] 4.1 Add `ICON_PX = 18`, `ICON_SHOWN`/`ICON_HIDDEN` animate targets, `ICON_TRANSITION` (`duration: 0.28`)/`ICON_INSTANT` (`duration: 0`), and `const prefersReduced = useReducedMotion()`.
+- [x] 4.2 Wrap button content in a fixed-size `relative` `<span>`; render two always-mounted `motion.span` (absolute, `initial={false}`) around the existing unchanged sun/moon `<svg>`, animate targets swapped on `isDark`, `transition={prefersReduced ? ICON_INSTANT : ICON_TRANSITION}`.
+- [x] 4.3 Tests: crossfade plays both directions (sun→moon, moon→sun); both icon elements exist mid-transition, differentiated by opacity; rotation/scale suppressed under reduce while crossfade may still play; full morph plays under `no-preference`. Satisfies interaction-motion "Theme toggle icon morph" + motion-accessibility "Theme-toggle rotation" scenarios.
 
 ## WU5: Hero line-stagger (`src/components/sections/Hero.tsx`)
 
