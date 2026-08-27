@@ -1,4 +1,4 @@
-import type { PortfolioContent } from "./content";
+import { IMAGE_URLS, PROJECT_ASSETS, type PortfolioContent } from "./content";
 
 export const es: PortfolioContent = {
   meta: {
@@ -47,7 +47,7 @@ export const es: PortfolioContent = {
 
       "Hoy soy capaz de construir aplicaciones full-stack completas con React, Node.js, Express y PostgreSQL. Mi diferencial: uso la IA estratégicamente —spec-driven development, evaluación de modelos y optimización de contextos. No es el camino típico, pero cada paso, desde el taller hasta el código, me dio herramientas que quiero aplicar en mi próximo desafío profesional.",
     ],
-    photoUrl: "https://res.cloudinary.com/dc3kybsmr/image/upload/v1752021992/max_foto_yqzdwl.png",
+    photoUrl: IMAGE_URLS.aboutPhoto,
     photoAlt: "Retrato de Maximiliano Vallejo",
   },
 
@@ -111,9 +111,7 @@ export const es: PortfolioContent = {
       description:
         "Sistema integral de gestión de inventarios y punto de venta (POS) con motor de descuentos dinámico, control de stock en tiempo real, seguimiento de ventas, cuentas corrientes y reportes estadísticos avanzados.",
       techTags: ["React", "Node.js", "Express", "PostgreSQL", "Prisma", "JWT"],
-      liveUrl: "https://stockdetienda.vercel.app",
-      repoUrl: "https://github.com/MaximilianoVallejo1991/stock-controll-main",
-      screenshot: "https://picsum.photos/seed/stock-control/800/450",
+      ...PROJECT_ASSETS.stockControl,
     },
     {
       slug: "elianapp",
@@ -121,9 +119,7 @@ export const es: PortfolioContent = {
       description:
         "Aplicación para control de gastos compartidos: cada persona reporta sus propios items, el sistema valida y balancea. Soporta división equitativa, por porcentaje y exacta por participante.",
       techTags: ["React 19", "Express 5", "Prisma 7", "PostgreSQL", "JWT"],
-      liveUrl: "https://elianapp.vercel.app",
-      repoUrl: "https://github.com/MaximilianoVallejo1991/ElianApp",
-      screenshot: "https://picsum.photos/seed/elianapp/800/450",
+      ...PROJECT_ASSETS.elianapp,
     },
     {
       slug: "countdown-christmas",
@@ -131,9 +127,7 @@ export const es: PortfolioContent = {
       description:
         "Buscá tu país y mirá la cuenta regresiva hasta Navidad y Año Nuevo. Proyecto liviano con despliegue en Vercel.",
       techTags: ["JavaScript", "HTML5", "CSS3", "Vercel"],
-      liveUrl: "https://tochristmas.vercel.app",
-      repoUrl: "https://github.com/MaximilianoVallejo1991/CountdownToChristmas",
-      screenshot: "https://picsum.photos/seed/christmas/800/450",
+      ...PROJECT_ASSETS.countdownChristmas,
     },
   ],
 

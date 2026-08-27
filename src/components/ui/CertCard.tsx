@@ -14,7 +14,7 @@ export default function CertCard({ cert, index }: CertCardProps) {
     <motion.article
       {...fadeInItem(index)}
       whileHover={prefersReduced ? undefined : hoverLift}
-      className="flex cursor-pointer flex-col rounded-lg border border-border bg-surface p-5 transition-colors duration-200 hover:border-accent/40"
+      className="relative flex cursor-pointer flex-col rounded-lg border border-border bg-surface p-5 transition-[border-color,opacity] duration-300 hover:z-10 hover:border-accent/40 group-hover/grid:!opacity-40 hover:!opacity-100"
     >
       <h3 className="font-heading text-base font-semibold text-primary">
         {cert.title}

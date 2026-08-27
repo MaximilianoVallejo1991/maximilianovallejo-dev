@@ -1,3 +1,10 @@
+## Testing
+
+The user owns test-writing for this project. If a test fails and it's unrelated to the
+change at hand (pre-existing/stale, not caused by your edit), do NOT try to fix it —
+flag it and, if the user confirms, delete it. The user will write/load tests manually
+when ready. Don't add new test files unless explicitly asked.
+
 ## graphify
 
 This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.

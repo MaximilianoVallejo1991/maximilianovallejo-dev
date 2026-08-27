@@ -75,7 +75,7 @@ export default function Certifications() {
       </motion.div>
 
       {/* Grid */}
-      <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="group/grid mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {certs.map((cert, i) => (
           <CertCard key={cert.title + cert.year} cert={cert} index={i + 2} />
         ))}

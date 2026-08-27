@@ -139,6 +139,33 @@ export interface NavLinkData {
   label: string;
 }
 
+/** Image URLs shared verbatim between content.es.ts and content.en.ts.
+    Single source of truth so both locales stay in sync. */
+export const IMAGE_URLS = {
+  aboutPhoto:
+    "https://res.cloudinary.com/dc3kybsmr/image/upload/v1752021992/max_foto_yqzdwl.png",
+} as const;
+
+/** Per-project screenshot/live/repo URLs — identical in both locales
+    (a live demo or a GitHub repo has no language). Keyed by slug. */
+export const PROJECT_ASSETS = {
+  stockControl: {
+    screenshot: "https://picsum.photos/seed/stock-control/800/450",
+    liveUrl: "https://stockdetienda.vercel.app",
+    repoUrl: "https://github.com/MaximilianoVallejo1991/stock-controll-main",
+  },
+  elianapp: {
+    screenshot: "https://picsum.photos/seed/elianapp/800/450",
+    liveUrl: "https://elianapp.vercel.app",
+    repoUrl: "https://github.com/MaximilianoVallejo1991/ElianApp",
+  },
+  countdownChristmas: {
+    screenshot: "https://picsum.photos/seed/christmas/800/450",
+    liveUrl: "https://tochristmas.vercel.app",
+    repoUrl: "https://github.com/MaximilianoVallejo1991/CountdownToChristmas",
+  },
+} as const;
+
 export interface PortfolioContent {
   meta: SiteMeta;
   construction: ConstructionBanner;
