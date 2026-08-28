@@ -42,7 +42,7 @@ export default function Certifications() {
   const isEn = content.hero.greeting === "Hi, I'm";
 
   return (
-    <SectionWrapper id="certifications" className="mx-auto max-w-6xl px-4 py-20 md:py-28">
+    <SectionWrapper id="certifications" className="min-h-screen mx-auto max-w-6xl px-4 py-20 md:py-28">
       <motion.h2
         {...fadeInItem(0)}
         className="font-heading text-3xl font-bold text-primary md:text-4xl"

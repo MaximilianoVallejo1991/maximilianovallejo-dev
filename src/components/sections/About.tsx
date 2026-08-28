@@ -8,7 +8,7 @@ export default function About() {
   const { about } = content;
 
   return (
-    <SectionWrapper id="about" className="mx-auto max-w-6xl px-4 py-12 md:py-28">
+    <SectionWrapper id="about" className="min-h-screen mx-auto max-w-6xl px-4 py-12 md:py-28">
       {/* Mobile: portrait above title */}
       <motion.img
         {...fadeInItem(0)}

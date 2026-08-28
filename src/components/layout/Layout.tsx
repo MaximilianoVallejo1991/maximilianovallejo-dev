@@ -5,8 +5,7 @@ import Nav from "./Nav";
 import Footer from "./Footer";
 import Hero from "../sections/Hero";
 import About from "../sections/About";
-import Skills from "../sections/Skills";
-import Projects from "../sections/Projects";
+import SkillsProjects from "../sections/SkillsProjects";
 import Experience from "../sections/Experience";
 import Certifications from "../sections/Certifications";
 import Contact from "../sections/Contact";
@@ -32,8 +31,7 @@ export default function Layout() {
         <motion.main id="main-content" key={language} {...fade}>
           <Hero />
           <About />
-          <Skills />
-          <Projects />
+          <SkillsProjects />
           <Experience />
           <Certifications />
           <Contact />

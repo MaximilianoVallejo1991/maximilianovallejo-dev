@@ -50,7 +50,7 @@ export default function SectionWrapper({
     <motion.section
       id={id}
       ref={ref}
-      className={`scroll-mt-14 ${className}`}
+      className={`scroll-mt-14 snap-start ${className}`}
       variants={prefersReduced ? undefined : containerVariants}
       initial={prefersReduced ? "visible" : "hidden"}
       animate={inView ? "visible" : "hidden"}

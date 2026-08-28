@@ -46,6 +46,10 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* Native scroll-snap on the document's own scrolling box (not a wrapper
+       div) — window.scrollY / window.scrollTo and the Nav IntersectionObserver
+       (default root: viewport) both keep working untouched. */
+    scroll-snap-type: y mandatory;
   }
 
   body {
