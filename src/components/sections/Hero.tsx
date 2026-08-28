@@ -198,7 +198,7 @@ export default function Hero() {
     <section
       id="hero"
       ref={sectionRef}
-      className="relative flex min-h-screen flex-col items-center justify-center md:overflow-hidden px-4 scroll-mt-14"
+      className="relative flex min-h-screen flex-col items-center justify-center md:overflow-hidden px-4 scroll-mt-14 snap-start"
     >
       {/* ─── DESKTOP: single SVG coordinate system ─── */}
       {/*
