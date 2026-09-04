@@ -16,22 +16,9 @@ export default function SkillsProjects() {
       id="skills-projects"
       className="min-h-screen mx-auto max-w-6xl px-4 py-20 md:py-28"
     >
-      <div id="skills" className="snap-start scroll-mt-14">
+      <div id="projects" className="snap-start scroll-mt-14">
         <motion.h2
           {...fadeInItem(0)}
-          className="font-heading text-3xl font-bold text-primary md:text-4xl"
-        >
-          {navLinks.find((l) => l.href === "#skills")?.label}
-        </motion.h2>
-
-        <motion.div {...fadeInItem(1)} className="mt-10">
-          <SkillCarousel skills={allSkills} />
-        </motion.div>
-      </div>
-
-      <div id="projects" className="snap-start mt-16 scroll-mt-14 md:mt-20">
-        <motion.h2
-          {...fadeInItem(2)}
           className="font-heading text-3xl font-bold text-primary md:text-4xl"
         >
           {navLinks.find((l) => l.href === "#projects")?.label}
@@ -42,6 +29,19 @@ export default function SkillsProjects() {
             <ProjectCard key={project.slug} project={project} index={i + 1} />
           ))}
         </div>
+      </div>
+
+      <div id="skills" className="snap-start mt-16 scroll-mt-14 md:mt-20">
+        <motion.h2
+          {...fadeInItem(1)}
+          className="font-heading text-3xl font-bold text-primary md:text-4xl"
+        >
+          {navLinks.find((l) => l.href === "#skills")?.label}
+        </motion.h2>
+
+        <motion.div {...fadeInItem(2)} className="mt-10">
+          <SkillCarousel skills={allSkills} />
+        </motion.div>
       </div>
     </SectionWrapper>
   );

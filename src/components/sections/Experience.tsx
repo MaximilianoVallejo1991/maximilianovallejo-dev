@@ -336,7 +336,7 @@ export default function Experience() {
   return (
     <SectionWrapper
       id="experience"
-      className="h-screen overflow-y-auto mx-auto max-w-6xl px-4 py-20 md:py-28"
+      className="h-screen overflow-y-auto scrollbar-hidden mx-auto max-w-6xl px-4 py-20 md:py-28"
     >
       <motion.h2
         {...fadeInItem(0)}
