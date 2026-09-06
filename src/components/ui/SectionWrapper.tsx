@@ -31,9 +31,12 @@ export function fadeInItem(index: number) {
   };
 }
 
+// No `scale` here on purpose: scaling an element that also carries a 1px
+// border makes Chrome round that border to a sub-pixel position, which
+// renders one side crisp and the other nearly invisible (visible on
+// ProjectCard's hover reveal and CertCard's border). Lift via `y` only.
 export const hoverLift = {
   y: -80,
-  scale: 1.02,
   transition: { type: "spring", stiffness: 400, damping: 30 },
 } as const;
 
