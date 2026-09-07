@@ -153,17 +153,20 @@ export const IMAGE_URLS = {
     (a live demo or a GitHub repo has no language). Keyed by slug. */
 export const PROJECT_ASSETS = {
   stockControl: {
-    screenshot: "https://picsum.photos/seed/stock-control/800/450",
+    screenshot:
+      "https://res.cloudinary.com/dc3kybsmr/image/upload/c_fill,g_north,h_450,w_800/f_auto/q_auto/projects/stock-control.png",
     liveUrl: "https://stockdetienda.vercel.app",
     repoUrl: "https://github.com/MaximilianoVallejo1991/stock-controll-main",
   },
   elianapp: {
-    screenshot: "https://picsum.photos/seed/elianapp/800/450",
+    screenshot:
+      "https://res.cloudinary.com/dc3kybsmr/image/upload/c_fill,g_north,h_450,w_800/f_auto/q_auto/projects/elianapp.png",
     liveUrl: "https://elianapp.vercel.app",
     repoUrl: "https://github.com/MaximilianoVallejo1991/ElianApp",
   },
   countdownChristmas: {
-    screenshot: "https://picsum.photos/seed/christmas/800/450",
+    screenshot:
+      "https://res.cloudinary.com/dc3kybsmr/image/upload/c_fill,g_north,h_450,w_800/f_auto/q_auto/projects/countdown-christmas.png",
     liveUrl: "https://tochristmas.vercel.app",
     repoUrl: "https://github.com/MaximilianoVallejo1991/CountdownToChristmas",
   },
