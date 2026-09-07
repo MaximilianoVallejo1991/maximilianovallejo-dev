@@ -14,11 +14,17 @@ const FILTERS: { key: CertFilter; label: { es: string; en: string } }[] = [
   { key: "extracurricular", label: { es: "Extracurricular", en: "Extracurricular" } },
 ];
 
+// Two full rows on desktop (lg:grid-cols-3) before the fade + "show more"
+// kicks in. Below this, every cert already fits without needing to collapse
+// anything, so the fade/button never render for small categories.
+const VISIBLE_CAP = 6;
+
 export default function Certifications() {
   const content = useContent();
   const { certifications } = content;
   const [filter, setFilter] = useState<CertFilter>("all");
   const [openCert, setOpenCert] = useState<CertItem | null>(null);
+  const [expanded, setExpanded] = useState(false);
   const availableKeys = useMemo(
     () => new Set(certifications.filter((c) => c.items.length > 0).map((c) => c.categoryKey)),
     [certifications],
@@ -36,8 +42,14 @@ export default function Certifications() {
     return all.filter((c) => c.categoryKey === filter);
   }, [certifications, filter]);
 
+  const isCappable = certs.length > VISIBLE_CAP;
+  const visibleCerts = isCappable && !expanded ? certs.slice(0, VISIBLE_CAP) : certs;
+
   const handleFilter = (key: CertFilter) => {
     setFilter((prev) => (prev === key ? "all" : key));
+    // Switching category starts collapsed again — showing 19 formal certs
+    // because the user had expanded "all" earlier would defeat the point.
+    setExpanded(false);
   };
 
   // Detect language from content (use navLinks as proxy since meta doesn't have lang)
@@ -76,17 +88,50 @@ export default function Certifications() {
         ))}
       </motion.div>
 
-      {/* Grid */}
-      <div className="group/grid mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {certs.map((cert, i) => (
-          <CertCard
-            key={cert.title + cert.year}
-            cert={cert}
-            index={i + 2}
-            onOpen={setOpenCert}
+      {/* Grid — relative wrapper so the fade overlay below can sit on top
+          of the (collapsed) last row instead of pushing layout around. */}
+      <div className="relative">
+        <div className="group/grid mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {visibleCerts.map((cert, i) => (
+            <CertCard
+              key={cert.title + cert.year}
+              cert={cert}
+              index={i + 2}
+              onOpen={setOpenCert}
+            />
+          ))}
+        </div>
+
+        {/* Fade-to-background over the collapsed grid's bottom edge — same
+            `bg-surface` token as both the page background (Layout.tsx) and
+            the cards themselves, so it reads as the grid trailing off
+            rather than a colored bar. Only rendered while capped, so it
+            never lingers once everything is shown. */}
+        {isCappable && !expanded && (
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-surface to-transparent"
           />
-        ))}
+        )}
       </div>
+
+      {isCappable && (
+        <div className="mt-6 flex justify-center">
+          <button
+            type="button"
+            onClick={() => setExpanded((prev) => !prev)}
+            className="cursor-pointer rounded-full border border-border px-5 py-2 font-body text-sm font-medium text-muted transition-colors duration-200 hover:border-accent/40 hover:text-accent"
+          >
+            {expanded
+              ? isEn
+                ? "Show less"
+                : "Ver menos"
+              : isEn
+                ? `Show more (${certs.length - VISIBLE_CAP})`
+                : `Ver más (${certs.length - VISIBLE_CAP})`}
+          </button>
+        </div>
+      )}
 
       <CertLightbox cert={openCert} onClose={() => setOpenCert(null)} />
     </SectionWrapper>
