@@ -15,11 +15,16 @@ const cert: CertItem = {
   title: "Test Cert",
   issuer: "Test Issuer",
   year: "2024",
+  description: "Test description",
+  thumbnailUrl: "https://example.com/thumb.jpg",
+  imageUrl: "https://example.com/full.jpg",
 };
+
+const noop = () => {};
 
 describe("CertCard — hover lift (no reduced-motion preference)", () => {
   it("applies a y/scale transform on hover", async () => {
-    const { container } = render(<CertCard cert={cert} index={0} />);
+    const { container } = render(<CertCard cert={cert} index={0} onOpen={noop} />);
     const article = container.querySelector("article")!;
 
     expect(article.style.boxShadow).toBe("");
@@ -34,7 +39,7 @@ describe("CertCard — hover lift (no reduced-motion preference)", () => {
   });
 
   it("returns to rest (no transform) on hover-out", async () => {
-    const { container } = render(<CertCard cert={cert} index={0} />);
+    const { container } = render(<CertCard cert={cert} index={0} onOpen={noop} />);
     const article = container.querySelector("article")!;
 
     fireEvent.pointerEnter(article);

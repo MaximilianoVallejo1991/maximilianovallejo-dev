@@ -17,11 +17,14 @@ const cert: CertItem = {
   title: "Test Cert",
   issuer: "Test Issuer",
   year: "2024",
+  description: "Test description",
+  thumbnailUrl: "https://example.com/thumb.jpg",
+  imageUrl: "https://example.com/full.jpg",
 };
 
 describe("CertCard — hover lift suppressed under prefers-reduced-motion: reduce", () => {
   it("applies no transform on hover", () => {
-    const { container } = render(<CertCard cert={cert} index={0} />);
+    const { container } = render(<CertCard cert={cert} index={0} onOpen={() => {}} />);
     const article = container.querySelector("article")!;
 
     fireEvent.pointerEnter(article);
