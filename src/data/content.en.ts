@@ -275,80 +275,241 @@ export const en: PortfolioContent = {
 
   certifications: [
     {
-      category: "Lorem",
+      category: "Formal",
       categoryKey: "formal",
       items: [
         {
-          title: "Lorem Ipsum Dolor",
-          issuer: "Sit Amet Consectetur",
-          year: "20XX",
+          title: "APN Guide",
+          year: "2019",
+          description:
+            "Certification as a guide with Argentina's National Parks Administration (APN).",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/guia-apn-2019.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/guia-apn-2019.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/guia-apn-2019.pdf",
         },
         {
-          title: "Adipiscing Elit",
-          issuer: "Sed Do Eiusmod",
-          year: "20XX",
+          title: "APN Guide Certification 2020",
+          year: "2020",
+          description:
+            "Resolution certifying guide qualification with Argentina's National Parks Administration.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/habilitacion-guia-apn-2020.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/habilitacion-guia-apn-2020.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/habilitacion-guia-apn-2020.pdf",
+        },
+        {
+          title: "APN Guide Certification 2021",
+          year: "2021",
+          description:
+            "Resolution certifying guide qualification with Argentina's National Parks Administration.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/habilitacion-guia-apn-2021.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/habilitacion-guia-apn-2021.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/habilitacion-guia-apn-2021.pdf",
+        },
+        {
+          title: "MMO — Degree in Process",
+          year: "N/A",
+          description: "Proof of degree in process (MMO).",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/mmo-constancia-tramite.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/mmo-constancia-tramite.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/mmo-constancia-tramite.pdf",
+        },
+        {
+          title: "MMO — Diploma",
+          year: "N/A",
+          description: "Diploma for the MMO program.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/mmo-diploma.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/mmo-diploma.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/mmo-diploma.pdf",
+        },
+        {
+          title: "Construction Technician — Diploma",
+          year: "N/A",
+          description: "Diploma for the Construction Technician program.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/tec-constructor-diploma.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/tec-constructor-diploma.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/tec-constructor-diploma.pdf",
+        },
+        {
+          title: "Electronics & Home Appliance Repair Technician",
+          year: "N/A",
+          description:
+            "Technical training certificate in electronics and home appliance repair.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/tec-electronica-electrodomesticos.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/tec-electronica-electrodomesticos.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/tec-electronica-electrodomesticos.pdf",
+        },
+        {
+          title: "Official Transcript — Construction Technician",
+          year: "N/A",
+          description:
+            "Official transcript for the Construction Technician degree.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/titulo-analitico-tec-constructor.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/titulo-analitico-tec-constructor.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/titulo-analitico-tec-constructor.pdf",
+        },
+        {
+          title: "ILVEM",
+          year: "N/A",
+          description: "Secondary school completion certificate (ILVEM).",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/ilvem.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/ilvem.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/ilvem.pdf",
         },
       ],
     },
     {
-      category: "Ipsum",
+      category: "Technical",
       categoryKey: "tecnica",
       items: [
         {
-          title: "Tempor Incididunt",
-          issuer: "Ut Labore",
-          year: "20XX",
+          title: "Argentina Programa",
+          year: "2021",
+          description:
+            'Completion certificate for the "Argentina Programa" software development training program.',
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/argentina-programa.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/argentina-programa.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/argentina-programa.pdf",
         },
         {
-          title: "Dolore Magna",
-          issuer: "Aliqua Ut Enim",
-          year: "20XX",
+          title: "QA",
+          year: "2021",
+          description:
+            "Certificate in software testing and quality assurance (QA).",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/qa-2021.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/qa-2021.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/qa-2021.pdf",
         },
         {
-          title: "Ad Minam Veniam",
-          issuer: "Quis Nostrud",
-          year: "20XX",
-        },
-        {
-          title: "Exercitation Ullamco",
-          issuer: "Laboris Nisi",
-          year: "20XX",
-        },
-        {
-          title: "Aliquip Ex Ea",
-          issuer: "Commodo Consequat",
-          year: "20XX",
-        },
-        {
-          title: "Duis Aute Irure",
-          issuer: "Dolor In Reprehenderit",
-          year: "20XX",
+          title: "Introduction to AI-Assisted Development",
+          year: "2026",
+          description:
+            "Certificate from an introductory course on AI-assisted software development.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/inicio-desarrollo-ia.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/inicio-desarrollo-ia.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/inicio-desarrollo-ia.pdf",
         },
       ],
     },
     {
-      category: "Dolor",
+      category: "Extracurricular",
       categoryKey: "extracurricular",
       items: [
         {
-          title: "In Voluptate Velit",
-          issuer: "Esse Cillum",
-          year: "20XX",
+          title: "Municipal Mountaineering Recognition",
+          year: "2024",
+          description:
+            "Municipal recognition for contribution and track record in mountaineering.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/distincion-montanismo-municipal.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/distincion-montanismo-municipal.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/distincion-montanismo-municipal.pdf",
         },
         {
-          title: "Dolore Eu Fugiat",
-          issuer: "Nulla Pariatur",
-          year: "20XX",
+          title: "Personnel Evaluation — PJT",
+          year: "N/A",
+          description: "Job performance evaluation at PJT Sistemas.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/evaluacion-personal-pjt.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/evaluacion-personal-pjt.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/evaluacion-personal-pjt.pdf",
         },
         {
-          title: "Excepteur Sint",
-          issuer: "Occaecat Cupidatat",
-          year: "20XX",
+          title: "Scout Training",
+          year: "N/A",
+          description: "Training certificate from the Scout movement.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/formacion-scout.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/formacion-scout.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/formacion-scout.pdf",
         },
         {
-          title: "Non Proident",
-          issuer: "Sunt In Culpa",
-          year: "20XX",
+          title: "Scout Instructor",
+          year: "N/A",
+          description:
+            "Certification as an instructor within the Scout movement.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/instructor-scout.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/instructor-scout.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/instructor-scout.pdf",
+        },
+        {
+          title: "First Aid",
+          year: "N/A",
+          description: "First aid training certificate.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/primeros-auxilios.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/primeros-auxilios.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/primeros-auxilios.pdf",
+        },
+        {
+          title: "RCP",
+          year: "N/A",
+          description:
+            "Certificate in cardiopulmonary resuscitation (CPR) training.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/rcp.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/rcp.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/rcp.pdf",
+        },
+        {
+          title: "Workshop — Work Certificate",
+          year: "N/A",
+          description:
+            "Certificate of workshop participation and work performance.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/taller-certificado-trabajo.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/taller-certificado-trabajo.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/taller-certificado-trabajo.pdf",
         },
       ],
     },

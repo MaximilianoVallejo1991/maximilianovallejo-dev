@@ -102,8 +102,11 @@ export interface ExperienceData {
 
 export interface CertItem {
   title: string;
-  issuer: string;
+  issuer?: string;
   year: string;
+  description: string;
+  thumbnailUrl: string;
+  imageUrl: string;
   pdfUrl?: string;
 }
 

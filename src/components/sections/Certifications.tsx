@@ -2,9 +2,10 @@ import { useState, useMemo } from "react";
 import { useContent } from "../../hooks/useContent";
 import SectionWrapper from "../ui/SectionWrapper";
 import CertCard from "../ui/CertCard";
+import CertLightbox from "../ui/CertLightbox";
 import { motion } from "motion/react";
 import { fadeInItem } from "../ui/SectionWrapper";
-import type { CertFilter } from "../../data/content";
+import type { CertFilter, CertItem } from "../../data/content";
 
 const FILTERS: { key: CertFilter; label: { es: string; en: string } }[] = [
   { key: "all", label: { es: "Todas", en: "All" } },
@@ -17,6 +18,7 @@ export default function Certifications() {
   const content = useContent();
   const { certifications } = content;
   const [filter, setFilter] = useState<CertFilter>("all");
+  const [openCert, setOpenCert] = useState<CertItem | null>(null);
   const availableKeys = useMemo(
     () => new Set(certifications.filter((c) => c.items.length > 0).map((c) => c.categoryKey)),
     [certifications],
@@ -77,9 +79,16 @@ export default function Certifications() {
       {/* Grid */}
       <div className="group/grid mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {certs.map((cert, i) => (
-          <CertCard key={cert.title + cert.year} cert={cert} index={i + 2} />
+          <CertCard
+            key={cert.title + cert.year}
+            cert={cert}
+            index={i + 2}
+            onOpen={setOpenCert}
+          />
         ))}
       </div>
+
+      <CertLightbox cert={openCert} onClose={() => setOpenCert(null)} />
     </SectionWrapper>
   );
 }
