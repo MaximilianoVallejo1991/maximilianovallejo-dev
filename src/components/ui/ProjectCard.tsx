@@ -36,7 +36,15 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
         )}
       </div>
 
-      <div className="relative z-20 bg-surface p-5">
+      {/* rounded-b-xl at rest matches the article's own rounded-xl bottom
+          corners — the article has no overflow-hidden (it can't, the
+          reveal below needs to escape its box), so without a matching
+          radius here this flat-cornered bg-surface rectangle would paint
+          straight over the article's rounded corner and square it off.
+          It un-rounds together with the article on hover so the card and
+          the reveal panel below read as one seamless shape, not a rounded
+          box suddenly growing square corners mid-transition. */}
+      <div className="relative z-20 rounded-b-xl bg-surface p-5 transition-[border-radius] duration-300 group-hover:rounded-b-none">
         <h3 className="font-heading text-lg font-semibold text-primary">
           {project.title}
         </h3>
