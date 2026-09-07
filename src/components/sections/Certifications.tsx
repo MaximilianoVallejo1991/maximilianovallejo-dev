@@ -22,7 +22,7 @@ const VISIBLE_CAP = 6;
 export default function Certifications() {
   const content = useContent();
   const { certifications } = content;
-  const [filter, setFilter] = useState<CertFilter>("all");
+  const [filter, setFilter] = useState<CertFilter>("tecnica");
   const [openCert, setOpenCert] = useState<CertItem | null>(null);
   const [expanded, setExpanded] = useState(false);
   const availableKeys = useMemo(
