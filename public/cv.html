@@ -15,14 +15,14 @@
     }
 
     html {
-      font-size: 14px;
+      font-size: 13px;
     }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       color: #1a1a1a;
       background: #f5f5f5;
-      line-height: 1.5;
+      line-height: 1.32;
       padding: 2rem 1rem;
     }
 
@@ -38,7 +38,7 @@
     /* ── Colored top bar ── */
     .topbar {
       background: linear-gradient(135deg, #1e40af, #2563eb);
-      padding: 1.6rem 2.2rem 1.2rem;
+      padding: 1.6rem 2.2rem 1.2rem 2.6rem;
       color: #fff;
     }
 
@@ -75,7 +75,7 @@
 
     /* ── Body ── */
     .body-wrap {
-      padding: 1.2rem 2.2rem 1.6rem;
+      padding: 1rem 2rem 1.2rem 2.6rem;
     }
 
     h2 {
@@ -85,8 +85,8 @@
       letter-spacing: .06em;
       color: #1e40af;
       border-bottom: 2px solid #2563eb;
-      padding-bottom: .3rem;
-      margin: 1.2rem 0 .6rem;
+      padding-bottom: .2rem;
+      margin: .5rem 0 .32rem;
     }
 
     h2:first-of-type {
@@ -133,26 +133,41 @@
     }
 
     /* ── Skills ── */
+    .skills-row {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: .3rem .5rem;
+      margin-bottom: .3rem;
+    }
+
+    .skills-label {
+      font-size: .8rem;
+      font-weight: 600;
+      color: #555;
+      flex-shrink: 0;
+      min-width: 6.2rem;
+    }
+
     .skills-grid {
       display: flex;
       flex-wrap: wrap;
-      gap: .35rem .45rem;
-      margin: .15rem 0;
+      gap: .3rem .4rem;
     }
 
     .skills-grid span {
       background: #eef2ff;
       color: #1e40af;
-      font-size: .76rem;
+      font-size: .78rem;
       font-weight: 500;
       padding: .12rem .6rem;
       border-radius: 999px;
-      line-height: 1.6;
+      line-height: 1.5;
     }
 
     /* ── Projects ── */
     .project {
-      margin-bottom: .6rem;
+      margin-bottom: .42rem;
     }
 
     .project h3 {
@@ -192,7 +207,7 @@
     .entry {
       display: flex;
       gap: 1rem;
-      margin-bottom: .6rem;
+      margin-bottom: .38rem;
     }
 
     .entry .date {
@@ -231,7 +246,7 @@
 
     /* ── Education ── */
     .edu {
-      margin-bottom: .3rem;
+      margin-bottom: .16rem;
       font-size: .85rem;
     }
 
@@ -256,11 +271,11 @@
       }
 
       .body-wrap {
-        padding: 1rem 2rem 1.4rem;
+        padding: .6rem 1.8rem .5rem 2.4rem;
       }
 
       .topbar {
-        padding: 1.2rem 2rem 1rem;
+        padding: .8rem 1.8rem .6rem 2.4rem;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
@@ -298,7 +313,7 @@
       font-size: .76rem;
       color: #888;
       font-style: italic;
-      margin-top: .8rem;
+      margin-top: .18rem;
     }
   </style>
 </head>
@@ -324,30 +339,38 @@
       <!-- ═══ SOBRE MÍ ═══ -->
       <h2>Sobre mí</h2>
       <p>
-        Desarrollador full stack autodidacta en transición desde la industria mecanica y los oficios.
-        Más de 10 años reparando, diseñando y fabricando maquinaria a me enseñaron
-        a resolver problemas reales con criterio técnico. Hoy construyo aplicaciones web con
-        React, Node.js, TypeScript y PostgreSQL, aplicando buenas prácticas de arquitectura,
-        testing y desarrollo iterativo.
+        No llegué al software por un camino tradicional. Durante más de 10 años trabajé junto a mi padre
+        en un taller de metalmecánica fabricando y reparando maquinaria, mientras cursaba el ciclo básico
+        de Ingeniería. Integrar automatizaciones con diagramas Ladder y PLCs en el taller me llevó al mundo
+        de las impresoras 3D con mi emprendimiento Emme 3D, y de ahí a la programación web: Argentina
+        Programa, un curso de QA Testing y estudio autodidacta. Hoy construyo aplicaciones full-stack
+        completas con React, Node.js, Express y PostgreSQL, usando la IA estratégicamente
+        (spec-driven development, evaluación de modelos, optimización de contextos).
       </p>
 
       <!-- ═══ SKILLS ═══ -->
       <h2>Tecnologías</h2>
 
-      <h4 style="margin-top:.2rem; font-size:.82rem; color:#555;">Frontend</h4>
-      <div class="skills-grid">
-        <span>React</span><span>TypeScript</span><span>JavaScript</span>
-        <span>Next.js</span><span>Tailwind CSS</span><span>HTML / CSS</span><span>Vite</span>
+      <div class="skills-row">
+        <span class="skills-label">Frontend</span>
+        <div class="skills-grid">
+          <span>React</span><span>TypeScript</span><span>JavaScript</span>
+          <span>Tailwind CSS</span><span>HTML / CSS</span>
+        </div>
       </div>
-      <h4 style="margin-top:.3rem; font-size:.82rem; color:#555;">Backend & BBDD</h4>
-      <div class="skills-grid">
-        <span>Node.js</span><span>Express</span><span>PostgreSQL</span><span>MySQL</span>
-        <span>Prisma ORM</span><span>REST APIs</span><span>JWT</span>
+      <div class="skills-row">
+        <span class="skills-label">Backend & BBDD</span>
+        <div class="skills-grid">
+          <span>Node.js</span><span>Express</span><span>PostgreSQL</span><span>MySQL</span>
+          <span>Prisma ORM</span><span>REST APIs</span><span>JWT</span><span>Git / GitHub</span>
+        </div>
       </div>
-      <h4 style="margin-top:.3rem; font-size:.82rem; color:#555;">Herramientas</h4>
-      <div class="skills-grid">
-        <span>Git / GitHub</span><span>Docker</span><span>Linux</span><span>Postman</span>
-        <span>VS Code</span><span>Figma</span><span>Vercel</span>
+      <div class="skills-row">
+        <span class="skills-label">Herramientas</span>
+        <div class="skills-grid">
+          <span>Docker</span><span>Figma</span><span>Vercel</span><span>Render</span>
+          <span>Supabase</span><span>Vite</span><span>Postman</span>
+        </div>
       </div>
 
       <!-- ═══ PROYECTOS ═══ -->
@@ -356,6 +379,7 @@
       <div class="project">
         <h3>Stock Control</h3>
         <div class="links">
+          <a href="https://stockdetienda.vercel.app" target="_blank">Live</a>
           <a href="https://github.com/MaximilianoVallejo1991/stock-controll-main" target="_blank">Repo</a>
         </div>
         <div class="tags">
@@ -363,15 +387,16 @@
           <span>PostgreSQL</span><span>Prisma</span><span>JWT</span>
         </div>
         <p>
-          Sistema de gestión de inventarios y POS con motor de descuentos dinámico,
-          control de stock en tiempo real, cuentas corrientes y reportes estadísticos.
+          Sistema integral de gestión de inventarios y punto de venta (POS) con motor de descuentos
+          dinámico, control de stock en tiempo real, seguimiento de ventas, cuentas corrientes y
+          reportes estadísticos avanzados.
         </p>
       </div>
 
       <div class="project">
         <h3>ElianApp</h3>
         <div class="links">
-          <a href="https://elian-app-frontend.vercel.app" target="_blank">Live</a>
+          <a href="https://elianapp.vercel.app" target="_blank">Live</a>
           <a href="https://github.com/MaximilianoVallejo1991/ElianApp" target="_blank">Repo</a>
         </div>
         <div class="tags">
@@ -379,59 +404,56 @@
           <span>PostgreSQL</span><span>JWT</span>
         </div>
         <p>
-          App de gastos compartidos: cada persona reporta sus items, el sistema valida
-          y balancea. Soporta división equitativa, porcentual y exacta por participante.
+          Aplicación para control de gastos compartidos: cada persona reporta sus propios items,
+          el sistema valida y balancea. Soporta división equitativa, por porcentaje y exacta por
+          participante.
         </p>
       </div>
 
       <div class="project">
-        <h3>Countdown to Christmas</h3>
+        <h3>Mi Portfolio</h3>
         <div class="links">
-          <a href="https://tochristmas.vercel.app" target="_blank">Live</a>
-          <a href="https://github.com/MaximilianoVallejo1991/CountdownToChristmas" target="_blank">Repo</a>
+          <a href="https://maximilianovallejo-dev.vercel.app" target="_blank">Live</a>
+          <a href="https://github.com/MaximilianoVallejo1991/maximilianovallejo-dev" target="_blank">Repo</a>
         </div>
-        <div class="tags"><span>JavaScript</span><span>HTML5</span><span>CSS3</span><span>Vercel</span></div>
-        <p>Countdown interactivo a Navidad y Año Nuevo filtrável por país.</p>
+        <div class="tags"><span>React</span><span>TypeScript</span><span>Vite</span><span>Tailwind CSS</span></div>
+        <p>Sitio portfolio propio con galería de proyectos, timeline de trayectoria y galería de certificaciones con Cloudinary.</p>
       </div>
 
       <!-- ═══ EXPERIENCIA ═══ -->
       <h2>Experiencia</h2>
 
       <div class="entry">
+        <div class="date">Actualidad</div>
+        <div class="body">
+          <h3>Desarrollador Full Stack Autodidacta</h3>
+          <div class="sub">Proyectos propios</div>
+          <ul>
+            <li>Construyo aplicaciones full-stack completas con React, Node.js, Express y PostgreSQL.</li>
+            <li>Uso la IA estratégicamente: spec-driven development, evaluación de modelos, optimización de contextos.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="entry">
         <div class="date">2022 — Actualidad</div>
         <div class="body">
-          <h3>Soporte Técnico y Seguridad Informática</h3>
+          <h3>Soporte IT y Seguridad Informática</h3>
           <div class="sub">Poder Judicial de Tucumán</div>
           <ul>
-            <li>Configuración y mantenimiento de redes de internet e intranet.</li>
-            <li>Supervisión de consola de seguridad, monitoreo de amenazas y medidas preventivas.</li>
-            <li>Reportes de estado de seguridad y desempeño de equipos.</li>
+            <li>Primer trabajo formal en tecnología, en la oficina de Sistemas.</li>
+            <li>Sigo creciendo profesionalmente en el área, con foco en Soporte IT y Seguridad Informática.</li>
           </ul>
         </div>
       </div>
 
       <div class="entry">
-        <div class="date">2023 — Actualidad</div>
+        <div class="date">2019 — 2022</div>
         <div class="body">
-          <h3>Desarrollador Full Stack — Proyectos Propios</h3>
-          <div class="sub">Autodidacta / Freelance</div>
+          <h3>Emme 3D</h3>
+          <div class="sub">Emprendimiento propio de impresión 3D</div>
           <ul>
-            <li>Construyo aplicaciones web completas con React, Node.js, Express y PostgreSQL.</li>
-            <li>Aplico arquitectura limpia, buenas prácticas de testing y desarrollo iterativo.</li>
-            <li>Uso estratégico de IA: spec-driven development, evaluación de modelos, optimización de contextos.</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="entry">
-        <div class="date">2020 — 2022</div>
-        <div class="body">
-          <h3>Propietario — Emme 3D</h3>
-          <div class="sub">Diseño e impresión 3D</div>
-          <ul>
-            <li>Escalé el emprendimiento a 10 impresoras 3D en simultáneo.</li>
-            <li>Diseño industrial y fabricación de productos personalizados con modelado 3D.</li>
-            <li>Gestión completa: mantenimiento, insumos, entregas y atención al cliente.</li>
+            <li>Llegué a tener 10 impresoras funcionando en simultáneo.</li>
           </ul>
         </div>
       </div>
@@ -440,25 +462,22 @@
         <div class="date">2017 — 2022</div>
         <div class="body">
           <h3>Coordinador de Ventas, Alquiler y Logística</h3>
-          <div class="sub">Ladrillos Macizos Concepción</div>
+          <div class="sub">Ladrillos Macizos Concepción — Autónomo</div>
           <ul>
-            <li>Comercialización de maquinaria industrial y materiales de construcción.</li>
-            <li>Gestión de ventas, alquiler, cobranza y administración de contratos.</li>
-            <li>Coordinación de logística de entrega en obra.</li>
-            <li>Diseño de piezas con modelado 3D (Fusion 360, Meshmixer).</li>
+            <li>Comercialización de máquinas y ladrillos fabricados en el propio taller.</li>
+            <li>Gestión de ventas, alquiler y logística de entrega en obra.</li>
           </ul>
         </div>
       </div>
 
       <div class="entry">
-        <div class="date">2009 — 2020</div>
+        <div class="date">2008 — 2019</div>
         <div class="body">
-          <h3>Técnico Mecánico</h3>
-          <div class="sub">Taller Mecánica — reparación, diseño y fabricación de maquinaria industrial</div>
+          <h3>Taller Metalmecánico</h3>
+          <div class="sub">Fabricación y reparación de maquinaria</div>
           <ul>
-            <li>Más de 10 años en reparación y fabricación de maquinaria pesada e industrial.</li>
-            <li>Automatización con PLC Siemens LOGO!8 y sistemas neumáticos.</li>
-            <li>Mantenimiento predictivo y correctivo de maquinaria.</li>
+            <li>Más de 10 años fabricando y reparando maquinaria.</li>
+            <li>Automatización con diagramas Ladder y PLCs.</li>
           </ul>
         </div>
       </div>
@@ -467,28 +486,30 @@
       <h2>Formación</h2>
 
       <div class="edu">
+        <h3>QA Testing</h3>
+        <span class="meta">— 300 horas, certificado por UTN Facultad Regional Tucumán — 2021–2022</span>
+      </div>
+      <div class="edu">
+        <h3>Desarrollo con IA</h3>
+        <span class="meta">— Curso introductorio de desarrollo de software asistido por IA — 2026</span>
+      </div>
+      <div class="edu">
         <h3>Argentina Programa</h3>
-        <span class="meta">— Desarrollo web — 2023</span>
+        <span class="meta">— #SéProgramar, mi entrada formal al código — 2021</span>
       </div>
       <div class="edu">
-        <h3>QA Testing Manual y Automatización</h3>
-        <span class="meta">— UTN Facultad Regional Tucumán — 2024</span>
+        <h3>Platzi</h3>
+        <span class="meta">— Fundamentos de Arquitectura de Software · React.js · Backend con Node.js: API
+          REST con Express.js · Fundamentos de JavaScript, y otras capacitaciones</span>
       </div>
       <div class="edu">
-        <h3>React Avanzado — Patrones y Arquitectura</h3>
-        <span class="meta">— Frontend Masters — 2024</span>
-      </div>
-      <div class="edu">
-        <h3>TypeScript: De Cero a Experto</h3>
-        <span class="meta">— Udemy — 2024</span>
+        <h3>Títulos técnicos previos</h3>
+        <span class="meta">— Técnico Constructor · MMO (Maestro Mayor de Obras) · Técnico en Electrónica y
+          Reparación de Electrodomésticos</span>
       </div>
 
-      <h2 style="margin-top:1rem;">Idiomas</h2>
-      <p>Español nativo · Inglés B1 (en curso)</p>
-
-      <div class="note">
-        Abierto a oportunidades full stack Jr. · Presencial Tucumán / Remoto Argentina
-      </div>
+      <h2>Idiomas</h2>
+      <p>Español nativo · Inglés B1 &nbsp;·&nbsp; <em>Abierto a oportunidades junior o trainee</em></p>
 
     </div><!-- /body-wrap -->
   </div>
