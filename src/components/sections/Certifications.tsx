@@ -11,6 +11,7 @@ const FILTERS: { key: CertFilter; label: { es: string; en: string } }[] = [
   { key: "all", label: { es: "Todas", en: "All" } },
   { key: "formal", label: { es: "Formal", en: "Formal" } },
   { key: "tecnica", label: { es: "Técnica", en: "Technical" } },
+  { key: "platzi", label: { es: "Platzi", en: "Platzi" } },
   { key: "extracurricular", label: { es: "Extracurricular", en: "Extracurricular" } },
 ];
 

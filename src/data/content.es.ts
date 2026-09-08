@@ -58,9 +58,7 @@ export const es: PortfolioContent = {
       items: [
         { name: "React", icon: "react" },
         { name: "TypeScript", icon: "typescript" },
-        { name: "Next.js", icon: "nextjs" },
         { name: "Tailwind CSS", icon: "tailwindcss" },
-        { name: "Astro", icon: "astro" },
         { name: "HTML / CSS", icon: "html" },
         { name: "JavaScript", icon: "javascript" },
       ],
@@ -439,6 +437,162 @@ export const es: PortfolioContent = {
             "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/inicio-desarrollo-ia.jpg",
           pdfUrl:
             "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/inicio-desarrollo-ia.pdf",
+        },
+      ],
+    },
+    {
+      category: "Platzi",
+      categoryKey: "platzi",
+      items: [
+        {
+          title: "Frontend Developer",
+          year: "2024",
+          description: "Diploma de Platzi por aprobar el curso de Frontend Developer.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/platzi-frontend-developer.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/platzi-frontend-developer.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/platzi-frontend-developer.pdf",
+        },
+        {
+          title: "Conseguir Trabajo como Frontend Developer",
+          year: "2024",
+          description:
+            "Diploma de Platzi por aprobar el curso para conseguir trabajo como Frontend Developer.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/platzi-conseguir-trabajo-frontend.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/platzi-conseguir-trabajo-frontend.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/platzi-conseguir-trabajo-frontend.pdf",
+        },
+        {
+          title: "React.js",
+          year: "2024",
+          description: "Diploma de Platzi por aprobar el curso de React.js.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/platzi-react.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/platzi-react.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/platzi-react.pdf",
+        },
+        {
+          title: "Fundamentos de JavaScript",
+          year: "2024",
+          description: "Diploma de Platzi por aprobar el curso de Fundamentos de JavaScript.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/platzi-javascript.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/platzi-javascript.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/platzi-javascript.pdf",
+        },
+        {
+          title: "Backend con Node.js: API REST con Express.js",
+          year: "2026",
+          description:
+            "Diploma de Platzi por aprobar el curso de Backend con Node.js: API REST con Express.js.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/platzi-backend-nodejs-express.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/platzi-backend-nodejs-express.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/platzi-backend-nodejs-express.pdf",
+        },
+        {
+          title: "Práctico de Frontend Developer",
+          year: "2024",
+          description: "Diploma de Platzi por aprobar el curso Práctico de Frontend Developer.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/platzi-frontend-developer-practico.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/platzi-frontend-developer-practico.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/platzi-frontend-developer-practico.pdf",
+        },
+        {
+          title: "Fundamentos de Arquitectura de Software",
+          year: "2026",
+          description:
+            "Diploma de Platzi por aprobar el curso de Fundamentos de Arquitectura de Software.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/platzi-arquitectura-software.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/platzi-arquitectura-software.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/platzi-arquitectura-software.pdf",
+        },
+        {
+          title: "Asincronismo con JavaScript",
+          year: "2024",
+          description: "Diploma de Platzi por aprobar el curso de Asincronismo con JavaScript.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/platzi-asincronismo-js.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/platzi-asincronismo-js.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/platzi-asincronismo-js.pdf",
+        },
+        {
+          title: "React.js con Vite.js y TailwindCSS",
+          year: "2024",
+          description:
+            "Diploma de Platzi por aprobar el curso de React.js con Vite.js y TailwindCSS.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/platzi-react-vite-tailwindcss.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/platzi-react-vite-tailwindcss.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/platzi-react-vite-tailwindcss.pdf",
+        },
+        {
+          title: "Introducción al Desarrollo Backend",
+          year: "2026",
+          description:
+            "Diploma de Platzi por aprobar el curso de Introducción al Desarrollo Backend.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/platzi-backend-intro.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/platzi-backend-intro.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/platzi-backend-intro.pdf",
+        },
+        {
+          title: "Laboratorio de React.js: E-commerce Profesional",
+          year: "2024",
+          description:
+            "Diploma de Platzi por aprobar el Laboratorio de React.js: E-commerce Profesional.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/platzi-react-ecommerce-lab.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/platzi-react-ecommerce-lab.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/platzi-react-ecommerce-lab.pdf",
+        },
+        {
+          title: "NPM: Gestión de Paquetes y Dependencias en JavaScript",
+          year: "2024",
+          description:
+            "Diploma de Platzi por aprobar el curso de NPM: Gestión de Paquetes y Dependencias en JavaScript.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/platzi-npm.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/platzi-npm.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/platzi-npm.pdf",
+        },
+        {
+          title: "Claude AI",
+          year: "2026",
+          description: "Diploma de Platzi por aprobar el curso de Claude AI.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/platzi-claude-ai.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/platzi-claude-ai.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/platzi-claude-ai.pdf",
         },
       ],
     },

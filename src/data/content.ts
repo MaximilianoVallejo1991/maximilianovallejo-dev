@@ -116,7 +116,7 @@ export interface CertCategory {
   items: CertItem[];
 }
 
-export type CertFilter = "all" | "formal" | "tecnica" | "extracurricular";
+export type CertFilter = "all" | "formal" | "tecnica" | "platzi" | "extracurricular";
 
 export interface ContactLinkLabels {
   email: string;
