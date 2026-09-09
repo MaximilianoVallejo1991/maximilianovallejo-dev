@@ -693,7 +693,7 @@ export const es: PortfolioContent = {
   ],
 
   contact: {
-    email: "maximilianovallejo@gmail.com",
+    email: "jmaximilianovallejo@gmail.com",
     linkedin: "https://www.linkedin.com/in/maximiliano-vallejo/",
     github: "https://github.com/MaximilianoVallejo1991",
     cta: "¿Trabajamos juntos?",

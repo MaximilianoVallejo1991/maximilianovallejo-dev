@@ -29,7 +29,7 @@ Portfolio personal bilingüe (ES/EN) de Maximiliano Vallejo. Single-page React 1
 2. ElianApp — Collaborative Expense Tracking — live: `elian-app-frontend.vercel.app`, repo: `MaximilianoVallejo1991/ElianApp`
 3. Countdown to Christmas — live: `tochristmas.vercel.app/`, repo: `MaximilianoVallejo1991/CountdownToChristmas`
 
-**Contacto**: maximilianovallejo@gmail.com · LinkedIn: linkedin.com/in/maximiliano-vallejo/ · GitHub: MaximilianoVallejo1991
+**Contacto**: jmaximilianovallejo@gmail.com · LinkedIn: linkedin.com/in/maximiliano-vallejo/ · GitHub: MaximilianoVallejo1991
 
 ## Estructura de Secciones (implementada)
 
