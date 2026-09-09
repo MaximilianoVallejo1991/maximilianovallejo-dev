@@ -92,26 +92,6 @@ export default function Nav() {
           : "border-transparent bg-surface/90 backdrop-blur-sm"
       }`}
     >
-      <div
-        role="note"
-        className="border-b border-accent/20 bg-accent/10 px-4 py-1.5 text-center text-xs font-medium text-accent"
-      >
-        <span className="font-heading uppercase tracking-wide">
-          {content.construction.label}
-        </span>
-        <span className="mx-2 text-accent/50" aria-hidden="true">
-          &middot;
-        </span>
-        <span>{content.construction.message}</span>
-        <a
-          href={content.contact.linkedin}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="ml-1 underline decoration-accent/40 underline-offset-2 transition-colors hover:decoration-accent"
-        >
-          {content.contact.linkedin}
-        </a>
-      </div>
       <nav
         aria-label={content.navAriaLabel}
         className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3"
