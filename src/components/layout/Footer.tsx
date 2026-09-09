@@ -5,7 +5,12 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-border bg-surface py-8">
+    // Explicit role: footer only gets the implicit contentinfo landmark
+    // when it's NOT a descendant of article/aside/main/nav/section (HTML
+    // spec) — since Contact.tsx now nests this inside its own <section>
+    // (see Contact.tsx for why), that implicit mapping is lost. Stating it
+    // explicitly keeps screen-reader landmark navigation working.
+    <footer role="contentinfo" className="border-t border-border bg-surface py-8">
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-4 text-center text-sm text-muted md:flex-row md:justify-between">
         <p>
           &copy; {year} {content.meta.author}

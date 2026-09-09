@@ -2,7 +2,6 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useLanguage } from "../../i18n/LanguageContext";
 import SkipLink from "./SkipLink";
 import Nav from "./Nav";
-import Footer from "./Footer";
 import Hero from "../sections/Hero";
 import About from "../sections/About";
 import SkillsProjects from "../sections/SkillsProjects";
@@ -37,7 +36,6 @@ export default function Layout() {
           <Contact />
         </motion.main>
       </AnimatePresence>
-      <Footer />
     </div>
   );
 }
