@@ -277,53 +277,6 @@ export const en: PortfolioContent = {
       categoryKey: "formal",
       items: [
         {
-          title: "APN Guide",
-          year: "2019",
-          description:
-            "Certification as a guide with Argentina's National Parks Administration (APN).",
-          thumbnailUrl:
-            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/guia-apn-2019.jpg",
-          imageUrl:
-            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/guia-apn-2019.jpg",
-          pdfUrl:
-            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/guia-apn-2019.pdf",
-        },
-        {
-          title: "APN Guide Certification 2020",
-          year: "2020",
-          description:
-            "Resolution certifying guide qualification with Argentina's National Parks Administration.",
-          thumbnailUrl:
-            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/habilitacion-guia-apn-2020.jpg",
-          imageUrl:
-            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/habilitacion-guia-apn-2020.jpg",
-          pdfUrl:
-            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/habilitacion-guia-apn-2020.pdf",
-        },
-        {
-          title: "APN Guide Certification 2021",
-          year: "2021",
-          description:
-            "Resolution certifying guide qualification with Argentina's National Parks Administration.",
-          thumbnailUrl:
-            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/habilitacion-guia-apn-2021.jpg",
-          imageUrl:
-            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/habilitacion-guia-apn-2021.jpg",
-          pdfUrl:
-            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/habilitacion-guia-apn-2021.pdf",
-        },
-        {
-          title: "MMO — Degree in Process",
-          year: "N/A",
-          description: "Proof of degree in process (MMO).",
-          thumbnailUrl:
-            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/mmo-constancia-tramite.jpg",
-          imageUrl:
-            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/mmo-constancia-tramite.jpg",
-          pdfUrl:
-            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/mmo-constancia-tramite.pdf",
-        },
-        {
           title: "MMO — Diploma",
           year: "N/A",
           description: "Diploma for the MMO program.",
@@ -358,6 +311,34 @@ export const en: PortfolioContent = {
             "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/tec-electronica-electrodomesticos.pdf",
         },
         {
+          title: "Workshop — Work Certificate",
+          year: "N/A",
+          description:
+            "Certificate of workshop participation and work performance.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/taller-certificado-trabajo.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/taller-certificado-trabajo.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/taller-certificado-trabajo.pdf",
+        },
+        /* Hidden — "MMO — Degree in Process" superseded by "MMO — Diploma",
+           keep for future reference.
+        {
+          title: "MMO — Degree in Process",
+          year: "N/A",
+          description: "Proof of degree in process (MMO).",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/mmo-constancia-tramite.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/mmo-constancia-tramite.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/mmo-constancia-tramite.pdf",
+        },
+        */
+        /* Hidden — "Official Transcript — Construction Technician" superseded
+           by "Construction Technician — Diploma", keep for future reference.
+        {
           title: "Official Transcript — Construction Technician",
           year: "N/A",
           description:
@@ -369,22 +350,12 @@ export const en: PortfolioContent = {
           pdfUrl:
             "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/titulo-analitico-tec-constructor.pdf",
         },
-        {
-          title: "ILVEM",
-          year: "N/A",
-          description: "Secondary school completion certificate (ILVEM).",
-          thumbnailUrl:
-            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/ilvem.jpg",
-          imageUrl:
-            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/ilvem.jpg",
-          pdfUrl:
-            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/ilvem.pdf",
-        },
+        */
       ],
     },
     {
-      category: "Technical",
-      categoryKey: "tecnica",
+      category: "Full-Stack Dev",
+      categoryKey: "dev",
       items: [
         {
           title: "Argentina Programa",
@@ -422,12 +393,6 @@ export const en: PortfolioContent = {
           pdfUrl:
             "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/inicio-desarrollo-ia.pdf",
         },
-      ],
-    },
-    {
-      category: "Platzi",
-      categoryKey: "platzi",
-      items: [
         {
           title: "Frontend Developer",
           year: "2024",
@@ -438,6 +403,29 @@ export const en: PortfolioContent = {
             "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/platzi-frontend-developer.jpg",
           pdfUrl:
             "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/platzi-frontend-developer.pdf",
+        },
+        {
+          title: "Node.js Backend: REST API with Express.js",
+          year: "2026",
+          description:
+            "Platzi diploma for completing the Node.js Backend: REST API with Express.js course.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/platzi-backend-nodejs-express.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/platzi-backend-nodejs-express.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/platzi-backend-nodejs-express.pdf",
+        },
+        {
+          title: "Claude AI",
+          year: "2026",
+          description: "Platzi diploma for completing the Claude AI course.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/platzi-claude-ai.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/platzi-claude-ai.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/platzi-claude-ai.pdf",
         },
         {
           title: "Getting a Job as a Frontend Developer",
@@ -472,18 +460,6 @@ export const en: PortfolioContent = {
             "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/platzi-javascript.jpg",
           pdfUrl:
             "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/platzi-javascript.pdf",
-        },
-        {
-          title: "Node.js Backend: REST API with Express.js",
-          year: "2026",
-          description:
-            "Platzi diploma for completing the Node.js Backend: REST API with Express.js course.",
-          thumbnailUrl:
-            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/platzi-backend-nodejs-express.jpg",
-          imageUrl:
-            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/platzi-backend-nodejs-express.jpg",
-          pdfUrl:
-            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/platzi-backend-nodejs-express.pdf",
         },
         {
           title: "Practical Frontend Developer",
@@ -567,23 +543,48 @@ export const en: PortfolioContent = {
           pdfUrl:
             "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/platzi-npm.pdf",
         },
-        {
-          title: "Claude AI",
-          year: "2026",
-          description: "Platzi diploma for completing the Claude AI course.",
-          thumbnailUrl:
-            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/platzi-claude-ai.jpg",
-          imageUrl:
-            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/platzi-claude-ai.jpg",
-          pdfUrl:
-            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/platzi-claude-ai.pdf",
-        },
       ],
     },
     {
       category: "Extracurricular",
       categoryKey: "extracurricular",
       items: [
+        {
+          title: "APN Guide",
+          year: "2019",
+          description:
+            "Certification as a guide with Argentina's National Parks Administration (APN).",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/guia-apn-2019.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/guia-apn-2019.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/guia-apn-2019.pdf",
+        },
+        {
+          title: "APN Guide Certification 2020",
+          year: "2020",
+          description:
+            "Resolution certifying guide qualification with Argentina's National Parks Administration.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/habilitacion-guia-apn-2020.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/habilitacion-guia-apn-2020.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/habilitacion-guia-apn-2020.pdf",
+        },
+        {
+          title: "APN Guide Certification 2021",
+          year: "2021",
+          description:
+            "Resolution certifying guide qualification with Argentina's National Parks Administration.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/habilitacion-guia-apn-2021.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/habilitacion-guia-apn-2021.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/habilitacion-guia-apn-2021.pdf",
+        },
         {
           title: "Municipal Mountaineering Recognition",
           year: "2024",
@@ -595,17 +596,6 @@ export const en: PortfolioContent = {
             "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/distincion-montanismo-municipal.jpg",
           pdfUrl:
             "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/distincion-montanismo-municipal.pdf",
-        },
-        {
-          title: "Personnel Evaluation — PJT",
-          year: "N/A",
-          description: "Job performance evaluation at PJT Sistemas.",
-          thumbnailUrl:
-            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/evaluacion-personal-pjt.jpg",
-          imageUrl:
-            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/evaluacion-personal-pjt.jpg",
-          pdfUrl:
-            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/evaluacion-personal-pjt.pdf",
         },
         {
           title: "Scout Training",
@@ -631,6 +621,28 @@ export const en: PortfolioContent = {
             "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/instructor-scout.pdf",
         },
         {
+          title: "ILVEM",
+          year: "N/A",
+          description: "Secondary school completion certificate (ILVEM).",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/ilvem.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/ilvem.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/ilvem.pdf",
+        },
+        {
+          title: "Personnel Evaluation — PJT",
+          year: "N/A",
+          description: "Job performance evaluation at PJT Sistemas.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/evaluacion-personal-pjt.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/evaluacion-personal-pjt.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/evaluacion-personal-pjt.pdf",
+        },
+        {
           title: "First Aid",
           year: "N/A",
           description: "First aid training certificate.",
@@ -653,18 +665,6 @@ export const en: PortfolioContent = {
           pdfUrl:
             "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/rcp.pdf",
         },
-        {
-          title: "Workshop — Work Certificate",
-          year: "N/A",
-          description:
-            "Certificate of workshop participation and work performance.",
-          thumbnailUrl:
-            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/taller-certificado-trabajo.jpg",
-          imageUrl:
-            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/taller-certificado-trabajo.jpg",
-          pdfUrl:
-            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/taller-certificado-trabajo.pdf",
-        },
       ],
     },
   ],
@@ -684,7 +684,8 @@ export const en: PortfolioContent = {
   navLinks: [
     { href: "#hero", label: "Home" },
     { href: "#about", label: "About" },
-    { href: "#skills", label: "Skills" },
+    // Skills section temporarily hidden — re-add when scroll behavior is fixed.
+    // { href: "#skills", label: "Skills" },
     { href: "#projects", label: "Projects" },
     { href: "#experience", label: "Journey" },
     { href: "#certifications", label: "Certifications" },
