@@ -9,9 +9,8 @@ import type { CertFilter, CertItem } from "../../data/content";
 
 const FILTERS: { key: CertFilter; label: { es: string; en: string } }[] = [
   { key: "all", label: { es: "Todas", en: "All" } },
+  { key: "dev", label: { es: "Dev Full Stack", en: "Full-Stack Dev" } },
   { key: "formal", label: { es: "Formal", en: "Formal" } },
-  { key: "tecnica", label: { es: "Técnica", en: "Technical" } },
-  { key: "platzi", label: { es: "Platzi", en: "Platzi" } },
   { key: "extracurricular", label: { es: "Extracurricular", en: "Extracurricular" } },
 ];
 
@@ -23,7 +22,7 @@ const VISIBLE_CAP = 6;
 export default function Certifications() {
   const content = useContent();
   const { certifications } = content;
-  const [filter, setFilter] = useState<CertFilter>("tecnica");
+  const [filter, setFilter] = useState<CertFilter>("dev");
   const [openCert, setOpenCert] = useState<CertItem | null>(null);
   const [expanded, setExpanded] = useState(false);
   const availableKeys = useMemo(
@@ -36,11 +35,30 @@ export default function Certifications() {
   );
 
   const certs = useMemo(() => {
-    const all = certifications.flatMap((cat) =>
-      cat.items.map((item) => ({ ...item, categoryKey: cat.categoryKey })),
-    );
-    if (filter === "all") return all;
-    return all.filter((c) => c.categoryKey === filter);
+    const withKeys = (cat: (typeof certifications)[number]) =>
+      cat.items.map((item) => ({ ...item, categoryKey: cat.categoryKey }));
+
+    if (filter !== "all") {
+      return certifications.filter((cat) => cat.categoryKey === filter).flatMap(withKeys);
+    }
+
+    // "All" interleaves in chunks of 3 per category — dev, formal,
+    // extracurricular, same order as the tabs — instead of listing one
+    // whole category before moving to the next.
+    const CHUNK = 3;
+    const order: CertFilter[] = ["dev", "formal", "extracurricular"];
+    const queues = order.map((key) => {
+      const items = certifications.find((cat) => cat.categoryKey === key)?.items ?? [];
+      return items.map((item) => ({ ...item, categoryKey: key }));
+    });
+
+    const interleaved: ReturnType<typeof withKeys> = [];
+    for (let offset = 0; queues.some((q) => offset < q.length); offset += CHUNK) {
+      for (const queue of queues) {
+        interleaved.push(...queue.slice(offset, offset + CHUNK));
+      }
+    }
+    return interleaved;
   }, [certifications, filter]);
 
   const isCappable = certs.length > VISIBLE_CAP;
@@ -57,7 +75,14 @@ export default function Certifications() {
   const isEn = content.hero.greeting === "Hi, I'm";
 
   return (
-    <SectionWrapper id="certifications" className="min-h-screen mx-auto max-w-6xl px-4 py-20 md:py-28">
+    <SectionWrapper
+      id="certifications"
+      // Extra bottom padding (vs. the pt-20/pt-28 top) — this section's
+      // height grows past 100vh once certs are expanded, and pb equal to pt
+      // left almost no buffer before the mandatory scroll-snap pulled you
+      // into Contact right as you scrolled past the show-more button.
+      className="min-h-screen mx-auto max-w-6xl px-4 pt-20 pb-40 md:pt-28 md:pb-56"
+    >
       <motion.h2
         {...fadeInItem(0)}
         className="font-heading text-3xl font-bold text-primary md:text-4xl"
