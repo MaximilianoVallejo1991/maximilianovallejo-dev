@@ -336,7 +336,14 @@ export default function Experience() {
   return (
     <SectionWrapper
       id="experience"
-      className="h-screen overflow-y-auto scrollbar-hidden mx-auto max-w-6xl px-4 py-20 md:py-28"
+      // Extra bottom padding (vs. pt-20/pt-28 on top) — this section scrolls
+      // internally (h-screen + overflow-y-auto, see index.css's note on
+      // internally-scrolling snap slots), so pb equal to pt left almost no
+      // internal scroll room to absorb the last bit of momentum before it
+      // leaked into the outer page scroll and the mandatory snap yanked you
+      // into the next section. More bottom padding = more internal scroll
+      // distance to soak that up first. Same fix as Certifications.tsx.
+      className="h-screen overflow-y-auto scrollbar-hidden mx-auto max-w-6xl px-4 pt-20 pb-40 md:pt-28 md:pb-56"
     >
       <motion.h2
         {...fadeInItem(0)}
