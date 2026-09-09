@@ -189,4 +189,5 @@ export interface PortfolioContent {
   navAriaLabel: string;
   navOpenMenu: string;
   navCloseMenu: string;
+  downloadCvLabel: string;
 }

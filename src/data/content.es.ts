@@ -721,6 +721,7 @@ export const es: PortfolioContent = {
   navAriaLabel: "Navegación principal",
   navOpenMenu: "Abrir menú",
   navCloseMenu: "Cerrar menú",
+  downloadCvLabel: "Descargar CV",
 };
 
 export default es;

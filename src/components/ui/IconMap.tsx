@@ -212,6 +212,13 @@ const icons: Record<string, JSX.Element> = {
       <path d="M13 4l-2 16" />
     </svg>
   ),
+  download: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 3v12" />
+      <path d="M7 10l5 5 5-5" />
+      <path d="M4 19h16" />
+    </svg>
+  ),
 };
 
 interface IconMapProps {

@@ -3,6 +3,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useContent } from "../../hooks/useContent";
 import LanguageSwitch from "../../i18n/LanguageSwitch";
 import ThemeToggle from "../../theme/ThemeToggle";
+import IconMap from "../ui/IconMap";
 
 const SCROLL_THRESHOLD = 8;
 
@@ -11,6 +12,16 @@ const INDICATOR_INSTANT = { duration: 0 } as const;
 
 const MENU_TRANSITION = { duration: 0.24, ease: [0.16, 1, 0.3, 1] } as const;
 const MENU_INSTANT = { duration: 0 } as const;
+
+// Idle "breathing" cue on the CV badge — signals the logo is downloadable
+// without a hover-only tooltip (which mobile/touch never sees). Loops
+// indefinitely; disabled entirely under reduced motion, where the badge
+// just sits at its resting scale/opacity instead of pulsing.
+const CV_BADGE_PULSE = {
+  scale: [1, 1.18, 1],
+  opacity: [0.75, 1, 0.75],
+};
+const CV_BADGE_TRANSITION = { duration: 2.2, repeat: Infinity, ease: "easeInOut" } as const;
 
 export default function Nav() {
   const content = useContent();
@@ -108,10 +119,22 @@ export default function Nav() {
         <a
           href="/cv.pdf"
           download="Maximiliano_Vallejo_CV.pdf"
-          className="font-heading text-lg font-semibold text-primary no-underline transition-colors duration-200 hover:text-accent"
-          title="Descargar CV"
+          className="relative inline-flex font-heading text-lg font-semibold text-primary no-underline transition-colors duration-200 hover:text-accent"
+          title={content.downloadCvLabel}
+          aria-label={content.downloadCvLabel}
         >
           MV
+          {/* Persistent download cue — a hover-only title tooltip never
+              reaches touch devices, so the badge itself has to carry the
+              "this does something" signal via a slow idle pulse instead. */}
+          <motion.span
+            aria-hidden="true"
+            animate={prefersReduced ? undefined : CV_BADGE_PULSE}
+            transition={prefersReduced ? undefined : CV_BADGE_TRANSITION}
+            className="absolute -right-2 -top-1.5 flex h-3.5 w-3.5 items-center justify-center rounded-full border border-accent bg-surface text-accent"
+          >
+            <IconMap name="download" className="h-2 w-2" />
+          </motion.span>
         </a>
 
         {/* Desktop nav */}

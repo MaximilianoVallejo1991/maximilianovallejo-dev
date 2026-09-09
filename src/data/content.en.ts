@@ -705,6 +705,7 @@ export const en: PortfolioContent = {
   navAriaLabel: "Main navigation",
   navOpenMenu: "Open menu",
   navCloseMenu: "Close menu",
+  downloadCvLabel: "Download CV",
 };
 
 export default en;
