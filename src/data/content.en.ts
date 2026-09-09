@@ -187,6 +187,13 @@ export const en: PortfolioContent = {
             hoverIllumination: { downwardsYears: 5 },
           },
           {
+            year: "2015",
+            title: "Ladrillos Macizos Concepción",
+            description:
+              "Sold and leased the shop's machines — brick presses, saws, potato harvesters — plus the bricks they produced.",
+            hoverIllumination: { upwardsYears: 3, downwardsYears: 1 },
+          },
+          {
             year: "2017",
             title: "PLC",
             description:

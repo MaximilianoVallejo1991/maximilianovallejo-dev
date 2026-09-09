@@ -195,6 +195,13 @@ export const es: PortfolioContent = {
             hoverIllumination: { downwardsYears: 5 },
           },
           {
+            year: "2015",
+            title: "Ladrillos Macizos Concepción",
+            description:
+              "Vendí y alquilé las máquinas del taller —ladrilleras, sierras, arrancadoras de papa— y los ladrillos que producían.",
+            hoverIllumination: { upwardsYears: 3, downwardsYears: 1 },
+          },
+          {
             year: "2017",
             title: "Automatizaciones PLC",
             description:
