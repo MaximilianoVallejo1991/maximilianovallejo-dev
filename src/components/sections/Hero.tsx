@@ -65,7 +65,11 @@ function buildNodes(labels: [string, string, string, string, string]): NodeConfi
       textX: 785,
       textY: 508,
       textAnchor: "middle",
-      target: "#skills",
+      // Was "#skills" — that section is temporarily hidden (see
+      // SkillsProjects.tsx), which left this pointing at a dead id and
+      // silently no-oping on click/tap. Projects is the next closest fit
+      // for "real problem solving" until Skills comes back.
+      target: "#projects",
       fontSize: 9,
     },
     {
