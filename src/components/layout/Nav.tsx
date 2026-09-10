@@ -98,7 +98,7 @@ export default function Nav() {
       >
         <a
           href="/cv.pdf"
-          download="Maximiliano_Vallejo_CV.pdf"
+          download="MaximilianoVallejoCV.pdf"
           className="relative inline-flex font-heading text-lg font-semibold text-primary no-underline transition-colors duration-200 hover:text-accent"
           title={content.downloadCvLabel}
           aria-label={content.downloadCvLabel}
