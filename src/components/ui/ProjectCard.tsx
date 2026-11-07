@@ -51,7 +51,16 @@ export default function ProjectCard({
       // contained inside this card — on a single-column mobile grid that
       // let a *closed* sibling's title (its internal z-20) paint in front
       // of this card's opened z-10 reveal panel, hiding its text behind it.
-      className={`group relative z-0 cursor-pointer rounded-xl border border-border bg-surface transition-[border-color,opacity,border-radius,box-shadow] duration-300 hover:z-10 hover:rounded-b-none hover:border-accent/40 hover:shadow-xl data-[open=true]:z-10 data-[open=true]:rounded-b-none data-[open=true]:border-accent/40 data-[open=true]:shadow-xl group-hover/grid:!opacity-40 hover:!opacity-100${dimmed ? " opacity-40" : ""}`}
+      // Dimming a mostly-dark card with opacity alone barely reads — most of
+      // its chrome (border, bg-surface, muted text) is already dark against
+      // the dark page, so only the bright screenshot visibly fades. Pairing
+      // a stronger opacity drop with `saturate-50` dulls that bright patch
+      // too, so the whole card recedes evenly instead of leaving a washed-out
+      // pale rectangle. `duration-500 ease-out` softens the fade into a
+      // deliberate settle rather than a flat linear step (applies to every
+      // state change on this card, not just dimming, so hover/open still
+      // feel smooth — just unhurried instead of snappy).
+      className={`group relative z-0 cursor-pointer rounded-xl border border-border bg-surface transition-[border-color,opacity,border-radius,box-shadow,filter] duration-500 ease-out hover:z-10 hover:rounded-b-none hover:border-accent/40 hover:shadow-xl data-[open=true]:z-10 data-[open=true]:rounded-b-none data-[open=true]:border-accent/40 data-[open=true]:shadow-xl group-hover/grid:!opacity-40 hover:!opacity-100${dimmed ? " opacity-25 saturate-50" : ""}`}
     >
       {/* Screenshot / fallback */}
       <div className="relative z-20 aspect-video w-full overflow-hidden rounded-t-xl bg-border/30">
