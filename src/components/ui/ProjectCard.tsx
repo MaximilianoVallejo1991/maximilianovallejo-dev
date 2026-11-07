@@ -43,7 +43,15 @@ export default function ProjectCard({
       whileHover={prefersReduced ? undefined : hoverLift}
       onClick={handleTap}
       data-open={isOpen}
-      className={`group relative cursor-pointer rounded-xl border border-border bg-surface transition-[border-color,opacity,border-radius,box-shadow] duration-300 hover:z-10 hover:rounded-b-none hover:border-accent/40 hover:shadow-xl data-[open=true]:z-10 data-[open=true]:rounded-b-none data-[open=true]:border-accent/40 data-[open=true]:shadow-xl group-hover/grid:!opacity-40 hover:!opacity-100${dimmed ? " opacity-40" : ""}`}
+      // z-0 (not the default z-index:auto) is load-bearing: `position:
+      // relative` alone doesn't create a stacking context, so without an
+      // explicit z-index this card's own z-20/z-10 children (image/title,
+      // reveal panel) would leak out and get compared directly against
+      // sibling cards' internal z-indexed layers instead of staying
+      // contained inside this card — on a single-column mobile grid that
+      // let a *closed* sibling's title (its internal z-20) paint in front
+      // of this card's opened z-10 reveal panel, hiding its text behind it.
+      className={`group relative z-0 cursor-pointer rounded-xl border border-border bg-surface transition-[border-color,opacity,border-radius,box-shadow] duration-300 hover:z-10 hover:rounded-b-none hover:border-accent/40 hover:shadow-xl data-[open=true]:z-10 data-[open=true]:rounded-b-none data-[open=true]:border-accent/40 data-[open=true]:shadow-xl group-hover/grid:!opacity-40 hover:!opacity-100${dimmed ? " opacity-40" : ""}`}
     >
       {/* Screenshot / fallback */}
       <div className="relative z-20 aspect-video w-full overflow-hidden rounded-t-xl bg-border/30">
