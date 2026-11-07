@@ -41,9 +41,47 @@ export default function ProjectCard({
       // this the description/links might open half off-screen. Deferred a
       // frame so the reveal's open-state layout has started before we
       // measure where to scroll.
+      //
+      // Not a plain scrollIntoView(block: "center") — that centers the
+      // *card's own* box, but the reveal panel hangs off its bottom edge,
+      // not its top, so centering the card left the reveal crowded into
+      // the lower half of the screen. Parking the card's top ~12% down
+      // instead leaves most of the viewport for the card + reveal below it.
+      //
+      // The page's mandatory scroll snap (index.css) silently swallows a
+      // plain `behavior: "smooth"` scrollTo here: since this section is one
+      // big snap point, Chrome's snap re-evaluation mid-animation treats the
+      // target as "not a valid resting place" and cancels the scroll back to
+      // wherever it started, so the card never actually moved — a flat
+      // instant jump dodges that, but then there's no animation at all,
+      // just a hard cut. So: suspend snap for the duration of this one
+      // scroll (it has nothing valid to snap to below "no scroll-snap
+      // points for the length of a user-driven gesture" anyway, since this
+      // is us moving the page, not them), run the normal smooth scroll
+      // unobstructed, then restore snap once it settles — `scrollend` is
+      // the real signal; the timeout is only a safety net for browsers that
+      // don't fire it.
       if (opening) {
         requestAnimationFrame(() => {
-          articleRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+          const el = articleRef.current;
+          if (!el) return;
+          const targetY =
+            window.scrollY + el.getBoundingClientRect().top - window.innerHeight * 0.12;
+
+          const html = document.documentElement;
+          const prevSnap = html.style.scrollSnapType;
+          html.style.scrollSnapType = "none";
+          let restored = false;
+          const restoreSnap = () => {
+            if (restored) return;
+            restored = true;
+            html.style.scrollSnapType = prevSnap;
+            window.removeEventListener("scrollend", restoreSnap);
+          };
+          window.addEventListener("scrollend", restoreSnap, { once: true });
+          setTimeout(restoreSnap, 700);
+
+          window.scrollTo({ top: targetY, behavior: "smooth" });
         });
       }
     }
@@ -66,14 +104,17 @@ export default function ProjectCard({
       // of this card's opened z-10 reveal panel, hiding its text behind it.
       // Dimming a mostly-dark card with opacity alone barely reads — most of
       // its chrome (border, bg-surface, muted text) is already dark against
-      // the dark page, so only the bright screenshot visibly fades. Pairing
-      // a stronger opacity drop with `saturate-50` dulls that bright patch
-      // too, so the whole card recedes evenly instead of leaving a washed-out
-      // pale rectangle. `duration-500 ease-out` softens the fade into a
-      // deliberate settle rather than a flat linear step (applies to every
-      // state change on this card, not just dimming, so hover/open still
-      // feel smooth — just unhurried instead of snappy).
-      className={`group relative z-0 cursor-pointer rounded-xl border border-border bg-surface transition-[border-color,opacity,border-radius,box-shadow,filter] duration-500 ease-out hover:z-10 hover:rounded-b-none hover:border-accent/40 hover:shadow-xl data-[open=true]:z-10 data-[open=true]:rounded-b-none data-[open=true]:border-accent/40 data-[open=true]:shadow-xl group-hover/grid:!opacity-40 hover:!opacity-100${dimmed ? " opacity-25 saturate-50" : ""}`}
+      // the dark page, so only the bright screenshot visibly fades. Instead
+      // of fading it toward transparent (which just blends into the page),
+      // `brightness-[0.25]` drives it dark — like the light got dimmed, not
+      // switched off entirely (full `brightness-0` read as too harsh/pure
+      // black) — while `opacity-80` keeps that shape/border legible instead
+      // of also fading into the page behind it. `duration-500 ease-out`
+      // softens the change into a deliberate settle rather than a flat
+      // linear step (applies to every state change on this card, not just
+      // dimming, so hover/open still feel smooth — just unhurried instead
+      // of snappy).
+      className={`group relative z-0 cursor-pointer rounded-xl border border-border bg-surface transition-[border-color,opacity,border-radius,box-shadow,filter] duration-500 ease-out hover:z-10 hover:rounded-b-none hover:border-accent/40 hover:shadow-xl data-[open=true]:z-10 data-[open=true]:rounded-b-none data-[open=true]:border-accent/40 data-[open=true]:shadow-xl group-hover/grid:!opacity-40 hover:!opacity-100${dimmed ? " opacity-80 brightness-[0.25]" : ""}`}
     >
       {/* Screenshot / fallback */}
       <div className="relative z-20 aspect-video w-full overflow-hidden rounded-t-xl bg-border/30">

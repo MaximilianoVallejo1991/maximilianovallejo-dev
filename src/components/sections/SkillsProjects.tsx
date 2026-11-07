@@ -21,8 +21,12 @@ export default function SkillsProjects() {
       id="skills-projects"
       // Extra bottom padding (vs. pt-20/pt-28 on top) — same fix as
       // Certifications.tsx and Experience.tsx: gives more scroll room
-      // before the mandatory snap pulls you into the next section.
-      className="min-h-screen mx-auto max-w-6xl px-4 pt-20 pb-40 md:pt-28 md:pb-56"
+      // before the mandatory snap pulls you into the next section. Bumped
+      // further than those (pb-64/md:pb-72) because this grid grew from 3
+      // to 6 cards and the last row was getting cut off right as you tried
+      // to scroll a bit more to read it — instead the snap just advanced
+      // you straight into Trayectoria.
+      className="min-h-screen mx-auto max-w-6xl px-4 pt-20 pb-64 md:pt-28 md:pb-72"
     >
       <div id="projects" className="scroll-mt-14">
         <motion.h2
@@ -49,6 +53,30 @@ export default function SkillsProjects() {
             />
           ))}
         </div>
+
+        {/* On-demand scroll room, mobile only matters in practice: the open
+            card's reveal panel is `position: absolute` so it never grows the
+            page's natural scroll height — and ProjectCard's tap-to-center
+            scroll (see its handleTap) can only move the open card as far up
+            as there's actual document height below it to scroll into. The
+            bottom padding above already covers normal browsing, but the
+            *last* row had nowhere near enough slack below it to fully come
+            up, so it opened stuck low with its reveal clipped by the
+            section's end. Expanding only while something's open keeps this
+            invisible during normal scroll-through instead of permanently
+            padding out the page.
+            Grows WITHOUT a transition on open: ProjectCard's scrollTo runs
+            one frame after the tap, and `window.scrollTo` clamps its target
+            to whatever's scrollable *at that instant* — if this were still
+            mid-transition (animating from h-0), the extra room wouldn't
+            exist yet and the scroll would get clamped short, stranding the
+            card low with the fix silently doing nothing. Only shrinks
+            smoothly, on close, since nothing time-sensitive depends on
+            that direction. */}
+        <div
+          aria-hidden="true"
+          className={openSlug ? "h-80" : "h-0 transition-[height] duration-500 ease-out"}
+        />
       </div>
 
       {/*
