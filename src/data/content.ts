@@ -210,5 +210,9 @@ export interface PortfolioContent {
   navAriaLabel: string;
   navOpenMenu: string;
   navCloseMenu: string;
+  /** Title/aria-label on the CV trigger button — describes what it opens. */
   downloadCvLabel: string;
+  /** Labels for the two items in the CV language picker it opens. */
+  downloadCvEs: string;
+  downloadCvEn: string;
 }

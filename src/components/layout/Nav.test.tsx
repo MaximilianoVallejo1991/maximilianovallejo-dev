@@ -99,7 +99,7 @@ describe("Nav — active-section indicator", () => {
     const { container, getByTestId } = renderNav();
     // Desktop list is CSS-hidden (`hidden md:flex`) but always mounted.
     // Opening the mobile menu mounts the mobile list simultaneously.
-    const hamburger = container.querySelector('button[aria-expanded]') as HTMLButtonElement;
+    const hamburger = container.querySelector('button[aria-controls="mobile-nav-menu"]') as HTMLButtonElement;
     fireEvent.click(hamburger);
 
     const desktopIndicator = getByTestId("nav-indicator-desktop");
@@ -112,13 +112,15 @@ describe("Nav — active-section indicator", () => {
 
 describe("Nav — animated mobile menu (AnimatePresence)", () => {
   function openMenu(container: HTMLElement) {
-    const hamburger = container.querySelector('button[aria-expanded]') as HTMLButtonElement;
+    const hamburger = container.querySelector('button[aria-controls="mobile-nav-menu"]') as HTMLButtonElement;
     fireEvent.click(hamburger);
   }
 
   it("is not mounted when closed", () => {
     const { container } = renderNav();
-    expect(container.querySelector('[aria-expanded="false"]')).not.toBeNull();
+    expect(
+      container.querySelector('button[aria-controls="mobile-nav-menu"][aria-expanded="false"]'),
+    ).not.toBeNull();
     expect(container.querySelectorAll('a[href="#about"]')).toHaveLength(1); // desktop only
   });
 
@@ -156,6 +158,8 @@ describe("Nav — animated mobile menu (AnimatePresence)", () => {
     await waitFor(() => {
       expect(container.querySelectorAll('a[href="#about"]')).toHaveLength(1);
     });
-    expect(container.querySelector('[aria-expanded="false"]')).not.toBeNull();
+    expect(
+      container.querySelector('button[aria-controls="mobile-nav-menu"][aria-expanded="false"]'),
+    ).not.toBeNull();
   });
 });

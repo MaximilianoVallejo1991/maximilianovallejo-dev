@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maximiliano Vallejo — CV</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 13px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: #1a1a1a;
+      background: #f5f5f5;
+      line-height: 1.32;
+      padding: 2rem 1rem;
+    }
+
+    .page {
+      max-width: 210mm;
+      margin: 0 auto;
+      background: #fff;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, .08);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    /* ── Colored top bar ── */
+    .topbar {
+      background: linear-gradient(135deg, #1e40af, #2563eb);
+      padding: 1.6rem 2.2rem 1.2rem 2.6rem;
+      color: #fff;
+    }
+
+    .topbar h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      color: #fff;
+    }
+
+    .topbar .title {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, .85);
+      font-weight: 500;
+      margin-top: .1rem;
+    }
+
+    .topbar .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .3rem 1.2rem;
+      margin-top: .5rem;
+      font-size: .8rem;
+      color: rgba(255, 255, 255, .9);
+    }
+
+    .topbar .contact-row a {
+      color: #fff;
+    }
+
+    .topbar .contact-row a:hover {
+      text-decoration: underline;
+    }
+
+    /* ── Body ── */
+    .body-wrap {
+      padding: 1rem 2rem 1.2rem 2.6rem;
+    }
+
+    h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: #1e40af;
+      border-bottom: 2px solid #2563eb;
+      padding-bottom: .2rem;
+      margin: .5rem 0 .32rem;
+    }
+
+    h2:first-of-type {
+      margin-top: 0;
+    }
+
+    h3 {
+      font-size: .95rem;
+      font-weight: 600;
+    }
+
+    h4 {
+      font-size: .82rem;
+      font-weight: 600;
+      color: #555;
+      margin-top: .4rem;
+    }
+
+    a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    p,
+    li {
+      font-size: .85rem;
+      color: #333;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    /* ── Summary ── */
+    .summary {
+      font-size: .85rem;
+      color: #444;
+      line-height: 1.55;
+    }
+
+    /* ── Skills ── */
+    .skills-row {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: .3rem .5rem;
+      margin-bottom: .3rem;
+    }
+
+    .skills-label {
+      font-size: .8rem;
+      font-weight: 600;
+      color: #555;
+      flex-shrink: 0;
+      min-width: 6.2rem;
+    }
+
+    .skills-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .3rem .4rem;
+    }
+
+    .skills-grid span {
+      background: #eef2ff;
+      color: #1e40af;
+      font-size: .78rem;
+      font-weight: 500;
+      padding: .12rem .6rem;
+      border-radius: 999px;
+      line-height: 1.5;
+    }
+
+    /* ── Projects ── */
+    .project {
+      margin-bottom: .42rem;
+    }
+
+    .project h3 {
+      display: inline;
+    }
+
+    .project .links {
+      display: inline;
+      font-size: .8rem;
+    }
+
+    .project .links a {
+      margin-left: .4rem;
+    }
+
+    .project .tags {
+      margin: .1rem 0 .15rem;
+    }
+
+    .project .tags span {
+      display: inline-block;
+      background: #f3f4f6;
+      color: #555;
+      font-size: .73rem;
+      padding: .03rem .45rem;
+      border-radius: 4px;
+      margin-right: .25rem;
+    }
+
+    .project p {
+      margin-top: .1rem;
+      font-size: .83rem;
+      color: #444;
+    }
+
+    /* ── Experience ── */
+    .entry {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: .38rem;
+    }
+
+    .entry .date {
+      min-width: 8rem;
+      font-size: .8rem;
+      font-weight: 500;
+      color: #555;
+      flex-shrink: 0;
+      padding-top: .05rem;
+    }
+
+    .entry .body h3 {
+      font-size: .9rem;
+    }
+
+    .entry .body .sub {
+      font-size: .8rem;
+      color: #555;
+      margin-bottom: .1rem;
+    }
+
+    .entry .body ul li {
+      position: relative;
+      padding-left: .9rem;
+      margin-bottom: .08rem;
+      font-size: .8rem;
+      color: #444;
+    }
+
+    .entry .body ul li::before {
+      content: "•";
+      position: absolute;
+      left: .15rem;
+      color: #888;
+    }
+
+    /* ── Education ── */
+    .edu {
+      margin-bottom: .16rem;
+      font-size: .85rem;
+    }
+
+    .edu strong {
+      font-weight: 600;
+    }
+
+    .edu .meta {
+      color: #555;
+    }
+
+    /* ── Print ── */
+    @media print {
+      body {
+        background: #fff;
+        padding: 0;
+      }
+
+      .page {
+        box-shadow: none;
+        border-radius: 0;
+      }
+
+      .body-wrap {
+        padding: .6rem 1.8rem .5rem 2.4rem;
+      }
+
+      .topbar {
+        padding: .8rem 1.8rem .6rem 2.4rem;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      h2 {
+        break-after: avoid;
+      }
+
+      .project,
+      .entry {
+        break-inside: avoid;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .topbar {
+        padding: 1.2rem 1.2rem 1rem;
+      }
+
+      .body-wrap {
+        padding: 1rem 1.2rem 1.2rem;
+      }
+
+      .entry {
+        flex-direction: column;
+        gap: .1rem;
+      }
+
+      .entry .date {
+        min-width: auto;
+      }
+    }
+
+    .note {
+      font-size: .76rem;
+      color: #888;
+      font-style: italic;
+      margin-top: .18rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+
+    <!-- ═══ HEADER ═══ -->
+    <div class="topbar">
+      <h1>Maximiliano Vallejo</h1>
+      <div class="title">Full Stack Developer</div>
+      <div class="contact-row">
+        <a href="mailto:jmaximilianovallejo@gmail.com">jmaximilianovallejo@gmail.com</a>
+        <a href="https://www.linkedin.com/in/maximiliano-vallejo/"
+          target="_blank">linkedin.com/in/maximiliano-vallejo</a>
+        <a href="https://github.com/MaximilianoVallejo1991" target="_blank">github.com/MaximilianoVallejo1991</a>
+        <span>Tucumán, Argentina</span>
+      </div>
+    </div>
+
+    <div class="body-wrap">
+
+      <!-- ═══ ABOUT ME ═══ -->
+      <h2>About Me</h2>
+      <p>
+        I didn't arrive at software through a traditional path. For over 10 years I worked alongside my father
+        in a metalworking shop, manufacturing and repairing machinery, while studying the core curriculum of an
+        Engineering degree. Integrating automation with Ladder diagrams and PLCs in the shop led me into the
+        world of 3D printing with my venture Emme 3D, and from there into web development: Argentina Programa,
+        a QA Testing course, and self-directed study. Today I build complete full-stack applications with React,
+        Node.js, Express, and PostgreSQL, using AI strategically (spec-driven development, model evaluation,
+        context optimization).
+      </p>
+
+      <!-- ═══ SKILLS ═══ -->
+      <h2>Skills</h2>
+
+      <div class="skills-row">
+        <span class="skills-label">Frontend</span>
+        <div class="skills-grid">
+          <span>React</span><span>TypeScript</span><span>JavaScript</span>
+          <span>Tailwind CSS</span><span>HTML / CSS</span>
+        </div>
+      </div>
+      <div class="skills-row">
+        <span class="skills-label">Backend & DB</span>
+        <div class="skills-grid">
+          <span>Node.js</span><span>Express</span><span>PostgreSQL</span><span>MySQL</span>
+          <span>Prisma ORM</span><span>REST APIs</span><span>JWT</span><span>Git / GitHub</span>
+        </div>
+      </div>
+      <div class="skills-row">
+        <span class="skills-label">Tools</span>
+        <div class="skills-grid">
+          <span>Docker</span><span>Figma</span><span>Vercel</span><span>Render</span>
+          <span>Supabase</span><span>Vite</span><span>Postman</span>
+        </div>
+      </div>
+
+      <!-- ═══ PROJECTS ═══ -->
+      <h2>Featured Projects</h2>
+
+      <div class="project">
+        <h3>Stock Control</h3>
+        <div class="links">
+          <a href="https://stockdetienda.vercel.app" target="_blank">Live</a>
+          <a href="https://github.com/MaximilianoVallejo1991/stock-controll-main" target="_blank">Repo</a>
+        </div>
+        <div class="tags">
+          <span>React</span><span>Node.js</span><span>Express</span>
+          <span>PostgreSQL</span><span>Prisma</span><span>JWT</span>
+        </div>
+        <p>
+          Full inventory management and point-of-sale (POS) system with a dynamic discount engine, real-time
+          stock control, sales tracking, current accounts, and advanced statistical reports.
+        </p>
+      </div>
+
+      <div class="project">
+        <h3>ElianApp</h3>
+        <div class="links">
+          <a href="https://elianapp.vercel.app" target="_blank">Live</a>
+          <a href="https://github.com/MaximilianoVallejo1991/ElianApp" target="_blank">Repo</a>
+        </div>
+        <div class="tags">
+          <span>React 19</span><span>Express 5</span><span>Prisma 7</span>
+          <span>PostgreSQL</span><span>JWT</span>
+        </div>
+        <p>
+          Shared expense tracking app: each person reports their own items, the system validates and balances.
+          Supports equal, percentage, and exact splitting per participant.
+        </p>
+      </div>
+
+      <div class="project">
+        <h3>My Portfolio</h3>
+        <div class="links">
+          <a href="https://maximilianovallejo-dev.vercel.app" target="_blank">Live</a>
+          <a href="https://github.com/MaximilianoVallejo1991/maximilianovallejo-dev" target="_blank">Repo</a>
+        </div>
+        <div class="tags"><span>React</span><span>TypeScript</span><span>Vite</span><span>Tailwind CSS</span></div>
+        <p>Personal portfolio site with a project gallery, a career timeline, and a certifications gallery powered by Cloudinary.</p>
+      </div>
+
+      <!-- ═══ EXPERIENCE ═══ -->
+      <h2>Experience</h2>
+
+      <div class="entry">
+        <div class="date">Present</div>
+        <div class="body">
+          <h3>Self-Taught Full Stack Developer</h3>
+          <div class="sub">Personal projects</div>
+          <ul>
+            <li>Build complete full-stack applications with React, Node.js, Express, and PostgreSQL.</li>
+            <li>Use AI strategically: spec-driven development, model evaluation, context optimization.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="date">2022 — Present</div>
+        <div class="body">
+          <h3>IT Support & Information Security</h3>
+          <div class="sub">Poder Judicial de Tucumán (Tucumán Judiciary)</div>
+          <ul>
+            <li>First formal job in tech, in the Systems (IT) office.</li>
+            <li>Continuing to grow professionally in the role, focused on IT Support and Information Security.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="date">2019 — 2022</div>
+        <div class="body">
+          <h3>Emme 3D</h3>
+          <div class="sub">Own 3D-printing venture</div>
+          <ul>
+            <li>Scaled up to 10 printers running simultaneously.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="date">2015 — 2022</div>
+        <div class="body">
+          <h3>Sales, Rental & Logistics Coordinator</h3>
+          <div class="sub">Ladrillos Macizos Concepción — Self-employed</div>
+          <ul>
+            <li>Sold machines and bricks manufactured in-house at the workshop.</li>
+            <li>Managed sales, rentals, and on-site delivery logistics.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="date">2008 — 2019</div>
+        <div class="body">
+          <h3>Metalworking Shop</h3>
+          <div class="sub">Machinery manufacturing and repair</div>
+          <ul>
+            <li>Over 10 years manufacturing and repairing machinery.</li>
+            <li>Automation with Ladder diagrams and PLCs.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ═══ EDUCATION ═══ -->
+      <h2>Education</h2>
+
+      <div class="edu">
+        <h3>QA Testing</h3>
+        <span class="meta">— 300 hours, certified by UTN Facultad Regional Tucumán — 2021–2022</span>
+      </div>
+      <div class="edu">
+        <h3>AI-Assisted Development</h3>
+        <span class="meta">— Introductory course on AI-assisted software development — 2026</span>
+      </div>
+      <div class="edu">
+        <h3>Argentina Programa</h3>
+        <span class="meta">— #SéProgramar, my formal entry into coding — 2021</span>
+      </div>
+      <div class="edu">
+        <h3>Platzi</h3>
+        <span class="meta">— Software Architecture Fundamentals · React.js · Backend with Node.js: REST
+          API with Express.js · JavaScript Fundamentals, and other courses</span>
+      </div>
+      <div class="edu">
+        <h3>Prior Technical Degrees</h3>
+        <span class="meta">— Construction Technician · MMO (Maestro Mayor de Obras / Master Builder) ·
+          Electronics and Home-Appliance Repair Technician</span>
+      </div>
+
+      <h2>Languages</h2>
+      <p>Native Spanish · English B1 &nbsp;·&nbsp; <em>Open to junior or trainee opportunities</em></p>
+
+    </div><!-- /body-wrap -->
+  </div>
+</body>
+
+</html>

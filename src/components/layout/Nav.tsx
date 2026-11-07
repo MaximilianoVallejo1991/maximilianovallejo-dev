@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, type MouseEvent } from "react";
+import { useState, useEffect, useCallback, useRef, type MouseEvent } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useContent } from "../../hooks/useContent";
 import LanguageSwitch from "../../i18n/LanguageSwitch";
@@ -26,9 +26,34 @@ const CV_BADGE_TRANSITION = { duration: 2.2, repeat: Infinity, ease: "easeInOut"
 export default function Nav() {
   const content = useContent();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [cvMenuOpen, setCvMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("#hero");
   const [scrolled, setScrolled] = useState(false);
   const prefersReduced = useReducedMotion();
+  const cvMenuRef = useRef<HTMLDivElement>(null);
+
+  // Close the CV language picker on an outside click or Escape — it's a
+  // popover sitting on top of the page, not a layout element like the
+  // mobile nav drawer below, so it needs to behave like one.
+  useEffect(() => {
+    if (!cvMenuOpen) return;
+
+    const handlePointerDown = (e: PointerEvent) => {
+      if (!cvMenuRef.current?.contains(e.target as Node)) {
+        setCvMenuOpen(false);
+      }
+    };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setCvMenuOpen(false);
+    };
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [cvMenuOpen]);
 
   const handleNavClick = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
@@ -96,26 +121,70 @@ export default function Nav() {
         aria-label={content.navAriaLabel}
         className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3"
       >
-        <a
-          href="/cv.pdf"
-          download="MaximilianoVallejoCV.pdf"
-          className="relative inline-flex font-heading text-lg font-semibold text-primary no-underline transition-colors duration-200 hover:text-accent"
-          title={content.downloadCvLabel}
-          aria-label={content.downloadCvLabel}
-        >
-          MV
-          {/* Persistent download cue — a hover-only title tooltip never
-              reaches touch devices, so the badge itself has to carry the
-              "this does something" signal via a slow idle pulse instead. */}
-          <motion.span
-            aria-hidden="true"
-            animate={prefersReduced ? undefined : CV_BADGE_PULSE}
-            transition={prefersReduced ? undefined : CV_BADGE_TRANSITION}
-            className="absolute -right-2 -top-1.5 flex h-3.5 w-3.5 items-center justify-center rounded-full border border-accent bg-surface text-accent"
+        <div ref={cvMenuRef} className="relative">
+          <button
+            type="button"
+            onClick={() => setCvMenuOpen((o) => !o)}
+            aria-haspopup="menu"
+            aria-expanded={cvMenuOpen}
+            className="relative inline-flex cursor-pointer items-center font-heading text-lg font-semibold text-primary transition-colors duration-200 hover:text-accent"
+            title={content.downloadCvLabel}
+            aria-label={content.downloadCvLabel}
           >
-            <IconMap name="download" className="h-2 w-2" />
-          </motion.span>
-        </a>
+            MV
+            {/* Persistent download cue — a hover-only title tooltip never
+                reaches touch devices, so the badge itself has to carry the
+                "this does something" signal via a slow idle pulse instead.
+                Stops once the menu is open — it's served its purpose and a
+                pulsing badge next to an open menu reads as distracting
+                rather than inviting. */}
+            <motion.span
+              aria-hidden="true"
+              animate={prefersReduced || cvMenuOpen ? undefined : CV_BADGE_PULSE}
+              transition={prefersReduced ? undefined : CV_BADGE_TRANSITION}
+              className="absolute -right-2 -top-1.5 flex h-3.5 w-3.5 items-center justify-center rounded-full border border-accent bg-surface text-accent"
+            >
+              <IconMap name="download" className="h-2 w-2" />
+            </motion.span>
+          </button>
+
+          {/* CV language picker — the portfolio and the CV are separate
+              documents with independent languages: this always offers
+              both regardless of which language the site is currently
+              showing, rather than following LanguageSwitch. */}
+          <AnimatePresence>
+            {cvMenuOpen && (
+              <motion.div
+                key="cv-menu"
+                role="menu"
+                initial={{ opacity: 0, y: -4, scale: 0.97 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -4, scale: 0.97 }}
+                transition={prefersReduced ? MENU_INSTANT : { duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
+                className="absolute left-0 top-full z-50 mt-2 min-w-[11rem] overflow-hidden rounded-lg border border-border bg-surface py-1 shadow-lg"
+              >
+                <a
+                  role="menuitem"
+                  href="/cv.pdf"
+                  download="MaximilianoVallejoCV.pdf"
+                  onClick={() => setCvMenuOpen(false)}
+                  className="block px-3 py-2 text-sm font-medium text-primary no-underline transition-colors duration-150 hover:bg-border/50 hover:text-accent"
+                >
+                  {content.downloadCvEs}
+                </a>
+                <a
+                  role="menuitem"
+                  href="/cv.en.pdf"
+                  download="MaximilianoVallejoCV-EN.pdf"
+                  onClick={() => setCvMenuOpen(false)}
+                  className="block px-3 py-2 text-sm font-medium text-primary no-underline transition-colors duration-150 hover:bg-border/50 hover:text-accent"
+                >
+                  {content.downloadCvEn}
+                </a>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
 
         {/* Desktop nav */}
         <div className="hidden items-center gap-6 md:flex">
@@ -151,6 +220,7 @@ export default function Nav() {
             onClick={() => setMenuOpen((o) => !o)}
             aria-label={menuOpen ? content.navCloseMenu : content.navOpenMenu}
             aria-expanded={menuOpen}
+            aria-controls="mobile-nav-menu"
             className="ml-2 cursor-pointer rounded-md p-1.5 text-muted transition-colors duration-200 hover:text-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 md:hidden"
           >
             <svg
@@ -187,6 +257,7 @@ export default function Nav() {
         {menuOpen && (
           <motion.div
             key="mobile-menu"
+            id="mobile-nav-menu"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}

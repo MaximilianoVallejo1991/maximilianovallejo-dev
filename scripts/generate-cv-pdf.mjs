@@ -1,14 +1,18 @@
-// Generates public/cv.pdf from public/cv.html using the system Chrome/Edge install.
+// Generates public/cv.pdf and public/cv.en.pdf from their matching .html
+// sources, using the system Chrome/Edge install.
 // Run with: pnpm cv:pdf
-// Re-run this any time public/cv.html content changes.
+// Re-run this any time public/cv.html or public/cv.en.html content changes.
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import puppeteer from "puppeteer-core";
 
 const rootDir = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
-const sourceHtml = path.join(rootDir, "public", "cv.html");
-const outputPdf = path.join(rootDir, "public", "cv.pdf");
+
+const CV_VARIANTS = [
+  { html: "cv.html", pdf: "cv.pdf" },
+  { html: "cv.en.html", pdf: "cv.en.pdf" },
+];
 
 function findChromeExecutable() {
   if (process.env.CHROME_PATH && existsSync(process.env.CHROME_PATH)) {
@@ -40,32 +44,38 @@ function findChromeExecutable() {
 }
 
 async function main() {
-  if (!existsSync(sourceHtml)) {
-    throw new Error(`No existe ${sourceHtml}`);
-  }
-
   const browser = await puppeteer.launch({
     executablePath: findChromeExecutable(),
     headless: true,
   });
 
   try {
-    const page = await browser.newPage();
-    await page.goto(`file:///${sourceHtml.replace(/\\/g, "/")}`, {
-      waitUntil: "networkidle0",
-    });
-    await page.pdf({
-      path: outputPdf,
-      format: "A4",
-      printBackground: true,
-      preferCSSPageSize: false,
-      margin: { top: "0mm", bottom: "0mm", left: "0mm", right: "0mm" },
-    });
+    for (const { html, pdf } of CV_VARIANTS) {
+      const sourceHtml = path.join(rootDir, "public", html);
+      const outputPdf = path.join(rootDir, "public", pdf);
+
+      if (!existsSync(sourceHtml)) {
+        throw new Error(`No existe ${sourceHtml}`);
+      }
+
+      const page = await browser.newPage();
+      await page.goto(`file:///${sourceHtml.replace(/\\/g, "/")}`, {
+        waitUntil: "networkidle0",
+      });
+      await page.pdf({
+        path: outputPdf,
+        format: "A4",
+        printBackground: true,
+        preferCSSPageSize: false,
+        margin: { top: "0mm", bottom: "0mm", left: "0mm", right: "0mm" },
+      });
+      await page.close();
+
+      console.log(`CV generado en ${outputPdf}`);
+    }
   } finally {
     await browser.close();
   }
-
-  console.log(`CV generado en ${outputPdf}`);
 }
 
 main().catch((error) => {

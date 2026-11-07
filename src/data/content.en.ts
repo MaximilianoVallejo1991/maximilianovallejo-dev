@@ -730,6 +730,8 @@ export const en: PortfolioContent = {
   navOpenMenu: "Open menu",
   navCloseMenu: "Close menu",
   downloadCvLabel: "Download CV",
+  downloadCvEs: "CV in Spanish",
+  downloadCvEn: "CV in English",
 };
 
 export default en;
