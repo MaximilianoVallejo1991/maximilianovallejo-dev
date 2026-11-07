@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { fadeInItem, hoverLift } from "./SectionWrapper";
 import Tag from "./Tag";
@@ -26,6 +26,7 @@ export default function ProjectCard({
 }: ProjectCardProps) {
   const [imgError, setImgError] = useState(false);
   const prefersReduced = useReducedMotion();
+  const articleRef = useRef<HTMLElement>(null);
 
   // Touch devices have no `:hover`, so the reveal panel below (description,
   // tags, GitHub/Live links) would otherwise be permanently unreachable —
@@ -33,12 +34,24 @@ export default function ProjectCard({
   // support real hover, where the existing hover behavior already works.
   const handleTap = () => {
     if (typeof window !== "undefined" && window.matchMedia("(hover: none)").matches) {
+      const opening = !isOpen;
       onToggle?.();
+      // Only on open (not close): on a single-column mobile layout the card
+      // plus its reveal panel can be taller than the viewport, so without
+      // this the description/links might open half off-screen. Deferred a
+      // frame so the reveal's open-state layout has started before we
+      // measure where to scroll.
+      if (opening) {
+        requestAnimationFrame(() => {
+          articleRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+        });
+      }
     }
   };
 
   return (
     <motion.article
+      ref={articleRef}
       {...fadeInItem(index)}
       whileHover={prefersReduced ? undefined : hoverLift}
       onClick={handleTap}
