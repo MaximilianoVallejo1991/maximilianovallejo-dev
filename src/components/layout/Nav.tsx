@@ -13,15 +13,26 @@ const INDICATOR_INSTANT = { duration: 0 } as const;
 const MENU_TRANSITION = { duration: 0.24, ease: [0.16, 1, 0.3, 1] } as const;
 const MENU_INSTANT = { duration: 0 } as const;
 
-// Idle "breathing" cue on the CV badge — signals the logo is downloadable
-// without a hover-only tooltip (which mobile/touch never sees). Loops
-// indefinitely; disabled entirely under reduced motion, where the badge
-// just sits at its resting scale/opacity instead of pulsing.
-const CV_BADGE_PULSE = {
-  scale: [1, 1.18, 1],
-  opacity: [0.75, 1, 0.75],
-};
-const CV_BADGE_TRANSITION = { duration: 2.2, repeat: Infinity, ease: "easeInOut" } as const;
+// Idle "liquid" cue on the CV logo — the "MV" initials dissolve into a
+// download icon and back, forever. Driven by a plain boolean toggled on
+// an interval rather than one long keyframes array: Nav re-renders
+// somewhat often (scroll, scroll-spy), and a multi-second keyframes
+// animation has no way to resume cleanly if a render lands mid-tween —
+// it was observed stalling for most of a leg before jumping to the next
+// keyframe. A single target swap re-settles correctly on every render.
+//
+// No `filter: blur()` here on purpose — animating blur on a child of
+// this header is a known Chrome compositor trap: the header itself
+// uses `backdrop-blur-*`, and an animated child filter forces it to
+// recompute that backdrop on every frame, tanking this to a handful
+// of fps instead of interpolating smoothly.
+const CV_MORPH_HOLD_MS = 1800;
+const CV_MORPH_TRANSITION = { duration: 0.6, ease: "easeInOut" } as const;
+const CV_MORPH_SETTLE = { duration: 0.25, ease: "easeOut" } as const;
+const CV_MORPH_MV_VISIBLE = { opacity: 1, scale: 1 };
+const CV_MORPH_MV_HIDDEN = { opacity: 0, scale: 0.55 };
+const CV_MORPH_ICON_VISIBLE = { opacity: 1, scale: 1 };
+const CV_MORPH_ICON_HIDDEN = { opacity: 0, scale: 0.55 };
 
 export default function Nav() {
   const content = useContent();
@@ -29,8 +40,21 @@ export default function Nav() {
   const [cvMenuOpen, setCvMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("#hero");
   const [scrolled, setScrolled] = useState(false);
+  const [showCvIcon, setShowCvIcon] = useState(false);
   const prefersReduced = useReducedMotion();
   const cvMenuRef = useRef<HTMLDivElement>(null);
+
+  // Drives the CV logo's idle MV <-> download-icon loop. Paused (and
+  // reset to "MV") while the language popover is open or reduced motion
+  // is on, rather than just left running underneath it.
+  useEffect(() => {
+    if (prefersReduced || cvMenuOpen) {
+      setShowCvIcon(false);
+      return;
+    }
+    const id = window.setInterval(() => setShowCvIcon((v) => !v), CV_MORPH_HOLD_MS);
+    return () => window.clearInterval(id);
+  }, [prefersReduced, cvMenuOpen]);
 
   // Close the CV language picker on an outside click or Escape — it's a
   // popover sitting on top of the page, not a layout element like the
@@ -131,21 +155,29 @@ export default function Nav() {
             title={content.downloadCvLabel}
             aria-label={content.downloadCvLabel}
           >
-            MV
-            {/* Persistent download cue — a hover-only title tooltip never
-                reaches touch devices, so the badge itself has to carry the
-                "this does something" signal via a slow idle pulse instead.
-                Stops once the menu is open — it's served its purpose and a
-                pulsing badge next to an open menu reads as distracting
-                rather than inviting. */}
-            <motion.span
-              aria-hidden="true"
-              animate={prefersReduced || cvMenuOpen ? undefined : CV_BADGE_PULSE}
-              transition={prefersReduced ? undefined : CV_BADGE_TRANSITION}
-              className="absolute -right-2 -top-1.5 flex h-3.5 w-3.5 items-center justify-center rounded-full border border-accent bg-surface text-accent"
-            >
-              <IconMap name="download" className="h-2 w-2" />
-            </motion.span>
+            <span className="relative inline-flex h-7 w-9 items-center justify-center">
+              <motion.span
+                className="flex h-full w-full items-center justify-center"
+                animate={showCvIcon ? CV_MORPH_MV_HIDDEN : CV_MORPH_MV_VISIBLE}
+                transition={prefersReduced ? undefined : cvMenuOpen ? CV_MORPH_SETTLE : CV_MORPH_TRANSITION}
+              >
+                MV
+              </motion.span>
+              {/* Persistent download cue — a hover-only title tooltip never
+                  reaches touch devices, so the logo itself has to carry the
+                  "this does something" signal by morphing into the download
+                  icon on an idle loop. Stops once the menu is open — it's
+                  served its purpose and a morphing logo next to an open menu
+                  reads as distracting rather than inviting. */}
+              <motion.span
+                aria-hidden="true"
+                className="absolute inset-0 flex items-center justify-center text-accent"
+                animate={showCvIcon ? CV_MORPH_ICON_VISIBLE : CV_MORPH_ICON_HIDDEN}
+                transition={prefersReduced ? undefined : cvMenuOpen ? CV_MORPH_SETTLE : CV_MORPH_TRANSITION}
+              >
+                <IconMap name="download" className="h-5 w-5" />
+              </motion.span>
+            </span>
           </button>
 
           {/* CV language picker — the portfolio and the CV are separate
