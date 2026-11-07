@@ -26,13 +26,24 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
             {project.title}
           </div>
         ) : (
-          <img
-            src={project.screenshot}
-            alt={project.title}
-            loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-            onError={() => setImgError(true)}
-          />
+          <>
+            <img
+              src={project.screenshot}
+              alt={project.title}
+              loading="lazy"
+              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              onError={() => setImgError(true)}
+            />
+            {project.screenshotHover && (
+              <img
+                src={project.screenshotHover}
+                alt=""
+                loading="lazy"
+                aria-hidden="true"
+                className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+              />
+            )}
+          </>
         )}
       </div>
 
@@ -83,14 +94,16 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
 
         {/* Links */}
         <div className="mt-4 flex gap-4 font-body text-sm">
-          <a
-            href={project.repoUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-medium text-accent no-underline transition-colors duration-200 hover:underline"
-          >
-            GitHub &rarr;
-          </a>
+          {project.repoUrl && (
+            <a
+              href={project.repoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-accent no-underline transition-colors duration-200 hover:underline"
+            >
+              GitHub &rarr;
+            </a>
+          )}
           {project.liveUrl && (
             <a
               href={project.liveUrl}

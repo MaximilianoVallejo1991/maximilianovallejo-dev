@@ -47,8 +47,11 @@ export interface Project {
   description: string;
   techTags: string[];
   liveUrl?: string;
-  repoUrl: string;
+  /** Omitted for private repos with no public demo (e.g. client work under NDA). */
+  repoUrl?: string;
   screenshot: string;
+  /** Shown on hover instead of `screenshot`, e.g. to reveal a second view of the app. */
+  screenshotHover?: string;
 }
 
 export interface HoverIllumination {
@@ -169,6 +172,24 @@ export const PROJECT_ASSETS = {
       "https://res.cloudinary.com/dc3kybsmr/image/upload/c_fill,g_north,h_450,w_800/f_auto/q_auto/projects/countdown-christmas.png",
     liveUrl: "https://tochristmas.vercel.app",
     repoUrl: "https://github.com/MaximilianoVallejo1991/CountdownToChristmas",
+  },
+  minigamesEngine: {
+    screenshot:
+      "https://res.cloudinary.com/dc3kybsmr/image/upload/c_fill,g_north,h_450,w_800/f_auto/q_auto/projects/minigames-engine.jpg",
+    liveUrl: "https://maximilianovallejo1991.github.io/minigames-engine/",
+    repoUrl: "https://github.com/MaximilianoVallejo1991/minigames-engine",
+  },
+  sofia15: {
+    screenshot:
+      "https://res.cloudinary.com/dc3kybsmr/image/upload/c_fill,g_north,h_450,w_800/f_auto/q_auto/projects/sofia-15.jpg",
+    liveUrl: "https://sofialarcon15.vercel.app",
+    repoUrl: "https://github.com/MaximilianoVallejo1991/SofiAlarcon15",
+  },
+  inventoryBot: {
+    screenshot:
+      "https://res.cloudinary.com/dc3kybsmr/image/upload/c_fill,g_north,h_450,w_800/f_auto/q_auto/projects/inventary-bot-login.png",
+    screenshotHover:
+      "https://res.cloudinary.com/dc3kybsmr/image/upload/c_fill,g_north,h_450,w_800/f_auto/q_auto/projects/inventary-bot-inside.png",
   },
 } as const;
 

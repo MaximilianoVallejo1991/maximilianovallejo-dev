@@ -127,6 +127,30 @@ export const es: PortfolioContent = {
       techTags: ["JavaScript", "HTML5", "CSS3", "Vercel"],
       ...PROJECT_ASSETS.countdownChristmas,
     },
+    {
+      slug: "minigames-engine",
+      title: "Minijuegos",
+      description:
+        "Motor de minijuegos educativos multiplataforma: cada juego es un módulo independiente y los temas se cambian solo con datos. Primer juego: trivia de ruleta sobre reciclaje y medioambiente.",
+      techTags: ["Flutter", "Dart", "go_router"],
+      ...PROJECT_ASSETS.minigamesEngine,
+    },
+    {
+      slug: "sofia-15",
+      title: "Invitación 15 de Sofía",
+      description:
+        "Invitación web interactiva para una fiesta de 15 años: cuenta regresiva, galería de fotos, confirmación de asistencia y sección de regalos.",
+      techTags: ["React 19", "Vite", "Tailwind CSS v4"],
+      ...PROJECT_ASSETS.sofia15,
+    },
+    {
+      slug: "inventory-bot",
+      title: "InventoryBot",
+      description:
+        "Panel interno de solo lectura para consultar inventario de equipos y su historial de cambios, sincronizado a diario desde un bot en Google Apps Script. Repositorio privado por confidencialidad del cliente.",
+      techTags: ["Next.js", "React 19", "Supabase", "TypeScript"],
+      ...PROJECT_ASSETS.inventoryBot,
+    },
   ],
 
   experience: {
