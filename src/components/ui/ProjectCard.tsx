@@ -7,11 +7,24 @@ import type { Project } from "../../data/content";
 interface ProjectCardProps {
   project: Project;
   index: number;
+  /** Tap-opened state on touch devices (see handleTap below). Lifted to the
+   *  grid parent so the open card can dim its siblings — defaults to closed
+   *  for callers (tests) that don't care about the mobile-tap behavior. */
+  isOpen?: boolean;
+  /** True when a *different* card in the grid is tap-opened — dims this one,
+   *  the touch equivalent of the `group-hover/grid:opacity-40` desktop dim. */
+  dimmed?: boolean;
+  onToggle?: () => void;
 }
 
-export default function ProjectCard({ project, index }: ProjectCardProps) {
+export default function ProjectCard({
+  project,
+  index,
+  isOpen = false,
+  dimmed = false,
+  onToggle,
+}: ProjectCardProps) {
   const [imgError, setImgError] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
   const prefersReduced = useReducedMotion();
 
   // Touch devices have no `:hover`, so the reveal panel below (description,
@@ -20,7 +33,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
   // support real hover, where the existing hover behavior already works.
   const handleTap = () => {
     if (typeof window !== "undefined" && window.matchMedia("(hover: none)").matches) {
-      setIsOpen((open) => !open);
+      onToggle?.();
     }
   };
 
@@ -30,7 +43,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
       whileHover={prefersReduced ? undefined : hoverLift}
       onClick={handleTap}
       data-open={isOpen}
-      className="group relative cursor-pointer rounded-xl border border-border bg-surface transition-[border-color,opacity,border-radius,box-shadow] duration-300 hover:z-10 hover:rounded-b-none hover:border-accent/40 hover:shadow-xl data-[open=true]:z-10 data-[open=true]:rounded-b-none data-[open=true]:border-accent/40 data-[open=true]:shadow-xl group-hover/grid:!opacity-40 hover:!opacity-100"
+      className={`group relative cursor-pointer rounded-xl border border-border bg-surface transition-[border-color,opacity,border-radius,box-shadow] duration-300 hover:z-10 hover:rounded-b-none hover:border-accent/40 hover:shadow-xl data-[open=true]:z-10 data-[open=true]:rounded-b-none data-[open=true]:border-accent/40 data-[open=true]:shadow-xl group-hover/grid:!opacity-40 hover:!opacity-100${dimmed ? " opacity-40" : ""}`}
     >
       {/* Screenshot / fallback */}
       <div className="relative z-20 aspect-video w-full overflow-hidden rounded-t-xl bg-border/30">

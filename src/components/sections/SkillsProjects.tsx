@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useContent } from "../../hooks/useContent";
 import SectionWrapper from "../ui/SectionWrapper";
 // Skills section temporarily hidden — re-add when scroll behavior is fixed.
@@ -9,6 +10,11 @@ import { fadeInItem } from "../ui/SectionWrapper";
 export default function SkillsProjects() {
   const content = useContent();
   const { projects, navLinks } = content;
+
+  // Which card is tap-opened on touch devices (see ProjectCard) — lifted
+  // here, not local to each card, so an open card can dim its siblings the
+  // same way `group-hover/grid:opacity-40` already dims them on real hover.
+  const [openSlug, setOpenSlug] = useState<string | null>(null);
 
   return (
     <SectionWrapper
@@ -31,7 +37,16 @@ export default function SkillsProjects() {
             top-row card slides it up over this heading. */}
         <div className="group/grid mt-24 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {projects.map((project, i) => (
-            <ProjectCard key={project.slug} project={project} index={i + 1} />
+            <ProjectCard
+              key={project.slug}
+              project={project}
+              index={i + 1}
+              isOpen={openSlug === project.slug}
+              dimmed={openSlug !== null && openSlug !== project.slug}
+              onToggle={() =>
+                setOpenSlug((prev) => (prev === project.slug ? null : project.slug))
+              }
+            />
           ))}
         </div>
       </div>
