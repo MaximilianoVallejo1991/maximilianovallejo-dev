@@ -11,13 +11,26 @@ interface ProjectCardProps {
 
 export default function ProjectCard({ project, index }: ProjectCardProps) {
   const [imgError, setImgError] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const prefersReduced = useReducedMotion();
+
+  // Touch devices have no `:hover`, so the reveal panel below (description,
+  // tags, GitHub/Live links) would otherwise be permanently unreachable —
+  // tapping the card toggles it open instead. Left alone on devices that
+  // support real hover, where the existing hover behavior already works.
+  const handleTap = () => {
+    if (typeof window !== "undefined" && window.matchMedia("(hover: none)").matches) {
+      setIsOpen((open) => !open);
+    }
+  };
 
   return (
     <motion.article
       {...fadeInItem(index)}
       whileHover={prefersReduced ? undefined : hoverLift}
-      className="group relative cursor-pointer rounded-xl border border-border bg-surface transition-[border-color,opacity,border-radius,box-shadow] duration-300 hover:z-10 hover:rounded-b-none hover:border-accent/40 hover:shadow-xl group-hover/grid:!opacity-40 hover:!opacity-100"
+      onClick={handleTap}
+      data-open={isOpen}
+      className="group relative cursor-pointer rounded-xl border border-border bg-surface transition-[border-color,opacity,border-radius,box-shadow] duration-300 hover:z-10 hover:rounded-b-none hover:border-accent/40 hover:shadow-xl data-[open=true]:z-10 data-[open=true]:rounded-b-none data-[open=true]:border-accent/40 data-[open=true]:shadow-xl group-hover/grid:!opacity-40 hover:!opacity-100"
     >
       {/* Screenshot / fallback */}
       <div className="relative z-20 aspect-video w-full overflow-hidden rounded-t-xl bg-border/30">
@@ -31,7 +44,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
               src={project.screenshot}
               alt={project.title}
               loading="lazy"
-              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 group-data-[open=true]:scale-105"
               onError={() => setImgError(true)}
             />
             {project.screenshotHover && (
@@ -40,7 +53,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
                 alt=""
                 loading="lazy"
                 aria-hidden="true"
-                className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-data-[open=true]:opacity-100"
               />
             )}
           </>
@@ -55,7 +68,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
           It un-rounds together with the article on hover so the card and
           the reveal panel below read as one seamless shape, not a rounded
           box suddenly growing square corners mid-transition. */}
-      <div className="relative z-20 rounded-b-xl bg-surface p-5 transition-[border-radius] duration-300 group-hover:rounded-b-none">
+      <div className="relative z-20 rounded-b-xl bg-surface p-5 transition-[border-radius] duration-300 group-hover:rounded-b-none group-data-[open=true]:rounded-b-none">
         <h3 className="font-heading text-lg font-semibold text-primary">
           {project.title}
         </h3>
@@ -80,7 +93,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
           in below the title. Border color/width match the card's own
           border exactly (same accent tint on hover) so the outline reads
           as one continuous edge instead of two stacked pieces. */}
-      <div className="pointer-events-none absolute -left-px top-full z-10 w-[calc(100%+2px)] -translate-y-28 rounded-b-xl border-x border-b border-border bg-surface p-5 pt-3 opacity-0 transition-[opacity,transform,border-color] duration-300 ease-out motion-reduce:transition-none group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:border-accent/40 group-hover:opacity-100">
+      <div className="pointer-events-none absolute -left-px top-full z-10 w-[calc(100%+2px)] -translate-y-28 rounded-b-xl border-x border-b border-border bg-surface p-5 pt-3 opacity-0 transition-[opacity,transform,border-color] duration-300 ease-out motion-reduce:transition-none group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:border-accent/40 group-hover:opacity-100 group-data-[open=true]:pointer-events-auto group-data-[open=true]:translate-y-0 group-data-[open=true]:border-accent/40 group-data-[open=true]:opacity-100">
         <p className="font-body text-sm leading-relaxed text-muted">
           {project.description}
         </p>
@@ -99,6 +112,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
               href={project.repoUrl}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
               className="font-medium text-accent no-underline transition-colors duration-200 hover:underline"
             >
               GitHub &rarr;
@@ -109,6 +123,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
               href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
               className="font-medium text-accent no-underline transition-colors duration-200 hover:underline"
             >
               Live &rarr;
