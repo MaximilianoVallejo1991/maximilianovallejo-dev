@@ -1,7 +1,7 @@
 # Handoff — Portfolio Launch (maximilianovallejo-dev)
 
 > Punto de entrada para retomar este proyecto en otra IA, otra sesión, o después de un tiempo.
-> Última actualización: 2026-07-06
+> Última actualización: 2026-11-07
 
 ## TL;DR
 
@@ -9,7 +9,7 @@ Portfolio personal bilingüe (ES/EN) de Maximiliano Vallejo. Single-page React 1
 
 **Stack final**: Vite 6 + React 19 + TS 5 + Tailwind v4 (CSS-first) + `motion` v12 + Cloudinary (raw URLs, sin SDK). Sin i18n lib, sin router, sin backend.
 
-**Estado actual**: Contenido actualizado con experiencia real de LinkedIn/GitHub. 3 CRITICAL fixes aplicados y verificados. Hero con animación mejorada (stagger text, hover lift, labels navegables). CV descargable desde logo MV.
+**Estado actual**: Contenido actualizado con experiencia real de LinkedIn/GitHub. 3 CRITICAL fixes aplicados y verificados. Hero con animación mejorada (stagger text, hover lift, labels navegables). CV descargable desde logo MV. 6 proyectos visibles (ver sesión 2026-11-07).
 
 ## Project Context
 
@@ -24,10 +24,13 @@ Portfolio personal bilingüe (ES/EN) de Maximiliano Vallejo. Single-page React 1
 
 **Stack del sujeto**: React 19, TypeScript, Node.js, Express, Prisma, PostgreSQL, JWT, Vite, Tailwind CSS v4, motion, Docker, Git.
 
-**Proyectos destacados** (3 visibles):
+**Proyectos destacados** (6 visibles):
 1. Stock Control — POS & Inventory — repo: `MaximilianoVallejo1991/stock-controll-main`
 2. ElianApp — Collaborative Expense Tracking — live: `elian-app-frontend.vercel.app`, repo: `MaximilianoVallejo1991/ElianApp`
 3. Countdown to Christmas — live: `tochristmas.vercel.app/`, repo: `MaximilianoVallejo1991/CountdownToChristmas`
+4. Minijuegos — motor de minijuegos educativos (Flutter) — live: `maximilianovallejo1991.github.io/minigames-engine/`, repo: `MaximilianoVallejo1991/minigames-engine`
+5. Invitación 15 de Sofía — live: `sofialarcon15.vercel.app`, repo: `MaximilianoVallejo1991/SofiAlarcon15`
+6. InventoryBot — panel interno de inventario (Next.js + Supabase) — **repo privado** (`inventary-bot`), sin `repoUrl`/`liveUrl` en el card; solo screenshots (ver sesión 2026-11-07 para el detalle de por qué y cómo se redactaron)
 
 **Contacto**: jmaximilianovallejo@gmail.com · LinkedIn: linkedin.com/in/maximiliano-vallejo/ · GitHub: MaximilianoVallejo1991
 
@@ -114,6 +117,47 @@ Portfolio personal bilingüe (ES/EN) de Maximiliano Vallejo. Single-page React 1
 
 ### Build
 - `tsc -b && vite build` — 0 errores, 456 modules
+
+## Session 2026-11-07 — Work Completed
+
+### Sincronización
+- El local estaba 5 commits atrás de `origin/main` (CV regenerado, email de contacto actualizado, banner "under construction" removido, cue de descarga del CV animado, hito 2015 de Ladrillos Macizos). `git pull --ff-only` sin conflictos.
+- Verificado que el deploy de producción en Vercel coincide siempre con `origin/main` (build automático por push a GitHub).
+
+### 3 proyectos nuevos en la sección Proyectos
+Datos (descripción, stack) sacados directamente de GitHub (`gh repo view` / `gh api .../languages` / `package.json` / `pubspec.yaml`), no inventados.
+
+1. **Minijuegos** (`minigames-engine`) — Flutter + Dart + go_router, motor de minijuegos educativos data-driven (temas intercambiables solo con datos). Primer juego: trivia de ruleta sobre reciclaje. Deploy en GitHub Pages. Repo público.
+2. **Invitación 15 de Sofía** (`SofiAlarcon15`) — React 19 + Vite + Tailwind v4 + lucide-react. Invitación web interactiva (countdown, galería, confirmación, regalos). Deploy en Vercel. Repo público.
+3. **InventoryBot** (`inventary-bot`, nombre interno real del repo `eset-inventory-web`) — Next.js 15 + React 19 + Supabase + TypeScript. Panel interno de solo lectura para inventario de equipos, sincronizado a diario desde un bot en Google Apps Script. **Repo privado** (confidencialidad del cliente) y sin demo activa (el usuario pausó el backend/DB en Supabase — plan free solo permite 2 proyectos activos simultáneos, y priorizó dejar activo ElianApp). Pendiente a futuro: migrar la DB de ElianApp a otra cuenta de Supabase del usuario para poder reactivar ambos (no abordado esta sesión, el usuario pidió dejarlo para después).
+
+### Cambios de modelo de datos (`src/data/content.ts`)
+- `Project.repoUrl` pasó de obligatorio a **opcional** — necesario para InventoryBot, que no tiene un repo público al que linkear.
+- Nuevo campo opcional `Project.screenshotHover` — segunda imagen que reemplaza a `screenshot` en hover (crossfade). Se usa solo en InventoryBot (login → vista interna). `ProjectCard.tsx` ahora: (a) no renderiza el link "GitHub →" si falta `repoUrl`, (b) apila un `<img>` absoluto con `opacity-0 group-hover:opacity-100` cuando hay `screenshotHover`.
+
+### Screenshots de InventoryBot — redacción de datos sensibles
+El usuario pasó dos capturas reales del panel (`Login-inventary-bot.png`, `inside-inventary-bot.png`, en `C:\Users\jmaxi\OneDrive\Imágenes\Screenshots\`) que contenían datos de producción reales: nombre de la empresa dueña del sistema, apellidos de empleados, códigos de oficina, IPs internas, y el email de sesión del usuario. Antes de subir nada se confirmó con el usuario qué se podía mostrar.
+
+Redacción aplicada (con `Pillow`, instalado ad-hoc vía `pip install Pillow` — no es dependencia del proyecto) usando **blur real** (`ImageFilter.GaussianBlur`, no cajas sólidas) sobre las coordenadas exactas, detectadas por escaneo de píxeles columna por columna (no por métricas de fuente, que no coincidían con la fuente real de la app):
+- Nombre de la empresa (header) y email de sesión: blureados por completo.
+- Apellidos: blureados; nombres de pila visibles (incluido un caso con orden invertido "Apellido Nombre" en los datos de origen, manejado como caso especial).
+- Hostnames de equipos: ~42% inicial visible, resto blureado.
+- Oficina e IP: columnas enteras blureadas, nada visible.
+- Fila "CAMARAS" (no es una persona): sin tocar.
+
+Resultado: `Login-inventary-bot-redacted.png` / `inside-inventary-bot-redacted.png`, en la misma carpeta junto a los originales sin redactar (los originales **no** se subieron a ningún lado).
+
+### Assets subidos a Cloudinary (`dc3kybsmr`, carpeta `projects/`)
+- `projects/minigames-engine.jpg` y `projects/sofia-15.jpg` — capturados en vivo con automatización de Chrome (viewport 1600×900) contra los demos desplegados.
+- `projects/inventary-bot-login.png` y `projects/inventary-bot-inside.png` — las dos versiones ya redactadas, subidas vía `sign-upload` (firma) + `curl` directo a la Upload API (archivos locales, no soportado por `upload-asset`).
+- Las URLs en `content.ts` no fijan versión, así que un futuro re-upload con el mismo `public_id` se refleja solo, sin tocar código.
+
+### Verificación
+- `tsc -b` limpio, `vitest run` → 71/71 tests OK.
+- Server de dev levantado (`pnpm dev`, **no** `npm` — el repo fuerza pnpm vía `scripts/check-package-manager.mjs`) y revisado visualmente en Chrome: las 6 cards, el hover de InventoryBot (cambio de imagen, sin links) y el hover de Minijuegos (con GitHub + Live) andan como se espera.
+
+### Commit
+`e0f37ec` — `feat(projects): add Minijuegos, Sofía's 15th invitation, and InventoryBot` — pusheado a `origin/main`.
 
 ## Definition of Done (proposal) — 14/15 ✅
 
