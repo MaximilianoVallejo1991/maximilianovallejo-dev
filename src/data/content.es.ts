@@ -429,6 +429,18 @@ export const es: PortfolioContent = {
             "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/qa-2021.pdf",
         },
         {
+          title: "Full Stack Developer con JavaScript",
+          year: "2026",
+          description:
+            "Diploma de Platzi por aprobar la ruta de Full Stack Developer con JavaScript.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/platzi-ruta-fullstack-javascript.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/platzi-ruta-fullstack-javascript.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/platzi-ruta-fullstack-javascript.pdf",
+        },
+        {
           title: "Inicio en Desarrollo con IA",
           year: "2026",
           description:
@@ -589,6 +601,17 @@ export const es: PortfolioContent = {
             "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/platzi-npm.jpg",
           pdfUrl:
             "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/platzi-npm.pdf",
+        },
+        {
+          title: "Git y GitHub",
+          year: "2026",
+          description: "Diploma de Platzi por aprobar el curso de Git y GitHub.",
+          thumbnailUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_fill,g_north,h_450,w_800/f_auto/q_auto/certifications/platzi-git-github.jpg",
+          imageUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/pg_1/c_limit,w_1600/f_auto/q_auto/certifications/platzi-git-github.jpg",
+          pdfUrl:
+            "https://res.cloudinary.com/dc3kybsmr/image/upload/certifications/platzi-git-github.pdf",
         },
       ],
     },
